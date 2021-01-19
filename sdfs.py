@@ -25,6 +25,7 @@ def box(size):
     return f
 
 def round_box(size, radius):
+    size = np.array(size) / 2
     @checked
     def f(p):
         q = np.abs(p) - size
@@ -147,4 +148,10 @@ def smooth_intersection(k, a, *bs):
             m = d2 + (d1 - d2) * h
             d1 = m + k * h * (1 - h)
         return d1
+    return f
+
+def translate(offset, sdf):
+    @checked
+    def f(p):
+        return sdf(p - offset)
     return f
