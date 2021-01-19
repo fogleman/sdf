@@ -8,6 +8,9 @@ def checked(f):
 def _length(a):
     return np.linalg.norm(a, axis=1)
 
+def _normalize(a):
+    return a / _length(a)
+
 def _dot(a, b):
     return np.sum(a * b, axis=1)
 
@@ -18,6 +21,7 @@ def sphere(center, radius):
     return f
 
 def box(size):
+    size = np.array(size) / 2
     @checked
     def f(p):
         q = np.abs(p) - size
@@ -75,12 +79,12 @@ def capped_cylinder(a, b, radius):
         return np.sign(d) * np.sqrt(np.abs(d)) / baba
     return f
 
-def ellipsoid(x, y, z):
-    radius = np.array([x, y, z])
+def ellipsoid(size):
+    size = np.array(size)
     @checked
     def f(p):
-        k0 = _length(p / radius)
-        k1 = _length(p / (radius * radius))
+        k0 = _length(p / size)
+        k1 = _length(p / (size * size))
         return k0 * (k0 - 1) / k1
     return f
 
@@ -154,4 +158,19 @@ def translate(offset, sdf):
     @checked
     def f(p):
         return sdf(p - offset)
+    return f
+
+def rotate(vector, angle, sdf):
+    x, y, z = _normalize(np.array(vector).reshape(1, -1))[0]
+    s = np.sin(angle)
+    c = np.cos(angle)
+    m = 1 - c
+    matrix = np.array([
+        [m*x*x + c, m*x*y + z*s, m*z*x - y*s],
+        [m*x*y - z*s, m*y*y + c, m*y*z + x*s],
+        [m*z*x + y*s, m*y*z - x*s, m*z*z + c],
+    ]).T
+    @checked
+    def f(p):
+        return sdf(np.dot(p, matrix))
     return f
