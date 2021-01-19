@@ -1,5 +1,10 @@
 import numpy as np
 
+def checked(f):
+    def wrapper(*args, **kwargs):
+        return f(*args, **kwargs).reshape((-1, 1))
+    return wrapper
+
 def _length(a):
     return np.linalg.norm(a, axis=1)
 
@@ -7,23 +12,27 @@ def _dot(a, b):
     return np.sum(a * b, axis=1)
 
 def sphere(center, radius):
+    @checked
     def f(p):
         return _length(p - center) - radius
     return f
 
 def box(size):
+    @checked
     def f(p):
         q = np.abs(p) - size
         return _length(np.maximum(q, 0)) + np.minimum(np.amax(q, axis=1), 0)
     return f
 
 def round_box(size, radius):
+    @checked
     def f(p):
         q = np.abs(p) - size
         return _length(np.maximum(q, 0)) + np.minimum(np.amax(q, axis=1), 0) - radius
     return f
 
 def torus(center, r1, r2):
+    @checked
     def f(p):
         xz = p[:,[0,2]]
         y = p[:,1]
@@ -35,6 +44,7 @@ def torus(center, r1, r2):
 def capsule(a, b, radius):
     a = np.array(a)
     b = np.array(b)
+    @checked
     def f(p):
         pa = p - a
         ba = b - a
@@ -45,6 +55,7 @@ def capsule(a, b, radius):
 def capped_cylinder(a, b, radius):
     a = np.array(a)
     b = np.array(b)
+    @checked
     def f(p):
         ba = b - a
         pa = p - a
@@ -65,6 +76,7 @@ def capped_cylinder(a, b, radius):
 
 def ellipsoid(x, y, z):
     radius = np.array([x, y, z])
+    @checked
     def f(p):
         k0 = _length(p / radius)
         k1 = _length(p / (radius * radius))
@@ -72,6 +84,7 @@ def ellipsoid(x, y, z):
     return f
 
 def union(a, *bs):
+    @checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -81,6 +94,7 @@ def union(a, *bs):
     return f
 
 def difference(a, *bs):
+    @checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -90,6 +104,7 @@ def difference(a, *bs):
     return f
 
 def intersection(a, *bs):
+    @checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -99,6 +114,7 @@ def intersection(a, *bs):
     return f
 
 def smooth_union(k, a, *bs):
+    @checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -110,6 +126,7 @@ def smooth_union(k, a, *bs):
     return f
 
 def smooth_difference(k, a, *bs):
+    @checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -121,6 +138,7 @@ def smooth_difference(k, a, *bs):
     return f
 
 def smooth_intersection(k, a, *bs):
+    @checked
     def f(p):
         d1 = a(p)
         for b in bs:
