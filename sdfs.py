@@ -42,6 +42,27 @@ def capsule(a, b, radius):
         return _length(pa - np.multiply(ba, h)) - radius
     return f
 
+def capped_cylinder(a, b, radius):
+    a = np.array(a)
+    b = np.array(b)
+    def f(p):
+        ba = b - a
+        pa = p - a
+        baba = np.dot(ba, ba)
+        paba = np.dot(pa, ba).reshape((-1, 1))
+        x = _length(pa * baba - ba * paba) - radius * baba
+        y = np.abs(paba - baba * 0.5) - baba * 0.5
+        x = x.reshape((-1, 1))
+        y = y.reshape((-1, 1))
+        x2 = x * x
+        y2 = y * y * baba
+        d = np.where(
+            np.maximum(x, y) < 0,
+            -np.minimum(x2, y2),
+            np.where(x > 0, x2, 0) + np.where(y > 0, y2, 0))
+        return np.sign(d) * np.sqrt(np.abs(d)) / baba
+    return f
+
 def ellipsoid(x, y, z):
     radius = np.array([x, y, z])
     def f(p):

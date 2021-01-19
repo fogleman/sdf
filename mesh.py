@@ -41,6 +41,7 @@ def generate(
     Xs = [X[i:i+s+1] for i in range(0, len(X), s)]
     Ys = [Y[i:i+s+1] for i in range(0, len(Y), s)]
     Zs = [Z[i:i+s+1] for i in range(0, len(Z), s)]
+    print(len(Xs) * len(Ys) * len(Zs), 'batches')
     pool = ThreadPool(num_workers)
     results = pool.map(_worker, itertools.product([sdf], Xs, Ys, Zs))
     points = [p for r in results for p in r]

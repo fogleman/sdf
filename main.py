@@ -13,7 +13,7 @@ def main():
         capsule((0, 0, -2), (0, 0, 2), 0.5),
     )
 
-    s = 1.3
+    s = 1.1
     points = generate(
         sdf, -s, -s, -s, s, s, s, RESOLUTION, RESOLUTION, RESOLUTION)
     print(len(points) // 3, 'triangles')
