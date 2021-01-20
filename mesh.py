@@ -33,6 +33,27 @@ def _worker(job):
     offset = np.array([X[0], Y[0], Z[0]])
     return points * scale + offset
 
+def estimate_bounds(sdf):
+    s = 16
+    x0 = y0 = z0 = -1e9
+    x1 = y1 = z1 = 1e9
+    prev = None
+    for i in range(32):
+        X = np.linspace(x0, x1, s)
+        Y = np.linspace(y0, y1, s)
+        Z = np.linspace(z0, z1, s)
+        d = np.array([X[1] - X[0], Y[1] - Y[0], Z[1] - Z[0]])
+        threshold = np.linalg.norm(d) / 2
+        if threshold == prev:
+            break
+        prev = threshold
+        P = _cartesian_product(X, Y, Z)
+        volume = sdf(P).reshape((len(X), len(Y), len(Z)))
+        where = np.argwhere(volume <= threshold)
+        x1, y1, z1 = (x0, y0, z0) + where.max(axis=0) * d + d / 2
+        x0, y0, z0 = (x0, y0, z0) + where.min(axis=0) * d - d / 2
+    return ((x0, y0, z0), (x1, y1, z1))
+
 def generate(
         sdf, resolution=None, samples=NUM_SAMPLES, bounds=None,
         num_workers=NUM_WORKERS, batch_size=BATCH_SIZE):
@@ -64,27 +85,6 @@ def generate(
     results = pool.map(_worker, itertools.product([sdf], Xs, Ys, Zs))
     points = [p for r in results for p in r]
     return points
-
-def estimate_bounds(sdf):
-    s = 16
-    x0 = y0 = z0 = -1e9
-    x1 = y1 = z1 = 1e9
-    prev = None
-    for i in range(32):
-        X = np.linspace(x0, x1, s)
-        Y = np.linspace(y0, y1, s)
-        Z = np.linspace(z0, z1, s)
-        d = np.array([X[1] - X[0], Y[1] - Y[0], Z[1] - Z[0]])
-        threshold = np.linalg.norm(d) / 2
-        if threshold == prev:
-            break
-        prev = threshold
-        P = _cartesian_product(X, Y, Z)
-        volume = sdf(P).reshape((len(X), len(Y), len(Z)))
-        where = np.argwhere(volume <= threshold)
-        x1, y1, z1 = (x0, y0, z0) + where.max(axis=0) * d + d / 2
-        x0, y0, z0 = (x0, y0, z0) + where.min(axis=0) * d - d / 2
-    return ((x0, y0, z0), (x1, y1, z1))
 
 def save(path, *args, **kwargs):
     points = generate(*args, **kwargs)
