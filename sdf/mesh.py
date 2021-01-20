@@ -30,7 +30,7 @@ def _worker(job):
     volume = sdf(P).reshape((len(X), len(Y), len(Z)))
     try:
         points = _marching_cubes(volume)
-    except ValueError:
+    except Exception:
         return []
     scale = np.array([X[1] - X[0], Y[1] - Y[0], Z[1] - Z[0]])
     offset = np.array([X[0], Y[0], Z[0]])
