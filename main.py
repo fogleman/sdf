@@ -1,6 +1,6 @@
 from sdfs import *
-from mesh import generate
-from stl import write_binary_stl
+import mesh
+import stl
 
 RESOLUTION = 0.01
 
@@ -13,11 +13,10 @@ def main():
         capsule((0, 0, -2), (0, 0, 2), 0.5),
     )
 
-    s = 1.1
-    points = generate(
-        sdf, -s, -s, -s, s, s, s, RESOLUTION, RESOLUTION, RESOLUTION)
+    bounds = mesh.estimate_bounds(sdf)
+    points = mesh.generate(sdf, bounds, RESOLUTION)
     print(len(points) // 3, 'triangles')
-    write_binary_stl('out.stl', points)
+    stl.write_binary_stl('out.stl', points)
 
 if __name__ == '__main__':
     main()
