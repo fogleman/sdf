@@ -232,3 +232,9 @@ def bend(k, sdf):
         z2 = z
         return sdf(np.stack([x2, y2, z2], axis=-1))
     return f
+
+def onion(thickness, sdf):
+    @_checked
+    def f(p):
+        return np.abs(sdf(p)) - thickness
+    return f
