@@ -175,6 +175,15 @@ def rotate(vector, angle, sdf):
         return sdf(np.dot(p, matrix))
     return f
 
+def repeat(count, spacing, sdf):
+    count = np.array(count)
+    spacing = np.array(spacing)
+    @checked
+    def f(p):
+        q = p - spacing * np.clip(np.round(p / spacing), -count, count)
+        return sdf(q)
+    return f
+
 def elongate(size, sdf):
     @checked
     def f(p):
