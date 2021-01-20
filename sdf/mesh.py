@@ -59,7 +59,7 @@ def _estimate_bounds(sdf):
 
 def generate(
         sdf, resolution=None, samples=NUM_SAMPLES, bounds=None,
-        num_workers=NUM_WORKERS, batch_size=BATCH_SIZE, verbose=False):
+        workers=NUM_WORKERS, batch_size=BATCH_SIZE, verbose=False):
 
     start = time.time()
 
@@ -94,9 +94,9 @@ def generate(
         num_batches = len(Xs) * len(Ys) * len(Zs)
         num_samples = num_batches * BATCH_SIZE ** 3
         print('%d samples in %d batches with %d workers' %
-            (num_samples, num_batches, num_workers))
+            (num_samples, num_batches, workers))
 
-    pool = ThreadPool(num_workers)
+    pool = ThreadPool(workers)
     results = pool.map(_worker, itertools.product([sdf], Xs, Ys, Zs))
     points = [p for r in results for p in r]
 
