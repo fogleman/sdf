@@ -8,4 +8,4 @@ sdf = smooth_difference(
     capsule((0, 0, -2), (0, 0, 2), 0.5),
 )
 
-save('out.stl', sdf, verbose=True)
+save('example.stl', sdf, verbose=True)
