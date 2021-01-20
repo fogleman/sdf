@@ -199,3 +199,17 @@ def twist(k, sdf):
         z2 = z
         return sdf(np.stack([x2, y2, z2], axis=-1))
     return f
+
+def bend(k, sdf):
+    @checked
+    def f(p):
+        x = p[:,0]
+        y = p[:,1]
+        z = p[:,2]
+        c = np.cos(k * x)
+        s = np.sin(k * x)
+        x2 = c * x - s * y
+        y2 = s * x + c * y
+        z2 = z
+        return sdf(np.stack([x2, y2, z2], axis=-1))
+    return f
