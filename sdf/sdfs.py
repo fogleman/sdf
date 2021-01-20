@@ -160,6 +160,16 @@ def translate(offset, sdf):
         return sdf(p - offset)
     return f
 
+def scale(factor, sdf):
+    try:
+        x, y, z = factor
+    except TypeError:
+        x = y = z = factor
+    @_checked
+    def f(p):
+        return sdf(p / (x, y, z))
+    return f
+
 def rotate(vector, angle, sdf):
     x, y, z = _normalize(np.array(vector).reshape(1, -1))[0]
     s = np.sin(angle)
