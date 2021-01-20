@@ -1,11 +1,12 @@
 from multiprocessing.pool import ThreadPool
 from skimage import measure
+
 import multiprocessing
 import itertools
 import numpy as np
 import time
 
-import stl
+from .stl import write_binary_stl
 
 NUM_WORKERS = multiprocessing.cpu_count()
 NUM_SAMPLES = 2 ** 22
@@ -35,7 +36,7 @@ def _worker(job):
     offset = np.array([X[0], Y[0], Z[0]])
     return points * scale + offset
 
-def estimate_bounds(sdf):
+def _estimate_bounds(sdf):
     s = 16
     x0 = y0 = z0 = -1e9
     x1 = y1 = z1 = 1e9
@@ -61,7 +62,7 @@ def generate(
         num_workers=NUM_WORKERS, batch_size=BATCH_SIZE):
 
     if bounds is None:
-        bounds = estimate_bounds(sdf)
+        bounds = _estimate_bounds(sdf)
     (x0, y0, z0), (x1, y1, z1) = bounds
 
     if resolution is None and samples is not None:
@@ -99,4 +100,4 @@ def save(path, *args, **kwargs):
     triangles = len(points) // 3
     seconds = time.time() - start
     print('%d triangles in %g seconds' % (triangles, seconds))
-    stl.write_binary_stl(path, points)
+    write_binary_stl(path, points)

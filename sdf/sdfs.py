@@ -1,6 +1,6 @@
 import numpy as np
 
-def checked(f):
+def _checked(f):
     def wrapper(*args, **kwargs):
         return f(*args, **kwargs).reshape((-1, 1))
     return wrapper
@@ -15,14 +15,14 @@ def _dot(a, b):
     return np.sum(a * b, axis=1)
 
 def sphere(center, radius):
-    @checked
+    @_checked
     def f(p):
         return _length(p - center) - radius
     return f
 
 def box(size):
     size = np.array(size) / 2
-    @checked
+    @_checked
     def f(p):
         q = np.abs(p) - size
         return _length(np.maximum(q, 0)) + np.minimum(np.amax(q, axis=1), 0)
@@ -30,14 +30,14 @@ def box(size):
 
 def round_box(size, radius):
     size = np.array(size) / 2
-    @checked
+    @_checked
     def f(p):
         q = np.abs(p) - size
         return _length(np.maximum(q, 0)) + np.minimum(np.amax(q, axis=1), 0) - radius
     return f
 
 def torus(center, r1, r2):
-    @checked
+    @_checked
     def f(p):
         xz = p[:,[0,2]]
         y = p[:,1]
@@ -49,7 +49,7 @@ def torus(center, r1, r2):
 def capsule(a, b, radius):
     a = np.array(a)
     b = np.array(b)
-    @checked
+    @_checked
     def f(p):
         pa = p - a
         ba = b - a
@@ -60,7 +60,7 @@ def capsule(a, b, radius):
 def capped_cylinder(a, b, radius):
     a = np.array(a)
     b = np.array(b)
-    @checked
+    @_checked
     def f(p):
         ba = b - a
         pa = p - a
@@ -81,7 +81,7 @@ def capped_cylinder(a, b, radius):
 
 def ellipsoid(size):
     size = np.array(size)
-    @checked
+    @_checked
     def f(p):
         k0 = _length(p / size)
         k1 = _length(p / (size * size))
@@ -89,7 +89,7 @@ def ellipsoid(size):
     return f
 
 def union(a, *bs):
-    @checked
+    @_checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -99,7 +99,7 @@ def union(a, *bs):
     return f
 
 def difference(a, *bs):
-    @checked
+    @_checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -109,7 +109,7 @@ def difference(a, *bs):
     return f
 
 def intersection(a, *bs):
-    @checked
+    @_checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -119,7 +119,7 @@ def intersection(a, *bs):
     return f
 
 def smooth_union(k, a, *bs):
-    @checked
+    @_checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -131,7 +131,7 @@ def smooth_union(k, a, *bs):
     return f
 
 def smooth_difference(k, a, *bs):
-    @checked
+    @_checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -143,7 +143,7 @@ def smooth_difference(k, a, *bs):
     return f
 
 def smooth_intersection(k, a, *bs):
-    @checked
+    @_checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -155,7 +155,7 @@ def smooth_intersection(k, a, *bs):
     return f
 
 def translate(offset, sdf):
-    @checked
+    @_checked
     def f(p):
         return sdf(p - offset)
     return f
@@ -170,7 +170,7 @@ def rotate(vector, angle, sdf):
         [m*x*y - z*s, m*y*y + c, m*y*z + x*s],
         [m*z*x + y*s, m*y*z - x*s, m*z*z + c],
     ]).T
-    @checked
+    @_checked
     def f(p):
         return sdf(np.dot(p, matrix))
     return f
@@ -178,14 +178,14 @@ def rotate(vector, angle, sdf):
 def repeat(count, spacing, sdf):
     count = np.array(count)
     spacing = np.array(spacing)
-    @checked
+    @_checked
     def f(p):
         q = p - spacing * np.clip(np.round(p / spacing), -count, count)
         return sdf(q)
     return f
 
 def elongate(size, sdf):
-    @checked
+    @_checked
     def f(p):
         q = np.abs(p) - size
         x = q[:,0].reshape((-1, 1))
@@ -196,7 +196,7 @@ def elongate(size, sdf):
     return f
 
 def twist(k, sdf):
-    @checked
+    @_checked
     def f(p):
         x = p[:,0]
         y = p[:,1]
@@ -210,7 +210,7 @@ def twist(k, sdf):
     return f
 
 def bend(k, sdf):
-    @checked
+    @_checked
     def f(p):
         x = p[:,0]
         y = p[:,1]
