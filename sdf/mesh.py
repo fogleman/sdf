@@ -59,7 +59,9 @@ def _estimate_bounds(sdf):
 
 def generate(
         sdf, resolution=None, samples=NUM_SAMPLES, bounds=None,
-        num_workers=NUM_WORKERS, batch_size=BATCH_SIZE):
+        num_workers=NUM_WORKERS, batch_size=BATCH_SIZE, verbose=False):
+
+    start = time.time()
 
     if bounds is None:
         bounds = _estimate_bounds(sdf)
@@ -74,30 +76,37 @@ def generate(
     except TypeError:
         dx = dy = dz = resolution
 
-    print('min %g, %g, %g' % (x0, y0, z0))
-    print('max %g, %g, %g' % (x1, y1, z1))
-    print('step %g, %g, %g' % (dx, dy, dz))
+    if verbose:
+        print('min %g, %g, %g' % (x0, y0, z0))
+        print('max %g, %g, %g' % (x1, y1, z1))
+        print('step %g, %g, %g' % (dx, dy, dz))
 
-    s = batch_size
     X = np.arange(x0, x1, dx)
     Y = np.arange(y0, y1, dy)
     Z = np.arange(z0, z1, dz)
+
+    s = batch_size
     Xs = [X[i:i+s+1] for i in range(0, len(X), s)]
     Ys = [Y[i:i+s+1] for i in range(0, len(Y), s)]
     Zs = [Z[i:i+s+1] for i in range(0, len(Z), s)]
-    num_batches = len(Xs) * len(Ys) * len(Zs)
-    num_samples = num_batches * BATCH_SIZE ** 3
-    print('%d samples in %d batches with %d workers' %
-        (num_samples, num_batches, num_workers))
+
+    if verbose:
+        num_batches = len(Xs) * len(Ys) * len(Zs)
+        num_samples = num_batches * BATCH_SIZE ** 3
+        print('%d samples in %d batches with %d workers' %
+            (num_samples, num_batches, num_workers))
+
     pool = ThreadPool(num_workers)
     results = pool.map(_worker, itertools.product([sdf], Xs, Ys, Zs))
     points = [p for r in results for p in r]
+
+    if verbose:
+        triangles = len(points) // 3
+        seconds = time.time() - start
+        print('%d triangles in %g seconds' % (triangles, seconds))
+
     return points
 
 def save(path, *args, **kwargs):
-    start = time.time()
     points = generate(*args, **kwargs)
-    triangles = len(points) // 3
-    seconds = time.time() - start
-    print('%d triangles in %g seconds' % (triangles, seconds))
     write_binary_stl(path, points)
