@@ -174,3 +174,28 @@ def rotate(vector, angle, sdf):
     def f(p):
         return sdf(np.dot(p, matrix))
     return f
+
+def elongate(size, sdf):
+    @checked
+    def f(p):
+        q = np.abs(p) - size
+        x = q[:,0].reshape((-1, 1))
+        y = q[:,1].reshape((-1, 1))
+        z = q[:,2].reshape((-1, 1))
+        w = np.minimum(np.maximum(x, np.maximum(y, z)), 0)
+        return sdf(np.maximum(q, 0)) + w
+    return f
+
+def twist(k, sdf):
+    @checked
+    def f(p):
+        x = p[:,0]
+        y = p[:,1]
+        z = p[:,2]
+        c = np.cos(k * z)
+        s = np.sin(k * z)
+        x2 = c * x - s * y
+        y2 = s * x + c * y
+        z2 = z
+        return sdf(np.stack([x2, y2, z2], axis=-1))
+    return f
