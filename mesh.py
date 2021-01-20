@@ -3,8 +3,10 @@ from skimage import measure
 import multiprocessing
 import itertools
 import numpy as np
+import stl
 
 NUM_WORKERS = multiprocessing.cpu_count()
+NUM_SAMPLES = 2 ** 22
 BATCH_SIZE = 48
 
 def _marching_cubes(volume, level=0):
@@ -32,15 +34,22 @@ def _worker(job):
     return points * scale + offset
 
 def generate(
-        sdf, resolution, bounds=None,
+        sdf, resolution=None, samples=NUM_SAMPLES, bounds=None,
         num_workers=NUM_WORKERS, batch_size=BATCH_SIZE):
+
+    if bounds is None:
+        bounds = estimate_bounds(sdf)
+    (x0, y0, z0), (x1, y1, z1) = bounds
+
+    if resolution is None and samples is not None:
+        volume = (x1 - x0) * (y1 - y0) * (z1 - z0)
+        resolution = (volume / samples) ** (1 / 3)
+
     try:
         dx, dy, dz = resolution
     except TypeError:
         dx = dy = dz = resolution
-    if bounds is None:
-        bounds = estimate_bounds(sdf)
-    (x0, y0, z0), (x1, y1, z1) = bounds
+
     s = batch_size
     X = np.arange(x0, x1, dx)
     Y = np.arange(y0, y1, dy)
@@ -76,3 +85,8 @@ def estimate_bounds(sdf):
         x1, y1, z1 = (x0, y0, z0) + where.max(axis=0) * d + d / 2
         x0, y0, z0 = (x0, y0, z0) + where.min(axis=0) * d - d / 2
     return ((x0, y0, z0), (x1, y1, z1))
+
+def save(path, *args, **kwargs):
+    points = generate(*args, **kwargs)
+    print(len(points) // 3, 'triangles')
+    stl.write_binary_stl(path, points)

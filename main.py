@@ -1,8 +1,5 @@
 from sdfs import *
-import mesh
-import stl
-
-RESOLUTION = 0.01
+from mesh import save
 
 def main():
     sdf = smooth_difference(
@@ -13,9 +10,7 @@ def main():
         capsule((0, 0, -2), (0, 0, 2), 0.5),
     )
 
-    points = mesh.generate(sdf, RESOLUTION)
-    print(len(points) // 3, 'triangles')
-    stl.write_binary_stl('out.stl', points)
+    save('out.stl', sdf)
 
 if __name__ == '__main__':
     main()
