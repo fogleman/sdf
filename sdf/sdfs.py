@@ -36,7 +36,7 @@ def round_box(size, radius):
         return _length(np.maximum(q, 0)) + np.minimum(np.amax(q, axis=1), 0) - radius
     return f
 
-def torus(center, r1, r2):
+def torus(r1, r2):
     @_checked
     def f(p):
         xz = p[:,[0,2]]
