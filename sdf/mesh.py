@@ -8,8 +8,8 @@ import time
 
 from .stl import write_binary_stl
 
-NUM_WORKERS = multiprocessing.cpu_count()
-NUM_SAMPLES = 2 ** 22
+WORKERS = multiprocessing.cpu_count()
+SAMPLES = 2 ** 22
 BATCH_SIZE = 48
 
 def _marching_cubes(volume, level=0):
@@ -58,8 +58,10 @@ def _estimate_bounds(sdf):
     return ((x0, y0, z0), (x1, y1, z1))
 
 def generate(
-        sdf, resolution=None, samples=NUM_SAMPLES, bounds=None,
-        workers=NUM_WORKERS, batch_size=BATCH_SIZE, verbose=False):
+        sdf,
+        step=None, bounds=None, samples=SAMPLES,
+        workers=WORKERS, batch_size=BATCH_SIZE,
+        verbose=False):
 
     start = time.time()
 
@@ -67,14 +69,14 @@ def generate(
         bounds = _estimate_bounds(sdf)
     (x0, y0, z0), (x1, y1, z1) = bounds
 
-    if resolution is None and samples is not None:
+    if step is None and samples is not None:
         volume = (x1 - x0) * (y1 - y0) * (z1 - z0)
-        resolution = (volume / samples) ** (1 / 3)
+        step = (volume / samples) ** (1 / 3)
 
     try:
-        dx, dy, dz = resolution
+        dx, dy, dz = step
     except TypeError:
-        dx = dy = dz = resolution
+        dx = dy = dz = step
 
     if verbose:
         print('min %g, %g, %g' % (x0, y0, z0))
