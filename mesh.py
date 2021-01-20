@@ -32,13 +32,15 @@ def _worker(job):
     return points * scale + offset
 
 def generate(
-        sdf, bounds, resolution,
+        sdf, resolution, bounds=None,
         num_workers=NUM_WORKERS, batch_size=BATCH_SIZE):
-    (x0, y0, z0), (x1, y1, z1) = bounds
     try:
         dx, dy, dz = resolution
     except TypeError:
         dx = dy = dz = resolution
+    if bounds is None:
+        bounds = estimate_bounds(sdf)
+    (x0, y0, z0), (x1, y1, z1) = bounds
     s = batch_size
     X = np.arange(x0, x1, dx)
     Y = np.arange(y0, y1, dy)

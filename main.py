@@ -13,8 +13,7 @@ def main():
         capsule((0, 0, -2), (0, 0, 2), 0.5),
     )
 
-    bounds = mesh.estimate_bounds(sdf)
-    points = mesh.generate(sdf, bounds, RESOLUTION)
+    points = mesh.generate(sdf, RESOLUTION)
     print(len(points) // 3, 'triangles')
     stl.write_binary_stl('out.stl', points)
 
