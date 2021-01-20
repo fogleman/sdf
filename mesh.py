@@ -3,6 +3,8 @@ from skimage import measure
 import multiprocessing
 import itertools
 import numpy as np
+import time
+
 import stl
 
 NUM_WORKERS = multiprocessing.cpu_count()
@@ -71,6 +73,10 @@ def generate(
     except TypeError:
         dx = dy = dz = resolution
 
+    print('min %g, %g, %g' % (x0, y0, z0))
+    print('max %g, %g, %g' % (x1, y1, z1))
+    print('step %g, %g, %g' % (dx, dy, dz))
+
     s = batch_size
     X = np.arange(x0, x1, dx)
     Y = np.arange(y0, y1, dy)
@@ -80,13 +86,17 @@ def generate(
     Zs = [Z[i:i+s+1] for i in range(0, len(Z), s)]
     num_batches = len(Xs) * len(Ys) * len(Zs)
     num_samples = num_batches * BATCH_SIZE ** 3
-    print('%d samples in %d batches' % (num_samples, num_batches))
+    print('%d samples in %d batches with %d workers' %
+        (num_samples, num_batches, num_workers))
     pool = ThreadPool(num_workers)
     results = pool.map(_worker, itertools.product([sdf], Xs, Ys, Zs))
     points = [p for r in results for p in r]
     return points
 
 def save(path, *args, **kwargs):
+    start = time.time()
     points = generate(*args, **kwargs)
-    print(len(points) // 3, 'triangles')
+    triangles = len(points) // 3
+    seconds = time.time() - start
+    print('%d triangles in %g seconds' % (triangles, seconds))
     stl.write_binary_stl(path, points)
