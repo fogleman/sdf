@@ -111,6 +111,12 @@ def pyramid(h):
         return np.sqrt((d2 + qz * qz) / m2) * np.sign(np.maximum(qz, -py))
     return f
 
+def octahedron(s):
+    @_checked
+    def f(p):
+        return (np.sum(np.abs(p), axis=1) - s) * 0.57735027
+    return f
+
 def union(a, *bs):
     @_checked
     def f(p):
