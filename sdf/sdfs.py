@@ -28,6 +28,13 @@ def box(size):
         return _length(np.maximum(q, 0)) + np.minimum(np.amax(q, axis=1), 0)
     return f
 
+def aabb(a, b):
+    a = np.array(a)
+    b = np.array(b)
+    size = b - a
+    offset = a + size / 2
+    return translate(offset, box(size))
+
 def round_box(size, radius):
     size = np.array(size) / 2
     @_checked
@@ -77,6 +84,28 @@ def capped_cylinder(a, b, radius):
             -np.minimum(x2, y2),
             np.where(x > 0, x2, 0) + np.where(y > 0, y2, 0))
         return np.sign(d) * np.sqrt(np.abs(d)) / baba
+    return f
+
+def capped_cone(a, b, ra, rb):
+    a = np.array(a)
+    b = np.array(b)
+    @_checked
+    def f(p):
+        rba = rb - ra
+        baba = np.dot(b - a, b - a)
+        papa = _dot(p - a, p - a)
+        paba = np.dot(p - a, b - a) / baba
+        x = np.sqrt(papa - paba * paba * baba)
+        cax = np.maximum(0, x - np.where(paba < 0.5, ra, rb))
+        cay = np.abs(paba - 0.5) - 0.5
+        k = rba * rba + baba
+        f = np.clip((rba * (x - ra) + paba * baba) / k, 0, 1)
+        cbx = x - ra - f * rba
+        cby = paba - f
+        s = np.where(np.logical_and(cbx < 0, cay < 0), -1, 1)
+        return s * np.sqrt(np.minimum(
+            cax * cax + cay * cay * baba,
+            cbx * cbx + cby * cby * baba))
     return f
 
 def ellipsoid(size):
