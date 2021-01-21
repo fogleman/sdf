@@ -223,6 +223,12 @@ def smooth_intersection(k, a, *bs):
         return d1
     return f
 
+def blend(k, a, b):
+    @_checked
+    def f(p):
+        return k * b(p) + (1 - k) * a(p)
+    return f
+
 def translate(offset, sdf):
     @_checked
     def f(p):
