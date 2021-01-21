@@ -94,7 +94,8 @@ def generate(
 
     if verbose:
         num_batches = len(Xs) * len(Ys) * len(Zs)
-        num_samples = num_batches * BATCH_SIZE ** 3
+        num_samples = sum(len(xs) * len(ys) * len(zs)
+            for xs, ys, zs in itertools.product(Xs, Ys, Zs))
         print('%d samples in %d batches with %d workers' %
             (num_samples, num_batches, workers))
 
