@@ -88,6 +88,29 @@ def ellipsoid(size):
         return k0 * (k0 - 1) / k1
     return f
 
+def pyramid(h):
+    @_checked
+    def f(p):
+        a = np.abs(p[:,[0,2]]) - 0.5
+        w = a[:,1] > a[:,0]
+        a[w] = a[:,[1,0]][w]
+        px = a[:,0]
+        py = p[:,1]
+        pz = a[:,1]
+        m2 = h * h + 0.25
+        qx = pz
+        qy = h * py - 0.5 * px
+        qz = h * px + 0.5 * py
+        s = np.maximum(-qx, 0)
+        t = np.clip((qy - 0.5 * pz) / (m2 + 0.25), 0, 1)
+        a = m2 * (qx + s) ** 2 + qy * qy
+        b = m2 * (qx + 0.5 * t) ** 2 + (qy - m2 * t) ** 2
+        d2 = np.where(
+            np.minimum(qy, -qx * m2 - qy * 0.5) > 0,
+            0, np.minimum(a, b))
+        return np.sqrt((d2 + qz * qz) / m2) * np.sign(np.maximum(qz, -py))
+    return f
+
 def union(a, *bs):
     @_checked
     def f(p):
