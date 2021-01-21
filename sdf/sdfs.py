@@ -9,7 +9,7 @@ def _length(a):
     return np.linalg.norm(a, axis=1)
 
 def _normalize(a):
-    return a / _length(a)
+    return a / np.linalg.norm(a)
 
 def _dot(a, b):
     return np.sum(a * b, axis=1)
@@ -151,12 +151,6 @@ def pyramid(h):
         return np.sqrt((d2 + qz * qz) / m2) * np.sign(np.maximum(qz, -py))
     return f
 
-def octahedron(s):
-    @_checked
-    def f(p):
-        return (np.sum(np.abs(p), axis=1) - s) * 0.57735027
-    return f
-
 def union(a, *bs):
     @_checked
     def f(p):
@@ -246,7 +240,7 @@ def scale(factor, sdf):
     return f
 
 def rotate(vector, angle, sdf):
-    x, y, z = _normalize(np.array(vector).reshape(1, -1))[0]
+    x, y, z = _normalize(vector)
     s = np.sin(angle)
     c = np.cos(angle)
     m = 1 - c
@@ -312,4 +306,51 @@ def onion(thickness, sdf):
     @_checked
     def f(p):
         return np.abs(sdf(p)) - thickness
+    return f
+
+def tetrahedron(r):
+    @_checked
+    def f(p):
+        x = p[:,0]
+        y = p[:,1]
+        z = p[:,2]
+        return (np.maximum(np.abs(x + y) - z, np.abs(x - y) + z) - 1) / np.sqrt(3)
+    return f
+
+def cube(r):
+    @_checked
+    def f(p):
+        q = np.abs(p) - r
+        return _length(np.maximum(q, 0)) + np.minimum(np.amax(q, axis=1), 0)
+    return f
+
+def octahedron(r):
+    @_checked
+    def f(p):
+        return (np.sum(np.abs(p), axis=1) - r) * np.tan(np.radians(30))
+    return f
+
+def dodecahedron(r):
+    x, y, z = _normalize(((1 + np.sqrt(5)) / 2, 1, 0))
+    @_checked
+    def f(p):
+        p = np.abs(p / r)
+        a = np.dot(p, (x, y, z))
+        b = np.dot(p, (z, x, y))
+        c = np.dot(p, (y, z, x))
+        q = (np.maximum(np.maximum(a, b), c) - x) * r
+        return q
+    return f
+
+def icosahedron(r):
+    x, y, z = _normalize(((np.sqrt(5) + 3) / 2, 1, 0))
+    w = np.sqrt(3) / 3
+    @_checked
+    def f(p):
+        p = np.abs(p / r)
+        a = np.dot(p, (x, y, z))
+        b = np.dot(p, (z, x, y))
+        c = np.dot(p, (y, z, x))
+        d = np.dot(p, (w, w, w)) - x
+        return np.maximum(np.maximum(np.maximum(a, b), c) - x, d) * r
     return f
