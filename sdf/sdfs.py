@@ -86,6 +86,17 @@ def capped_cylinder(a, b, radius):
         return np.sign(d) * np.sqrt(np.abs(d)) / baba
     return f
 
+def rounded_cylinder(ra, rb, h):
+    @_checked
+    def f(p):
+        d = np.stack([
+            _length(p[:,[0,2]]) - 2 * ra + rb,
+            np.abs(p[:,1]) - h], axis=-1)
+        return (
+            np.minimum(np.maximum(d[:,0], d[:,1]), 0) +
+            _length(np.maximum(d, 0)) - rb)
+    return f
+
 def capped_cone(a, b, ra, rb):
     a = np.array(a)
     b = np.array(b)
