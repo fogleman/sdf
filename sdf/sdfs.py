@@ -14,6 +14,12 @@ def _normalize(a):
 def _dot(a, b):
     return np.sum(a * b, axis=1)
 
+def _stack(*arrs):
+    return np.stack(arrs, axis=-1)
+
+_min = np.minimum
+_max = np.maximum
+
 def sphere(center, radius):
     @_checked
     def f(p):
@@ -25,7 +31,7 @@ def box(size):
     @_checked
     def f(p):
         q = np.abs(p) - size
-        return _length(np.maximum(q, 0)) + np.minimum(np.amax(q, axis=1), 0)
+        return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0)
     return f
 
 def aabb(a, b):
@@ -36,11 +42,23 @@ def aabb(a, b):
     return translate(offset, box(size))
 
 def round_box(size, radius):
-    size = np.array(size) / 2
+    size = np.array(size) / 2 - radius
     @_checked
     def f(p):
         q = np.abs(p) - size
-        return _length(np.maximum(q, 0)) + np.minimum(np.amax(q, axis=1), 0) - radius
+        return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0) - radius
+    return f
+
+def bounding_box(b, e):
+    def g(a, b, c):
+        return _length(_max(_stack(a, b, c), 0)) + _min(_max(a, _max(b, c)), 0)
+    @_checked
+    def f(p):
+        p = np.abs(p) - b
+        q = np.abs(p + e) - e
+        px, py, pz = p[:,0], p[:,1], p[:,2]
+        qx, qy, qz = q[:,0], q[:,1], q[:,2]
+        return _min(_min(g(px, qy, qz), g(qx, py, qz)), g(qx, qy, pz))
     return f
 
 def torus(r1, r2):
@@ -49,7 +67,7 @@ def torus(r1, r2):
         xz = p[:,[0,2]]
         y = p[:,1]
         a = _length(xz) - r1
-        b = _length(np.stack([a, y], axis=1)) - r2
+        b = _length(_stack(a, y)) - r2
         return b
     return f
 
@@ -80,8 +98,8 @@ def capped_cylinder(a, b, radius):
         x2 = x * x
         y2 = y * y * baba
         d = np.where(
-            np.maximum(x, y) < 0,
-            -np.minimum(x2, y2),
+            _max(x, y) < 0,
+            -_min(x2, y2),
             np.where(x > 0, x2, 0) + np.where(y > 0, y2, 0))
         return np.sign(d) * np.sqrt(np.abs(d)) / baba
     return f
@@ -89,12 +107,12 @@ def capped_cylinder(a, b, radius):
 def rounded_cylinder(ra, rb, h):
     @_checked
     def f(p):
-        d = np.stack([
+        d = _stack(
             _length(p[:,[0,2]]) - 2 * ra + rb,
-            np.abs(p[:,1]) - h], axis=-1)
+            np.abs(p[:,1]) - h)
         return (
-            np.minimum(np.maximum(d[:,0], d[:,1]), 0) +
-            _length(np.maximum(d, 0)) - rb)
+            _min(_max(d[:,0], d[:,1]), 0) +
+            _length(_max(d, 0)) - rb)
     return f
 
 def capped_cone(a, b, ra, rb):
@@ -107,14 +125,14 @@ def capped_cone(a, b, ra, rb):
         papa = _dot(p - a, p - a)
         paba = np.dot(p - a, b - a) / baba
         x = np.sqrt(papa - paba * paba * baba)
-        cax = np.maximum(0, x - np.where(paba < 0.5, ra, rb))
+        cax = _max(0, x - np.where(paba < 0.5, ra, rb))
         cay = np.abs(paba - 0.5) - 0.5
         k = rba * rba + baba
         f = np.clip((rba * (x - ra) + paba * baba) / k, 0, 1)
         cbx = x - ra - f * rba
         cby = paba - f
         s = np.where(np.logical_and(cbx < 0, cay < 0), -1, 1)
-        return s * np.sqrt(np.minimum(
+        return s * np.sqrt(_min(
             cax * cax + cay * cay * baba,
             cbx * cbx + cby * cby * baba))
     return f
@@ -141,14 +159,14 @@ def pyramid(h):
         qx = pz
         qy = h * py - 0.5 * px
         qz = h * px + 0.5 * py
-        s = np.maximum(-qx, 0)
+        s = _max(-qx, 0)
         t = np.clip((qy - 0.5 * pz) / (m2 + 0.25), 0, 1)
         a = m2 * (qx + s) ** 2 + qy * qy
         b = m2 * (qx + 0.5 * t) ** 2 + (qy - m2 * t) ** 2
         d2 = np.where(
-            np.minimum(qy, -qx * m2 - qy * 0.5) > 0,
-            0, np.minimum(a, b))
-        return np.sqrt((d2 + qz * qz) / m2) * np.sign(np.maximum(qz, -py))
+            _min(qy, -qx * m2 - qy * 0.5) > 0,
+            0, _min(a, b))
+        return np.sqrt((d2 + qz * qz) / m2) * np.sign(_max(qz, -py))
     return f
 
 def union(a, *bs):
@@ -157,7 +175,7 @@ def union(a, *bs):
         d1 = a(p)
         for b in bs:
             d2 = b(p)
-            d1 = np.minimum(d1, d2)
+            d1 = _min(d1, d2)
         return d1
     return f
 
@@ -167,7 +185,7 @@ def difference(a, *bs):
         d1 = a(p)
         for b in bs:
             d2 = b(p)
-            d1 = np.maximum(d1, -d2)
+            d1 = _max(d1, -d2)
         return d1
     return f
 
@@ -177,7 +195,7 @@ def intersection(a, *bs):
         d1 = a(p)
         for b in bs:
             d2 = b(p)
-            d1 = np.maximum(d1, d2)
+            d1 = _max(d1, d2)
         return d1
     return f
 
@@ -270,8 +288,8 @@ def elongate(size, sdf):
         x = q[:,0].reshape((-1, 1))
         y = q[:,1].reshape((-1, 1))
         z = q[:,2].reshape((-1, 1))
-        w = np.minimum(np.maximum(x, np.maximum(y, z)), 0)
-        return sdf(np.maximum(q, 0)) + w
+        w = _min(_max(x, _max(y, z)), 0)
+        return sdf(_max(q, 0)) + w
     return f
 
 def twist(k, sdf):
@@ -285,7 +303,7 @@ def twist(k, sdf):
         x2 = c * x - s * y
         y2 = s * x + c * y
         z2 = z
-        return sdf(np.stack([x2, y2, z2], axis=-1))
+        return sdf(_stack(x2, y2, z2))
     return f
 
 def bend(k, sdf):
@@ -299,7 +317,7 @@ def bend(k, sdf):
         x2 = c * x - s * y
         y2 = s * x + c * y
         z2 = z
-        return sdf(np.stack([x2, y2, z2], axis=-1))
+        return sdf(_stack(x2, y2, z2))
     return f
 
 def onion(thickness, sdf):
@@ -314,14 +332,14 @@ def tetrahedron(r):
         x = p[:,0]
         y = p[:,1]
         z = p[:,2]
-        return (np.maximum(np.abs(x + y) - z, np.abs(x - y) + z) - 1) / np.sqrt(3)
+        return (_max(np.abs(x + y) - z, np.abs(x - y) + z) - 1) / np.sqrt(3)
     return f
 
 def cube(r):
     @_checked
     def f(p):
         q = np.abs(p) - r
-        return _length(np.maximum(q, 0)) + np.minimum(np.amax(q, axis=1), 0)
+        return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0)
     return f
 
 def octahedron(r):
@@ -338,7 +356,7 @@ def dodecahedron(r):
         a = np.dot(p, (x, y, z))
         b = np.dot(p, (z, x, y))
         c = np.dot(p, (y, z, x))
-        q = (np.maximum(np.maximum(a, b), c) - x) * r
+        q = (_max(_max(a, b), c) - x) * r
         return q
     return f
 
@@ -352,5 +370,5 @@ def icosahedron(r):
         b = np.dot(p, (z, x, y))
         c = np.dot(p, (y, z, x))
         d = np.dot(p, (w, w, w)) - x
-        return np.maximum(np.maximum(np.maximum(a, b), c) - x, d) * r
+        return _max(_max(_max(a, b), c) - x, d) * r
     return f
