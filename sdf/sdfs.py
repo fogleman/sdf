@@ -73,10 +73,10 @@ def sphere(radius=1, center=ORIGIN):
     return f
 
 @sdf
-def box(radius=1, center=ORIGIN):
-    radius = np.array(radius)
+def box(size=1, center=ORIGIN):
+    size = np.array(size) / 2
     def f(p):
-        q = np.abs(p - center) - radius
+        q = np.abs(p - center) - size
         return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0)
     return f
 
@@ -98,7 +98,6 @@ def round_box(size, radius):
 
 @sdf
 def bounding_box(b, e):
-    @sdf
     def g(a, b, c):
         return _length(_max(_stack(a, b, c), 0)) + _min(_max(a, _max(b, c)), 0)
     def f(p):
