@@ -52,8 +52,14 @@ class SDF:
         return generate(self, *args, **kwargs)
     def save(self, path, *args, **kwargs):
         return save(path, self, *args, **kwargs)
+    def shell(self, thickness):
+        return shell(thickness, self)
+    def translate(self, offset):
+        return translate(offset, self)
     def orient(self, axis):
         return rotate_to((0, 0, 1), _axis(axis), self)
+    def twist(self, k):
+        return twist(k, self)
 
 def sdf(f):
     def wrapper(*args, **kwargs):
@@ -301,8 +307,10 @@ def scale(factor, sdf):
         x, y, z = factor
     except TypeError:
         x = y = z = factor
+    s = (x, y, z)
+    m = min(x, min(y, z))
     def f(p):
-        return sdf(p / (x, y, z))
+        return sdf(p / s) * m
     return f
 
 @sdf
@@ -382,7 +390,7 @@ def bend(k, sdf):
     return f
 
 @sdf
-def onion(thickness, sdf):
+def shell(thickness, sdf):
     def f(p):
         return np.abs(sdf(p)) - thickness
     return f
