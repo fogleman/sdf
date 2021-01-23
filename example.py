@@ -1,11 +1,8 @@
 from sdf import *
 
-sdf = smooth_difference(
-    0.05,
-    smooth_intersection(0.05, box(2), sphere((0, 0, 0), 1.25)),
-    capsule((-2, 0, 0), (2, 0, 0), 0.5),
-    capsule((0, -2, 0), (0, 2, 0), 0.5),
-    capsule((0, 0, -2), (0, 0, 2), 0.5),
-)
+f = sphere(1) & box(0.75)
 
-save('example.stl', sdf, verbose=True)
+c = cylinder(0.5)
+f -= c.orient('x') | c.orient('y') | c.orient('z')
+
+f.save('out.stl', verbose=True)

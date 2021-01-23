@@ -1,9 +1,8 @@
 import numpy as np
 
-def _checked(f):
-    def wrapper(*args, **kwargs):
-        return f(*args, **kwargs).reshape((-1, 1))
-    return wrapper
+from .mesh import generate, save
+
+ORIGIN = (0, 0, 0)
 
 def _length(a):
     return np.linalg.norm(a, axis=1)
@@ -17,23 +16,65 @@ def _dot(a, b):
 def _stack(*arrs):
     return np.stack(arrs, axis=-1)
 
+def _perpendicular(a):
+    if a[0] == 0 and a[1] == 0:
+        if a[2] == 0:
+            return (0, 0, 0)
+        return (0, 1, 0)
+    return _normalize((-a[1], a[0], 0))
+
 _min = np.minimum
 _max = np.maximum
 
-def sphere(center, radius):
-    @_checked
+def _axis(arg):
+    if isinstance(arg, str):
+        arg = arg.lower()
+        if arg == 'x':
+            return (1, 0, 0)
+        if arg == 'y':
+            return (0, 1, 0)
+        if arg == 'z':
+            return (0, 0, 1)
+    return arg
+
+class SDF:
+    def __init__(self, f):
+        self.f = f
+    def __call__(self, p):
+        return self.f(p).reshape((-1, 1))
+    def __or__(self, other):
+        return union(self, other)
+    def __and__(self, other):
+        return intersection(self, other)
+    def __sub__(self, other):
+        return difference(self, other)
+    def generate(self, *args, **kwargs):
+        return generate(self, *args, **kwargs)
+    def save(self, path, *args, **kwargs):
+        return save(path, self, *args, **kwargs)
+    def orient(self, axis):
+        return rotate_to((0, 0, 1), _axis(axis), self)
+
+def sdf(f):
+    def wrapper(*args, **kwargs):
+        return SDF(f(*args, **kwargs))
+    return wrapper
+
+@sdf
+def sphere(radius=1, center=ORIGIN):
     def f(p):
         return _length(p - center) - radius
     return f
 
-def box(size):
-    size = np.array(size) / 2
-    @_checked
+@sdf
+def box(radius=1, center=ORIGIN):
+    radius = np.array(radius)
     def f(p):
-        q = np.abs(p) - size
+        q = np.abs(p - center) - radius
         return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0)
     return f
 
+@sdf
 def aabb(a, b):
     a = np.array(a)
     b = np.array(b)
@@ -41,18 +82,19 @@ def aabb(a, b):
     offset = a + size / 2
     return translate(offset, box(size))
 
+@sdf
 def round_box(size, radius):
     size = np.array(size) / 2 - radius
-    @_checked
     def f(p):
         q = np.abs(p) - size
         return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0) - radius
     return f
 
+@sdf
 def bounding_box(b, e):
+    @sdf
     def g(a, b, c):
         return _length(_max(_stack(a, b, c), 0)) + _min(_max(a, _max(b, c)), 0)
-    @_checked
     def f(p):
         p = np.abs(p) - b
         q = np.abs(p + e) - e
@@ -61,8 +103,8 @@ def bounding_box(b, e):
         return _min(_min(g(px, qy, qz), g(qx, py, qz)), g(qx, qy, pz))
     return f
 
+@sdf
 def torus(r1, r2):
-    @_checked
     def f(p):
         xz = p[:,[0,2]]
         y = p[:,1]
@@ -71,10 +113,10 @@ def torus(r1, r2):
         return b
     return f
 
+@sdf
 def capsule(a, b, radius):
     a = np.array(a)
     b = np.array(b)
-    @_checked
     def f(p):
         pa = p - a
         ba = b - a
@@ -82,10 +124,16 @@ def capsule(a, b, radius):
         return _length(pa - np.multiply(ba, h)) - radius
     return f
 
+@sdf
+def cylinder(radius):
+    def f(p):
+        return _length(_stack(p[:,0], p[:,1])) - radius;
+    return f
+
+@sdf
 def capped_cylinder(a, b, radius):
     a = np.array(a)
     b = np.array(b)
-    @_checked
     def f(p):
         ba = b - a
         pa = p - a
@@ -104,8 +152,8 @@ def capped_cylinder(a, b, radius):
         return np.sign(d) * np.sqrt(np.abs(d)) / baba
     return f
 
+@sdf
 def rounded_cylinder(ra, rb, h):
-    @_checked
     def f(p):
         d = _stack(
             _length(p[:,[0,2]]) - 2 * ra + rb,
@@ -115,10 +163,10 @@ def rounded_cylinder(ra, rb, h):
             _length(_max(d, 0)) - rb)
     return f
 
+@sdf
 def capped_cone(a, b, ra, rb):
     a = np.array(a)
     b = np.array(b)
-    @_checked
     def f(p):
         rba = rb - ra
         baba = np.dot(b - a, b - a)
@@ -137,17 +185,17 @@ def capped_cone(a, b, ra, rb):
             cbx * cbx + cby * cby * baba))
     return f
 
+@sdf
 def ellipsoid(size):
     size = np.array(size)
-    @_checked
     def f(p):
         k0 = _length(p / size)
         k1 = _length(p / (size * size))
         return k0 * (k0 - 1) / k1
     return f
 
+@sdf
 def pyramid(h):
-    @_checked
     def f(p):
         a = np.abs(p[:,[0,2]]) - 0.5
         w = a[:,1] > a[:,0]
@@ -169,8 +217,8 @@ def pyramid(h):
         return np.sqrt((d2 + qz * qz) / m2) * np.sign(_max(qz, -py))
     return f
 
+@sdf
 def union(a, *bs):
-    @_checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -179,8 +227,8 @@ def union(a, *bs):
         return d1
     return f
 
+@sdf
 def difference(a, *bs):
-    @_checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -189,8 +237,8 @@ def difference(a, *bs):
         return d1
     return f
 
+@sdf
 def intersection(a, *bs):
-    @_checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -199,8 +247,8 @@ def intersection(a, *bs):
         return d1
     return f
 
+@sdf
 def smooth_union(k, a, *bs):
-    @_checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -211,8 +259,8 @@ def smooth_union(k, a, *bs):
         return d1
     return f
 
+@sdf
 def smooth_difference(k, a, *bs):
-    @_checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -223,8 +271,8 @@ def smooth_difference(k, a, *bs):
         return d1
     return f
 
+@sdf
 def smooth_intersection(k, a, *bs):
-    @_checked
     def f(p):
         d1 = a(p)
         for b in bs:
@@ -235,28 +283,29 @@ def smooth_intersection(k, a, *bs):
         return d1
     return f
 
+@sdf
 def blend(k, a, b):
-    @_checked
     def f(p):
         return k * b(p) + (1 - k) * a(p)
     return f
 
+@sdf
 def translate(offset, sdf):
-    @_checked
     def f(p):
         return sdf(p - offset)
     return f
 
+@sdf
 def scale(factor, sdf):
     try:
         x, y, z = factor
     except TypeError:
         x = y = z = factor
-    @_checked
     def f(p):
         return sdf(p / (x, y, z))
     return f
 
+@sdf
 def rotate(vector, angle, sdf):
     x, y, z = _normalize(vector)
     s = np.sin(angle)
@@ -267,22 +316,34 @@ def rotate(vector, angle, sdf):
         [m*x*y - z*s, m*y*y + c, m*y*z + x*s],
         [m*z*x + y*s, m*y*z - x*s, m*z*z + c],
     ]).T
-    @_checked
     def f(p):
         return sdf(np.dot(p, matrix))
     return f
 
+@sdf
+def rotate_to(a, b, sdf):
+    a = np.array(a)
+    b = np.array(b)
+    dot = np.dot(b, a)
+    if dot == 1:
+        return sdf
+    if dot == -1:
+        return rotate(_perpendicular(a), np.pi, sdf)
+    angle = np.arccos(dot)
+    v = _normalize(np.cross(b, a))
+    return rotate(v, angle, sdf)
+
+@sdf
 def repeat(count, spacing, sdf):
     count = np.array(count)
     spacing = np.array(spacing)
-    @_checked
     def f(p):
         q = p - spacing * np.clip(np.round(p / spacing), -count, count)
         return sdf(q)
     return f
 
+@sdf
 def elongate(size, sdf):
-    @_checked
     def f(p):
         q = np.abs(p) - size
         x = q[:,0].reshape((-1, 1))
@@ -292,8 +353,8 @@ def elongate(size, sdf):
         return sdf(_max(q, 0)) + w
     return f
 
+@sdf
 def twist(k, sdf):
-    @_checked
     def f(p):
         x = p[:,0]
         y = p[:,1]
@@ -306,8 +367,8 @@ def twist(k, sdf):
         return sdf(_stack(x2, y2, z2))
     return f
 
+@sdf
 def bend(k, sdf):
-    @_checked
     def f(p):
         x = p[:,0]
         y = p[:,1]
@@ -320,14 +381,14 @@ def bend(k, sdf):
         return sdf(_stack(x2, y2, z2))
     return f
 
+@sdf
 def onion(thickness, sdf):
-    @_checked
     def f(p):
         return np.abs(sdf(p)) - thickness
     return f
 
+@sdf
 def tetrahedron(r):
-    @_checked
     def f(p):
         x = p[:,0]
         y = p[:,1]
@@ -335,22 +396,22 @@ def tetrahedron(r):
         return (_max(np.abs(x + y) - z, np.abs(x - y) + z) - 1) / np.sqrt(3)
     return f
 
+@sdf
 def cube(r):
-    @_checked
     def f(p):
         q = np.abs(p) - r
         return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0)
     return f
 
+@sdf
 def octahedron(r):
-    @_checked
     def f(p):
         return (np.sum(np.abs(p), axis=1) - r) * np.tan(np.radians(30))
     return f
 
+@sdf
 def dodecahedron(r):
     x, y, z = _normalize(((1 + np.sqrt(5)) / 2, 1, 0))
-    @_checked
     def f(p):
         p = np.abs(p / r)
         a = np.dot(p, (x, y, z))
@@ -360,10 +421,10 @@ def dodecahedron(r):
         return q
     return f
 
+@sdf
 def icosahedron(r):
     x, y, z = _normalize(((np.sqrt(5) + 3) / 2, 1, 0))
     w = np.sqrt(3) / 3
-    @_checked
     def f(p):
         p = np.abs(p / r)
         a = np.dot(p, (x, y, z))
