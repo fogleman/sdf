@@ -52,6 +52,7 @@ class SDF:
         return generate(self, *args, **kwargs)
     def save(self, path, *args, **kwargs):
         return save(path, self, *args, **kwargs)
+    # TODO: auto-register sdf's that operate on other sdf's
     def shell(self, thickness):
         return shell(thickness, self)
     def translate(self, offset):

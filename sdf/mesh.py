@@ -52,7 +52,7 @@ def _estimate_bounds(sdf):
         prev = threshold
         P = _cartesian_product(X, Y, Z)
         volume = sdf(P).reshape((len(X), len(Y), len(Z)))
-        where = np.argwhere(volume <= threshold)
+        where = np.argwhere(np.abs(volume) <= threshold)
         x1, y1, z1 = (x0, y0, z0) + where.max(axis=0) * d + d / 2
         x0, y0, z0 = (x0, y0, z0) + where.min(axis=0) * d - d / 2
     return ((x0, y0, z0), (x1, y1, z1))
