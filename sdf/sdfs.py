@@ -456,11 +456,37 @@ def revolve(other, offset=0):
 # TODO: separate 2D and 3D SDFs (different module / namespace)
 
 @sdf
+def circle(radius=1, center=(0, 0)):
+    def f(p):
+        return _length(p - center) - radius
+    return f
+
+@sdf
 def box2(size=1, center=(0, 0)):
     size = np.array(size) / 2
     def f(p):
         q = np.abs(p - center) - size
         return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0)
+    return f
+
+@sdf
+def rounded_box2(size, radius, center=(0, 0)):
+    try:
+        r0, r1, r2, r3 = radius
+    except TypeError:
+        r0 = r1 = r2 = r3 = radius
+    def f(p):
+        x = p[:,0]
+        y = p[:,1]
+        r = np.zeros(len(p)).reshape((-1, 1))
+        r[np.logical_and(x > 0, y > 0)] = r0
+        r[np.logical_and(x > 0, y <= 0)] = r1
+        r[np.logical_and(x <= 0, y <= 0)] = r2
+        r[np.logical_and(x <= 0, y > 0)] = r3
+        q = np.abs(p) - size + r
+        return (
+            _min(_max(q[:,0], q[:,1]), 0).reshape((-1, 1)) +
+            _length(_max(q, 0)).reshape((-1, 1)) - r)
     return f
 
 @sdf
