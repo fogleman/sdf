@@ -6,7 +6,7 @@ import itertools
 import numpy as np
 import time
 
-from .stl import write_binary_stl
+from . import progress, stl
 
 WORKERS = multiprocessing.cpu_count()
 SAMPLES = 2 ** 22
@@ -94,16 +94,22 @@ def generate(
     Ys = [Y[i:i+s+1] for i in range(0, len(Y), s)]
     Zs = [Z[i:i+s+1] for i in range(0, len(Z), s)]
 
+    batches = list(itertools.product([sdf], Xs, Ys, Zs))
+    num_batches = len(batches)
+    num_samples = sum(len(xs) * len(ys) * len(zs)
+        for _, xs, ys, zs in batches)
+
     if verbose:
-        num_batches = len(Xs) * len(Ys) * len(Zs)
-        num_samples = sum(len(xs) * len(ys) * len(zs)
-            for xs, ys, zs in itertools.product(Xs, Ys, Zs))
         print('%d samples in %d batches with %d workers' %
             (num_samples, num_batches, workers))
 
+    points = []
+    bar = progress.Bar(num_batches, enabled=verbose)
     pool = ThreadPool(workers)
-    results = pool.map(_worker, itertools.product([sdf], Xs, Ys, Zs))
-    points = [p for r in results for p in r]
+    for result in pool.imap(_worker, batches):
+        points.extend(result)
+        bar.increment(1)
+    bar.done()
 
     if verbose:
         triangles = len(points) // 3
@@ -114,4 +120,4 @@ def generate(
 
 def save(path, *args, **kwargs):
     points = generate(*args, **kwargs)
-    write_binary_stl(path, points)
+    stl.write_binary_stl(path, points)
