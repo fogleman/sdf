@@ -434,3 +434,59 @@ def shell(other, thickness):
     def f(p):
         return np.abs(other(p)) - thickness
     return f
+
+@registered_sdf
+def extrude(other, h):
+    def f(p):
+        d = other(p[:,[0,1]])
+        w = _vec(d.reshape(-1), np.abs(p[:,2]) - h)
+        return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w, 0))
+    return f
+
+@registered_sdf
+def revolve(other, offset=0):
+    def f(p):
+        xy = p[:,[0,1]]
+        q = _vec(_length(xy) - offset, p[:,2])
+        return other(q)
+    return f
+
+
+
+@sdf
+def box2(size=1, center=(0, 0)):
+    size = np.array(size) / 2
+    def f(p):
+        q = np.abs(p - center) - size
+        return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0)
+    return f
+
+@sdf
+def equilateral_triangle():
+    def f(p):
+        k = 3 ** 0.5
+        p = _vec(
+            np.abs(p[:,0]) - 1,
+            p[:,1] + 1 / k)
+        w = p[:,0] + k * p[:,1] > 0
+        q = _vec(
+            p[:,0] - k * p[:,1],
+            -k * p[:,0] - p[:,1]) / 2
+        p = np.where(w.reshape((-1, 1)), q, p)
+        p = _vec(
+            p[:,0] - np.clip(p[:,0], -2, 0),
+            p[:,1])
+        return -_length(p) * np.sign(p[:,1])
+    return f
+
+@sdf
+def hexagon(r):
+    def f(p):
+        k = np.array((3 ** 0.5 / -2, 0.5, np.tan(np.pi / 6)))
+        p = np.abs(p)
+        p -= 2 * k[:2] * _min(_dot(k[:2], p), 0).reshape((-1, 1))
+        p -= _vec(
+            np.clip(p[:,0], -k[2] * r, k[2] * r),
+            np.zeros(len(p)) + r)
+        return _length(p) * np.sign(p[:,1])
+    return f
