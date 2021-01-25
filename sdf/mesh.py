@@ -25,6 +25,7 @@ def _cartesian_product(*arrays):
     return arr.reshape(-1, la)
 
 def _worker(job):
+    # TODO: early return if whole batch isn't near surface
     sdf, X, Y, Z = job
     P = _cartesian_product(X, Y, Z)
     volume = sdf(P).reshape((len(X), len(Y), len(Z)))
@@ -37,6 +38,7 @@ def _worker(job):
     return points * scale + offset
 
 def _estimate_bounds(sdf):
+    # TODO: raise exception if bound estimation fails
     s = 16
     x0 = y0 = z0 = -1e9
     x1 = y1 = z1 = 1e9
