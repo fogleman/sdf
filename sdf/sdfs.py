@@ -364,8 +364,8 @@ def rotate(other, vector, angle):
 
 @registered_sdf
 def rotate_to(other, a, b):
-    a = np.array(a)
-    b = np.array(b)
+    a = _normalize(np.array(a))
+    b = _normalize(np.array(b))
     dot = np.dot(b, a)
     if dot == 1:
         return other
@@ -453,6 +453,8 @@ def revolve(other, offset=0):
 
 
 
+# TODO: separate 2D and 3D SDFs (different module / namespace)
+
 @sdf
 def box2(size=1, center=(0, 0)):
     size = np.array(size) / 2
@@ -489,4 +491,12 @@ def hexagon(r):
             np.clip(p[:,0], -k[2] * r, k[2] * r),
             np.zeros(len(p)) + r)
         return _length(p) * np.sign(p[:,1])
+    return f
+
+@sdf
+def rounded_x(w, r):
+    def f(p):
+        p = np.abs(p)
+        q = (_min(p[:,0] + p[:,1], w) * 0.5).reshape((-1, 1))
+        return _length(p - q) - r
     return f
