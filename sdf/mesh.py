@@ -10,7 +10,7 @@ from . import progress, stl
 
 WORKERS = multiprocessing.cpu_count()
 SAMPLES = 2 ** 22
-BATCH_SIZE = 48
+BATCH_SIZE = 32
 
 def _marching_cubes(volume, level=0):
     verts, faces, _, _ = measure.marching_cubes(volume, level)
@@ -24,15 +24,30 @@ def _cartesian_product(*arrays):
         arr[...,i] = a
     return arr.reshape(-1, la)
 
-def _worker(job):
-    # TODO: early return if whole batch isn't near surface
+def _skip(job):
     sdf, X, Y, Z = job
+    x0, x1 = X[0], X[-1]
+    y0, y1 = Y[0], Y[-1]
+    z0, z1 = Z[0], Z[-1]
+    x = (x0 + x1) / 2
+    y = (y0 + y1) / 2
+    z = (z0 + z1) / 2
+    r = abs(sdf(np.array([(x, y, z)])).reshape(-1)[0])
+    d = np.linalg.norm(np.array((x-x0, y-y0, z-z0)))
+    return r > d
+
+def _worker(job):
+    sdf, X, Y, Z = job
+    if _skip(job):
+        return None
+        # return _debug_triangles(X, Y, Z)
     P = _cartesian_product(X, Y, Z)
     volume = sdf(P).reshape((len(X), len(Y), len(Z)))
     try:
         points = _marching_cubes(volume)
     except Exception:
         return []
+        # return _debug_triangles(X, Y, Z)
     scale = np.array([X[1] - X[0], Y[1] - Y[0], Z[1] - Z[0]])
     offset = np.array([X[0], Y[0], Z[0]])
     return points * scale + offset
@@ -104,14 +119,22 @@ def generate(
             (num_samples, num_batches, workers))
 
     points = []
+    skipped = empty = nonempty = 0
     bar = progress.Bar(num_batches, enabled=verbose)
     pool = ThreadPool(workers)
     for result in pool.imap(_worker, batches):
-        points.extend(result)
         bar.increment(1)
+        if result is None:
+            skipped += 1
+        elif len(result) == 0:
+            empty += 1
+        else:
+            nonempty += 1
+            points.extend(result)
     bar.done()
 
     if verbose:
+        print('%d skipped, %d empty, %d nonempty' % (skipped, empty, nonempty))
         triangles = len(points) // 3
         seconds = time.time() - start
         print('%d triangles in %g seconds' % (triangles, seconds))
@@ -121,3 +144,39 @@ def generate(
 def save(path, *args, **kwargs):
     points = generate(*args, **kwargs)
     stl.write_binary_stl(path, points)
+
+def _debug_triangles(X, Y, Z):
+    x0, x1 = X[0], X[-1]
+    y0, y1 = Y[0], Y[-1]
+    z0, z1 = Z[0], Z[-1]
+
+    p = 0.25
+    x0, x1 = x0 + (x1 - x0) * p, x1 - (x1 - x0) * p
+    y0, y1 = y0 + (y1 - y0) * p, y1 - (y1 - y0) * p
+    z0, z1 = z0 + (z1 - z0) * p, z1 - (z1 - z0) * p
+
+    v = [
+        (x0, y0, z0),
+        (x0, y0, z1),
+        (x0, y1, z0),
+        (x0, y1, z1),
+        (x1, y0, z0),
+        (x1, y0, z1),
+        (x1, y1, z0),
+        (x1, y1, z1),
+    ]
+
+    return [
+        v[3], v[5], v[7],
+        v[5], v[3], v[1],
+        v[0], v[6], v[4],
+        v[6], v[0], v[2],
+        v[0], v[5], v[1],
+        v[5], v[0], v[4],
+        v[5], v[6], v[7],
+        v[6], v[5], v[4],
+        v[6], v[3], v[7],
+        v[3], v[6], v[2],
+        v[0], v[3], v[2],
+        v[3], v[0], v[1],
+    ]
