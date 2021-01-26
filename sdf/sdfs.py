@@ -233,13 +233,6 @@ def tetrahedron(r):
     return f
 
 @sdf
-def cube(r):
-    def f(p):
-        q = np.abs(p) - r
-        return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0)
-    return f
-
-@sdf
 def octahedron(r):
     def f(p):
         return (np.sum(np.abs(p), axis=1) - r) * np.tan(np.radians(30))
