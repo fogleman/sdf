@@ -381,6 +381,12 @@ def repeat(other, count, spacing):
         return other(q)
     return f
 
+@registered_sdf
+def circular_array(other, count, vector=UP):
+    angles = [i / count * 2 * np.pi for i in range(count)]
+    fs = [other.rotate(vector, a) for a in angles]
+    return functools.reduce(operator.or_, fs)
+
 # Alterations
 
 @registered_sdf
