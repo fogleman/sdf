@@ -1,3 +1,4 @@
+from functools import partial
 from multiprocessing.pool import ThreadPool
 from skimage import measure
 
@@ -24,8 +25,8 @@ def _cartesian_product(*arrays):
         arr[...,i] = a
     return arr.reshape(-1, la)
 
-def _skip(job):
-    sdf, X, Y, Z = job
+def _skip(sdf, job):
+    X, Y, Z = job
     x0, x1 = X[0], X[-1]
     y0, y1 = Y[0], Y[-1]
     z0, z1 = Z[0], Z[-1]
@@ -36,9 +37,9 @@ def _skip(job):
     d = np.linalg.norm(np.array((x-x0, y-y0, z-z0)))
     return r > d
 
-def _worker(job):
-    sdf, X, Y, Z = job
-    if _skip(job):
+def _worker(sdf, job, force):
+    X, Y, Z = job
+    if not force and _skip(sdf, job):
         return None
         # return _debug_triangles(X, Y, Z)
     P = _cartesian_product(X, Y, Z)
@@ -78,7 +79,7 @@ def generate(
         sdf,
         step=None, bounds=None, samples=SAMPLES,
         workers=WORKERS, batch_size=BATCH_SIZE,
-        verbose=False):
+        verbose=False, force=False):
 
     start = time.time()
 
@@ -109,10 +110,10 @@ def generate(
     Ys = [Y[i:i+s+1] for i in range(0, len(Y), s)]
     Zs = [Z[i:i+s+1] for i in range(0, len(Z), s)]
 
-    batches = list(itertools.product([sdf], Xs, Ys, Zs))
+    batches = list(itertools.product(Xs, Ys, Zs))
     num_batches = len(batches)
     num_samples = sum(len(xs) * len(ys) * len(zs)
-        for _, xs, ys, zs in batches)
+        for xs, ys, zs in batches)
 
     if verbose:
         print('%d samples in %d batches with %d workers' %
@@ -122,7 +123,8 @@ def generate(
     skipped = empty = nonempty = 0
     bar = progress.Bar(num_batches, enabled=verbose)
     pool = ThreadPool(workers)
-    for result in pool.imap(_worker, batches):
+    f = partial(_worker, sdf, force=force)
+    for result in pool.imap(f, batches):
         bar.increment(1)
         if result is None:
             skipped += 1
