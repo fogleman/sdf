@@ -439,7 +439,7 @@ def shell(other, thickness):
 def extrude(other, h):
     def f(p):
         d = other(p[:,[0,1]])
-        w = _vec(d.reshape(-1), np.abs(p[:,2]) - h)
+        w = _vec(d.reshape(-1), np.abs(p[:,2]) - h / 2)
         return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w, 0))
     return f
 
