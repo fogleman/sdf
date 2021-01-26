@@ -1,14 +1,12 @@
-from .sdfs import *
+from . import d2, d3
+
+from .d2 import *
+
+from .d3 import *
 
 from .mesh import (
     generate,
     save,
-)
-
-from .sdf import (
-    SDF,
-    sdf,
-    registered_sdf,
 )
 
 from .stl import (

@@ -37,9 +37,9 @@ def _skip(sdf, job):
     d = np.linalg.norm(np.array((x-x0, y-y0, z-z0)))
     return r > d
 
-def _worker(sdf, job, force):
+def _worker(sdf, job, sparse):
     X, Y, Z = job
-    if not force and _skip(sdf, job):
+    if sparse and _skip(sdf, job):
         return None
         # return _debug_triangles(X, Y, Z)
     P = _cartesian_product(X, Y, Z)
@@ -79,7 +79,7 @@ def generate(
         sdf,
         step=None, bounds=None, samples=SAMPLES,
         workers=WORKERS, batch_size=BATCH_SIZE,
-        verbose=False, force=False):
+        verbose=False, sparse=True):
 
     start = time.time()
 
@@ -123,7 +123,7 @@ def generate(
     skipped = empty = nonempty = 0
     bar = progress.Bar(num_batches, enabled=verbose)
     pool = ThreadPool(workers)
-    f = partial(_worker, sdf, force=force)
+    f = partial(_worker, sdf, sparse=sparse)
     for result in pool.imap(f, batches):
         bar.increment(1)
         if result is None:
