@@ -15,7 +15,7 @@ UP = Y
 
 # SDF Class
 
-_registered_sdfs = {}
+_ops = {}
 
 class SDF2:
     def __init__(self, f):
@@ -23,8 +23,8 @@ class SDF2:
     def __call__(self, p):
         return self.f(p).reshape((-1, 1))
     def __getattr__(self, name):
-        if name in _registered_sdfs:
-            f = _registered_sdfs[name]
+        if name in _ops:
+            f = _ops[name]
             return functools.partial(f, self)
         raise AttributeError
     def __or__(self, other):
@@ -39,16 +39,16 @@ def sdf2(f):
         return SDF2(f(*args, **kwargs))
     return wrapper
 
-def registered_sdf2(f):
+def op2(f):
     def wrapper(*args, **kwargs):
         return SDF2(f(*args, **kwargs))
-    _registered_sdfs[f.__name__] = wrapper
+    _ops[f.__name__] = wrapper
     return wrapper
 
-def registered_sdf23(f):
+def op23(f):
     def wrapper(*args, **kwargs):
         return d3.SDF3(f(*args, **kwargs))
-    _registered_sdfs[f.__name__] = wrapper
+    _ops[f.__name__] = wrapper
     return wrapper
 
 # Helpers
@@ -172,13 +172,13 @@ def rounded_x(w, r):
 
 # Positioning
 
-@registered_sdf2
+@op2
 def translate(other, offset):
     def f(p):
         return other(p - offset)
     return f
 
-@registered_sdf2
+@op2
 def scale(other, factor):
     try:
         x, y = factor
@@ -190,7 +190,7 @@ def scale(other, factor):
         return other(p / s) * m
     return f
 
-@registered_sdf2
+@op2
 def rotate(other, angle):
     s = np.sin(angle)
     c = np.cos(angle)
@@ -203,14 +203,14 @@ def rotate(other, angle):
         return other(np.dot(p, matrix))
     return f
 
-@registered_sdf2
+@op2
 def circular_array(other, count):
     angles = [i / count * 2 * np.pi for i in range(count)]
     return union(*[other.rotate(a) for a in angles])
 
 # Alterations
 
-@registered_sdf2
+@op2
 def elongate(other, size):
     def f(p):
         q = np.abs(p) - size
@@ -222,7 +222,7 @@ def elongate(other, size):
 
 # 2D => 3D Operations
 
-@registered_sdf23
+@op23
 def extrude(other, h):
     def f(p):
         d = other(p[:,[0,1]])
@@ -230,7 +230,7 @@ def extrude(other, h):
         return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w, 0))
     return f
 
-@registered_sdf23
+@op23
 def revolve(other, offset=0):
     def f(p):
         xy = p[:,[0,1]]
@@ -240,9 +240,9 @@ def revolve(other, offset=0):
 
 # Common
 
-union = registered_sdf2(dn.union)
-difference = registered_sdf2(dn.difference)
-intersection = registered_sdf2(dn.intersection)
-blend = registered_sdf2(dn.blend)
-shell = registered_sdf2(dn.shell)
-repeat = registered_sdf2(dn.repeat)
+union = op2(dn.union)
+difference = op2(dn.difference)
+intersection = op2(dn.intersection)
+blend = op2(dn.blend)
+shell = op2(dn.shell)
+repeat = op2(dn.repeat)

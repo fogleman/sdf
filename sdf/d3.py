@@ -16,7 +16,7 @@ UP = Z
 
 # SDF Class
 
-_registered_sdfs = {}
+_ops = {}
 
 class SDF3:
     def __init__(self, f):
@@ -24,8 +24,8 @@ class SDF3:
     def __call__(self, p):
         return self.f(p).reshape((-1, 1))
     def __getattr__(self, name):
-        if name in _registered_sdfs:
-            f = _registered_sdfs[name]
+        if name in _ops:
+            f = _ops[name]
             return functools.partial(f, self)
         raise AttributeError
     def __or__(self, other):
@@ -46,10 +46,10 @@ def sdf3(f):
         return SDF3(f(*args, **kwargs))
     return wrapper
 
-def registered_sdf3(f):
+def op3(f):
     def wrapper(*args, **kwargs):
         return SDF3(f(*args, **kwargs))
-    _registered_sdfs[f.__name__] = wrapper
+    _ops[f.__name__] = wrapper
     return wrapper
 
 # Helpers
@@ -303,13 +303,13 @@ def icosahedron(r):
 
 # Positioning
 
-@registered_sdf3
+@op3
 def translate(other, offset):
     def f(p):
         return other(p - offset)
     return f
 
-@registered_sdf3
+@op3
 def scale(other, factor):
     try:
         x, y, z = factor
@@ -321,7 +321,7 @@ def scale(other, factor):
         return other(p / s) * m
     return f
 
-@registered_sdf3
+@op3
 def rotate(other, vector, angle):
     x, y, z = _normalize(vector)
     s = np.sin(angle)
@@ -336,7 +336,7 @@ def rotate(other, vector, angle):
         return other(np.dot(p, matrix))
     return f
 
-@registered_sdf3
+@op3
 def rotate_to(other, a, b):
     a = _normalize(np.array(a))
     b = _normalize(np.array(b))
@@ -349,18 +349,18 @@ def rotate_to(other, a, b):
     v = _normalize(np.cross(b, a))
     return rotate(other, v, angle)
 
-@registered_sdf3
+@op3
 def orient(other, axis):
     return rotate_to(other, UP, axis)
 
-@registered_sdf3
+@op3
 def circular_array(other, count, vector=UP):
     angles = [i / count * 2 * np.pi for i in range(count)]
     return union(*[other.rotate(vector, a) for a in angles])
 
 # Alterations
 
-@registered_sdf3
+@op3
 def elongate(other, size):
     def f(p):
         q = np.abs(p) - size
@@ -371,7 +371,7 @@ def elongate(other, size):
         return other(_max(q, 0)) + w
     return f
 
-@registered_sdf3
+@op3
 def twist(other, k):
     def f(p):
         x = p[:,0]
@@ -385,7 +385,7 @@ def twist(other, k):
         return other(_vec(x2, y2, z2))
     return f
 
-@registered_sdf3
+@op3
 def bend(other, k):
     def f(p):
         x = p[:,0]
@@ -401,9 +401,9 @@ def bend(other, k):
 
 # Common
 
-union = registered_sdf3(dn.union)
-difference = registered_sdf3(dn.difference)
-intersection = registered_sdf3(dn.intersection)
-blend = registered_sdf3(dn.blend)
-shell = registered_sdf3(dn.shell)
-repeat = registered_sdf3(dn.repeat)
+union = op3(dn.union)
+difference = op3(dn.difference)
+intersection = op3(dn.intersection)
+blend = op3(dn.blend)
+shell = op3(dn.shell)
+repeat = op3(dn.repeat)
