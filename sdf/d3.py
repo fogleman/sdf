@@ -113,7 +113,7 @@ def slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None):
         fs.append(plane(Z, (0, 0, z0)))
     if z1 is not None:
         fs.append(plane(-Z, (0, 0, z1)))
-    return functools.reduce(operator.and_, fs)
+    return intersection(*fs)
 
 @sdf3
 def box(size=1, center=ORIGIN):
@@ -362,8 +362,7 @@ def orient(other, axis):
 @registered_sdf3
 def circular_array(other, count, vector=UP):
     angles = [i / count * 2 * np.pi for i in range(count)]
-    fs = [other.rotate(vector, a) for a in angles]
-    return functools.reduce(operator.or_, fs)
+    return union(*[other.rotate(vector, a) for a in angles])
 
 # Alterations
 

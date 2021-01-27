@@ -100,7 +100,7 @@ def slab(x0=None, y0=None, x1=None, y1=None):
         fs.append(plane(Y, (0, y0)))
     if y1 is not None:
         fs.append(plane(-Y, (0, y1)))
-    return functools.reduce(operator.and_, fs)
+    return intersection(*fs)
 
 @sdf2
 def box(size=1, center=ORIGIN):
@@ -212,8 +212,7 @@ def rotate(other, angle):
 @registered_sdf2
 def circular_array(other, count):
     angles = [i / count * 2 * np.pi for i in range(count)]
-    fs = [other.rotate(a) for a in angles]
-    return functools.reduce(operator.or_, fs)
+    return union(*[other.rotate(a) for a in angles])
 
 # Alterations
 
