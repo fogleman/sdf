@@ -409,6 +409,7 @@ def bend(other, k):
 
 @op32
 def slice(other):
+    # TODO: support specifying a slice plane
     # TODO: probably a better way to do this
     s = slab(z0=-1e-9, z1=1e-9)
     a = other & s
