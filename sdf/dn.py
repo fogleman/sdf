@@ -54,6 +54,11 @@ def blend(a, *bs, k=0.5):
         return d1
     return f
 
+def negate(other):
+    def f(p):
+        return -other(p)
+    return f
+
 def shell(other, thickness):
     def f(p):
         return np.abs(other(p)) - thickness

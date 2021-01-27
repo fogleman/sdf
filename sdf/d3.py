@@ -2,7 +2,7 @@ import functools
 import numpy as np
 import operator
 
-from . import dn, mesh
+from . import dn, d2, mesh
 
 # Constants
 
@@ -49,6 +49,12 @@ def sdf3(f):
 def op3(f):
     def wrapper(*args, **kwargs):
         return SDF3(f(*args, **kwargs))
+    _ops[f.__name__] = wrapper
+    return wrapper
+
+def op32(f):
+    def wrapper(*args, **kwargs):
+        return d2.SDF2(f(*args, **kwargs))
     _ops[f.__name__] = wrapper
     return wrapper
 
@@ -399,11 +405,29 @@ def bend(other, k):
         return other(_vec(x2, y2, z2))
     return f
 
+# 3D => 2D Operations
+
+@op32
+def slice(other):
+    # TODO: probably a better way to do this
+    s = slab(z0=-1e-9, z1=1e-9)
+    a = other & s
+    b = other.negate() & s
+    def f(p):
+        p = _vec(p[:,0], p[:,1], np.zeros(len(p)))
+        A = a(p).reshape(-1)
+        B = -b(p).reshape(-1)
+        w = A <= 0
+        A[w] = B[w]
+        return A
+    return f
+
 # Common
 
 union = op3(dn.union)
 difference = op3(dn.difference)
 intersection = op3(dn.intersection)
 blend = op3(dn.blend)
+negate = op3(dn.negate)
 shell = op3(dn.shell)
 repeat = op3(dn.repeat)
