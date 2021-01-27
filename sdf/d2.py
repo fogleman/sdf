@@ -33,12 +33,6 @@ class SDF2:
         return intersection(self, other)
     def __sub__(self, other):
         return difference(self, other)
-    def union(self, *others, **kwargs):
-        return union(self, *others, **kwargs)
-    def intersection(self, *others, **kwargs):
-        return intersection(self, *others, **kwargs)
-    def difference(self, *others, **kwargs):
-        return difference(self, *others, **kwargs)
 
 def sdf2(f):
     def wrapper(*args, **kwargs):
