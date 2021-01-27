@@ -79,7 +79,7 @@ def generate(
         sdf,
         step=None, bounds=None, samples=SAMPLES,
         workers=WORKERS, batch_size=BATCH_SIZE,
-        verbose=False, sparse=True):
+        verbose=True, sparse=True):
 
     start = time.time()
 
@@ -182,3 +182,44 @@ def _debug_triangles(X, Y, Z):
         v[0], v[3], v[2],
         v[3], v[0], v[1],
     ]
+
+def sample_slice(
+        sdf, w=1024, h=1024,
+        x=None, y=None, z=None, bounds=None):
+
+    if bounds is None:
+        bounds = _estimate_bounds(sdf)
+    (x0, y0, z0), (x1, y1, z1) = bounds
+
+    if x is not None:
+        X = np.array([x])
+        Y = np.linspace(y0, y1, w)
+        Z = np.linspace(z0, z1, h)
+        extent = (Z[0], Z[-1], Y[0], Y[-1])
+        axes = 'ZY'
+    elif y is not None:
+        Y = np.array([y])
+        X = np.linspace(x0, x1, w)
+        Z = np.linspace(z0, z1, h)
+        extent = (Z[0], Z[-1], X[0], X[-1])
+        axes = 'ZX'
+    elif z is not None:
+        Z = np.array([z])
+        X = np.linspace(x0, x1, w)
+        Y = np.linspace(y0, y1, h)
+        extent = (Y[0], Y[-1], X[0], X[-1])
+        axes = 'YX'
+    else:
+        raise Exception('x, y, or z position must be specified')
+
+    P = _cartesian_product(X, Y, Z)
+    return sdf(P).reshape((w, h)), extent, axes
+
+def show_slice(*args, **kwargs):
+    import matplotlib.pyplot as plt
+    a, extent, axes = sample_slice(*args, **kwargs)
+    im = plt.imshow(np.abs(a), extent=extent, origin='lower')
+    plt.xlabel(axes[0])
+    plt.ylabel(axes[1])
+    plt.colorbar(im)
+    plt.show()

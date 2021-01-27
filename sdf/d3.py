@@ -44,6 +44,8 @@ class SDF3:
         return mesh.generate(self, *args, **kwargs)
     def save(self, path, *args, **kwargs):
         return mesh.save(path, self, *args, **kwargs)
+    def show_slice(self, *args, **kwargs):
+        return mesh.show_slice(self, *args, **kwargs)
 
 def sdf3(f):
     def wrapper(*args, **kwargs):

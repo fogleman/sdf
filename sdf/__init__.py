@@ -7,6 +7,8 @@ from .d3 import *
 from .mesh import (
     generate,
     save,
+    sample_slice,
+    show_slice,
 )
 
 from .stl import (
