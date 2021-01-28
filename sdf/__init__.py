@@ -1,4 +1,4 @@
-from . import d2, d3
+from . import d2, d3, ease
 
 from .d2 import *
 
