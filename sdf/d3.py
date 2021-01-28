@@ -412,8 +412,8 @@ def transition(a, b, e=ease.linear):
         d1 = a(p)
         d2 = b(p)
         z = p[:,2]
-        t = np.clip(z, 0, 1).reshape((-1, 1))
-        t = e(t)
+        t = np.clip(z, 0, 1)
+        t = e(t).reshape((-1, 1))
         return t * d2 + (1 - t) * d1
     return f
 
