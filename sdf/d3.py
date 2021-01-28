@@ -406,13 +406,14 @@ def bend(other, k):
     return f
 
 @op3
-def transition(a, b, e=ease.linear):
-    # TODO: define transition points (project to line)
+def transition(f0, f1, p0=-Z, p1=Z, e=ease.linear):
+    p0 = np.array(p0)
+    p1 = np.array(p1)
+    ab = p1 - p0
     def f(p):
-        d1 = a(p)
-        d2 = b(p)
-        z = p[:,2]
-        t = np.clip(z, 0, 1)
+        d1 = f0(p)
+        d2 = f1(p)
+        t = np.clip(np.dot(p - p0, ab) / np.dot(ab, ab), 0, 1)
         t = e(t).reshape((-1, 1))
         return t * d2 + (1 - t) * d1
     return f
