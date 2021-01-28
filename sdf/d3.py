@@ -405,6 +405,23 @@ def bend(other, k):
         return other(_vec(x2, y2, z2))
     return f
 
+@op3
+def transition(a, b):
+    # TODO: define transition points (project to line)
+    # TODO: easing functions!
+    def f(p):
+        d1 = a(p)
+        d2 = b(p)
+        z = p[:,2]
+        t = np.clip(z, 0, 1).reshape((-1, 1))
+        # t = in_out_quad(t)
+        return t * d2 + (1 - t) * d1
+    return f
+
+# def in_out_quad(t):
+#     u = 2 * t - 1
+#     return np.where(t < 0.5, 2 * t * t, -0.5 * (u * (u - 2) - 1))
+
 # 3D => 2D Operations
 
 @op32
