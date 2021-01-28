@@ -35,7 +35,12 @@ def _skip(sdf, job):
     z = (z0 + z1) / 2
     r = abs(sdf(np.array([(x, y, z)])).reshape(-1)[0])
     d = np.linalg.norm(np.array((x-x0, y-y0, z-z0)))
-    return r > d
+    if r <= d:
+        return False
+    corners = np.array(list(itertools.product((x0, x1), (y0, y1), (z0, z1))))
+    values = sdf(corners).reshape(-1)
+    same = np.all(values > 0) if values[0] > 0 else np.all(values < 0)
+    return same
 
 def _worker(sdf, job, sparse):
     X, Y, Z = job
