@@ -376,9 +376,19 @@ def orient(other, axis):
     return rotate_to(other, UP, axis)
 
 @op3
-def circular_array(other, count, vector=UP, k=None):
-    angles = [i / count * 2 * np.pi for i in range(count)]
-    return union(*[other.rotate(vector, a) for a in angles], k=k)
+def circular_array(other, count, offset):
+    other = other.translate(X * offset)
+    da = 2 * np.pi / count
+    def f(p):
+        x = p[:,0]
+        y = p[:,1]
+        z = p[:,2]
+        d = np.hypot(x, y)
+        a = np.arctan2(y, x) % da
+        d1 = other(_vec(np.cos(a - da) * d, np.sin(a - da) * d, z))
+        d2 = other(_vec(np.cos(a) * d, np.sin(a) * d, z))
+        return _min(d1, d2)
+    return f
 
 # Alterations
 
