@@ -33,6 +33,9 @@ class SDF2:
         return intersection(self, other)
     def __sub__(self, other):
         return difference(self, other)
+    def k(self, k=None):
+        self.k = k
+        return self
 
 def sdf2(f):
     def wrapper(*args, **kwargs):

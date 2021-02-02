@@ -34,6 +34,9 @@ class SDF3:
         return intersection(self, other)
     def __sub__(self, other):
         return difference(self, other)
+    def k(self, k=None):
+        self.k = k
+        return self
     def generate(self, *args, **kwargs):
         return mesh.generate(self, *args, **kwargs)
     def save(self, path, *args, **kwargs):

@@ -8,12 +8,13 @@ def union(a, *bs, k=None):
         d1 = a(p)
         for b in bs:
             d2 = b(p)
-            if k is None:
+            K = k or getattr(d2, 'k', None)
+            if K is None:
                 d1 = _min(d1, d2)
             else:
-                h = np.clip(0.5 + 0.5 * (d2 - d1) / k, 0, 1)
+                h = np.clip(0.5 + 0.5 * (d2 - d1) / K, 0, 1)
                 m = d2 + (d1 - d2) * h
-                d1 = m - k * h * (1 - h)
+                d1 = m - K * h * (1 - h)
         return d1
     return f
 
@@ -22,12 +23,13 @@ def difference(a, *bs, k=None):
         d1 = a(p)
         for b in bs:
             d2 = b(p)
-            if k is None:
+            K = k or getattr(d2, 'k', None)
+            if K is None:
                 d1 = _max(d1, -d2)
             else:
-                h = np.clip(0.5 - 0.5 * (d2 + d1) / k, 0, 1)
+                h = np.clip(0.5 - 0.5 * (d2 + d1) / K, 0, 1)
                 m = d1 + (-d2 - d1) * h
-                d1 = m + k * h * (1 - h)
+                d1 = m + K * h * (1 - h)
         return d1
     return f
 
@@ -36,12 +38,13 @@ def intersection(a, *bs, k=None):
         d1 = a(p)
         for b in bs:
             d2 = b(p)
-            if k is None:
+            K = k or getattr(d2, 'k', None)
+            if K is None:
                 d1 = _max(d1, d2)
             else:
-                h = np.clip(0.5 - 0.5 * (d2 - d1) / k, 0, 1)
+                h = np.clip(0.5 - 0.5 * (d2 - d1) / K, 0, 1)
                 m = d2 + (d1 - d2) * h
-                d1 = m + k * h * (1 - h)
+                d1 = m + K * h * (1 - h)
         return d1
     return f
 
@@ -50,7 +53,8 @@ def blend(a, *bs, k=0.5):
         d1 = a(p)
         for b in bs:
             d2 = b(p)
-            d1 = k * d2 + (1 - k) * d1
+            K = k or getattr(d2, 'k', None)
+            d1 = K * d2 + (1 - K) * d1
         return d1
     return f
 
