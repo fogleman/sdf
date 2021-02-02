@@ -360,9 +360,9 @@ def orient(other, axis):
     return rotate_to(other, UP, axis)
 
 @op3
-def circular_array(other, count, vector=UP):
+def circular_array(other, count, vector=UP, k=None):
     angles = [i / count * 2 * np.pi for i in range(count)]
-    return union(*[other.rotate(vector, a) for a in angles])
+    return union(*[other.rotate(vector, a) for a in angles], k=k)
 
 # Alterations
 
