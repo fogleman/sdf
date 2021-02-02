@@ -102,7 +102,7 @@ def plane(normal=UP, point=ORIGIN):
     return f
 
 @sdf3
-def slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None):
+def slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None, k=None):
     fs = []
     if x0 is not None:
         fs.append(plane(X, (x0, 0, 0)))
@@ -116,7 +116,7 @@ def slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None):
         fs.append(plane(Z, (0, 0, z0)))
     if z1 is not None:
         fs.append(plane(-Z, (0, 0, z1)))
-    return intersection(*fs)
+    return intersection(*fs, k=k)
 
 @sdf3
 def box(size=1, center=ORIGIN):
@@ -234,6 +234,19 @@ def capped_cone(a, b, ra, rb):
         return s * np.sqrt(_min(
             cax * cax + cay * cay * baba,
             cbx * cbx + cby * cby * baba))
+    return f
+
+@sdf3
+def rounded_cone(r1, r2, h):
+    def f(p):
+        q = _vec(_length(p[:,[0,1]]), p[:,2])
+        b = (r1 - r2) / h
+        a = np.sqrt(1 - b * b)
+        k = np.dot(q, _vec(-b, a))
+        c1 = _length(q) - r1
+        c2 = _length(q - _vec(0, h)) - r2
+        c3 = np.dot(q, _vec(a, b)) - r1
+        return np.where(k < 0, c1, np.where(k > a * h, c2, c3))
     return f
 
 @sdf3

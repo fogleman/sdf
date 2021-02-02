@@ -87,7 +87,7 @@ def plane(normal=UP, point=ORIGIN):
     return f
 
 @sdf2
-def slab(x0=None, y0=None, x1=None, y1=None):
+def slab(x0=None, y0=None, x1=None, y1=None, k=None):
     fs = []
     if x0 is not None:
         fs.append(plane(X, (x0, 0)))
@@ -97,7 +97,7 @@ def slab(x0=None, y0=None, x1=None, y1=None):
         fs.append(plane(Y, (0, y0)))
     if y1 is not None:
         fs.append(plane(-Y, (0, y1)))
-    return intersection(*fs)
+    return intersection(*fs, k=k)
 
 @sdf2
 def box(size=1, center=ORIGIN):
