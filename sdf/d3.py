@@ -35,7 +35,7 @@ class SDF3:
     def __sub__(self, other):
         return difference(self, other)
     def k(self, k=None):
-        self.k = k
+        self._k = k
         return self
     def generate(self, *args, **kwargs):
         return mesh.generate(self, *args, **kwargs)

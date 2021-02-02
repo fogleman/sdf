@@ -34,7 +34,7 @@ class SDF2:
     def __sub__(self, other):
         return difference(self, other)
     def k(self, k=None):
-        self.k = k
+        self._k = k
         return self
 
 def sdf2(f):

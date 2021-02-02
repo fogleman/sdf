@@ -8,7 +8,7 @@ def union(a, *bs, k=None):
         d1 = a(p)
         for b in bs:
             d2 = b(p)
-            K = k or getattr(d2, 'k', None)
+            K = k or getattr(b, '_k', None)
             if K is None:
                 d1 = _min(d1, d2)
             else:
@@ -23,7 +23,7 @@ def difference(a, *bs, k=None):
         d1 = a(p)
         for b in bs:
             d2 = b(p)
-            K = k or getattr(d2, 'k', None)
+            K = k or getattr(b, '_k', None)
             if K is None:
                 d1 = _max(d1, -d2)
             else:
@@ -38,7 +38,7 @@ def intersection(a, *bs, k=None):
         d1 = a(p)
         for b in bs:
             d2 = b(p)
-            K = k or getattr(d2, 'k', None)
+            K = k or getattr(b, '_k', None)
             if K is None:
                 d1 = _max(d1, d2)
             else:
@@ -53,7 +53,7 @@ def blend(a, *bs, k=0.5):
         d1 = a(p)
         for b in bs:
             d2 = b(p)
-            K = k or getattr(d2, 'k', None)
+            K = k or getattr(b, '_k', None)
             d1 = K * d2 + (1 - K) * d1
         return d1
     return f
