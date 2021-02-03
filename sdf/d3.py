@@ -207,8 +207,8 @@ def capped_cylinder(a, b, radius):
 def rounded_cylinder(ra, rb, h):
     def f(p):
         d = _vec(
-            _length(p[:,[0,1]]) - 2 * ra + rb,
-            np.abs(p[:,2]) - h)
+            _length(p[:,[0,1]]) - ra + rb,
+            np.abs(p[:,2]) - h / 2 + rb)
         return (
             _min(_max(d[:,0], d[:,1]), 0) +
             _length(_max(d, 0)) - rb)
