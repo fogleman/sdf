@@ -2,7 +2,7 @@ import functools
 import numpy as np
 import operator
 
-from . import dn, d3
+from . import dn, d3, ease
 
 # Constants
 
@@ -227,6 +227,17 @@ def elongate(other, size):
 def extrude(other, h):
     def f(p):
         d = other(p[:,[0,1]])
+        w = _vec(d.reshape(-1), np.abs(p[:,2]) - h / 2)
+        return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w, 0))
+    return f
+
+@op23
+def extrude_to(a, b, h, e=ease.linear):
+    def f(p):
+        d1 = a(p[:,[0,1]])
+        d2 = b(p[:,[0,1]])
+        t = e(np.clip(p[:,2] / h, -0.5, 0.5) + 0.5)
+        d = d1 + (d2 - d1) * t.reshape((-1, 1))
         w = _vec(d.reshape(-1), np.abs(p[:,2]) - h / 2)
         return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w, 0))
     return f
