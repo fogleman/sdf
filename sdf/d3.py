@@ -119,7 +119,13 @@ def slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None, k=None):
     return intersection(*fs, k=k)
 
 @sdf3
-def box(size=1, center=ORIGIN):
+def box(size=1, center=ORIGIN, a=None, b=None):
+    if a is not None and b is not None:
+        a = np.array(a)
+        b = np.array(b)
+        size = b - a
+        center = a + size / 2
+        return box(size, center)
     size = np.array(size)
     def f(p):
         q = np.abs(p - center) - size / 2
@@ -127,28 +133,21 @@ def box(size=1, center=ORIGIN):
     return f
 
 @sdf3
-def aabb(a, b):
-    a = np.array(a)
-    b = np.array(b)
-    size = b - a
-    offset = a + size / 2
-    return box(size).translate(offset)
-
-@sdf3
 def rounded_box(size, radius):
     size = np.array(size)
     def f(p):
-        q = np.abs(p) - (size / 2 - radius)
+        q = np.abs(p) - size / 2 + radius
         return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0) - radius
     return f
 
 @sdf3
-def bounding_box(b, e):
+def wireframe_box(size, thickness):
+    size = np.array(size)
     def g(a, b, c):
         return _length(_max(_vec(a, b, c), 0)) + _min(_max(a, _max(b, c)), 0)
     def f(p):
-        p = np.abs(p) - b
-        q = np.abs(p + e) - e
+        p = np.abs(p) - size / 2 - thickness / 2
+        q = np.abs(p + thickness / 2) - thickness / 2
         px, py, pz = p[:,0], p[:,1], p[:,2]
         qx, qy, qz = q[:,0], q[:,1], q[:,2]
         return _min(_min(g(px, qy, qz), g(qx, py, qz)), g(qx, qy, pz))

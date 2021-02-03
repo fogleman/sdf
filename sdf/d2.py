@@ -100,20 +100,18 @@ def slab(x0=None, y0=None, x1=None, y1=None, k=None):
     return intersection(*fs, k=k)
 
 @sdf2
-def rectangle(size=1, center=ORIGIN):
+def rectangle(size=1, center=ORIGIN, a=None, b=None):
+    if a is not None and b is not None:
+        a = np.array(a)
+        b = np.array(b)
+        size = b - a
+        center = a + size / 2
+        return rectangle(size, center)
     size = np.array(size)
     def f(p):
         q = np.abs(p - center) - size / 2
         return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0)
     return f
-
-@sdf2
-def aabb(a, b):
-    a = np.array(a)
-    b = np.array(b)
-    size = b - a
-    offset = a + size / 2
-    return rectangle(size).translate(offset)
 
 @sdf2
 def rounded_box(size, radius, center=ORIGIN):
@@ -129,7 +127,7 @@ def rounded_box(size, radius, center=ORIGIN):
         r[np.logical_and(x > 0, y <= 0)] = r1
         r[np.logical_and(x <= 0, y <= 0)] = r2
         r[np.logical_and(x <= 0, y > 0)] = r3
-        q = np.abs(p) - size + r
+        q = np.abs(p) - size / 2 + r
         return (
             _min(_max(q[:,0], q[:,1]), 0).reshape((-1, 1)) +
             _length(_max(q, 0)).reshape((-1, 1)) - r)
