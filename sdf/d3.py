@@ -344,7 +344,7 @@ def scale(other, factor):
     return f
 
 @op3
-def rotate(other, vector, angle):
+def rotate(other, angle, vector=Z):
     x, y, z = _normalize(vector)
     s = np.sin(angle)
     c = np.cos(angle)
@@ -366,10 +366,10 @@ def rotate_to(other, a, b):
     if dot == 1:
         return other
     if dot == -1:
-        return rotate(other, _perpendicular(a), np.pi)
+        return rotate(other, np.pi, _perpendicular(a))
     angle = np.arccos(dot)
     v = _normalize(np.cross(b, a))
-    return rotate(other, v, angle)
+    return rotate(other, angle, v)
 
 @op3
 def orient(other, axis):
