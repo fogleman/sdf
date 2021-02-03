@@ -164,6 +164,13 @@ def aabb(a, b):
 
 @sdf3
 def rounded_box(size, radius):
+    """
+    Create a rounded box primitive. Passing a single value as the size will result in a cube.
+
+    :param size: The lengths of each side of the box.
+    :param radius: Center point of the box
+    :return: A 3D box/cube with the given parameters
+    """
     size = np.array(size) / 2 - radius
     def f(p):
         q = np.abs(p) - size
