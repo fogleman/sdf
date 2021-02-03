@@ -76,3 +76,9 @@ f.save('out.stl')
  * Extrude (2D -> 3D)
  * Revolve (2D -> 3D)
 
+## Constants
+ * `X` : (1, 0, 0)
+ * `Y` : (0, 1, 0)
+ * `Z` : (0, 0, 1)
+ * `UP` : A pseudonym for `Z`
+ * `ORIGIN` : (0, 0, 0)
