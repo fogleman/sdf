@@ -34,6 +34,9 @@ class SDF3:
         return intersection(self, other)
     def __sub__(self, other):
         return difference(self, other)
+    def k(self, k=None):
+        self._k = k
+        return self
     def generate(self, *args, **kwargs):
         return mesh.generate(self, *args, **kwargs)
     def save(self, path, *args, **kwargs):
@@ -99,7 +102,7 @@ def plane(normal=UP, point=ORIGIN):
     return f
 
 @sdf3
-def slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None):
+def slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None, k=None):
     fs = []
     if x0 is not None:
         fs.append(plane(X, (x0, 0, 0)))
@@ -113,7 +116,7 @@ def slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None):
         fs.append(plane(Z, (0, 0, z0)))
     if z1 is not None:
         fs.append(plane(-Z, (0, 0, z1)))
-    return intersection(*fs)
+    return intersection(*fs, k=k)
 
 @sdf3
 def box(size=1, center=ORIGIN):
@@ -204,8 +207,8 @@ def capped_cylinder(a, b, radius):
 def rounded_cylinder(ra, rb, h):
     def f(p):
         d = _vec(
-            _length(p[:,[0,1]]) - 2 * ra + rb,
-            np.abs(p[:,2]) - h)
+            _length(p[:,[0,1]]) - ra + rb,
+            np.abs(p[:,2]) - h / 2 + rb)
         return (
             _min(_max(d[:,0], d[:,1]), 0) +
             _length(_max(d, 0)) - rb)
@@ -231,6 +234,19 @@ def capped_cone(a, b, ra, rb):
         return s * np.sqrt(_min(
             cax * cax + cay * cay * baba,
             cbx * cbx + cby * cby * baba))
+    return f
+
+@sdf3
+def rounded_cone(r1, r2, h):
+    def f(p):
+        q = _vec(_length(p[:,[0,1]]), p[:,2])
+        b = (r1 - r2) / h
+        a = np.sqrt(1 - b * b)
+        k = np.dot(q, _vec(-b, a))
+        c1 = _length(q) - r1
+        c2 = _length(q - _vec(0, h)) - r2
+        c3 = np.dot(q, _vec(a, b)) - r1
+        return np.where(k < 0, c1, np.where(k > a * h, c2, c3))
     return f
 
 @sdf3
@@ -328,7 +344,7 @@ def scale(other, factor):
     return f
 
 @op3
-def rotate(other, vector, angle):
+def rotate(other, angle, vector=Z):
     x, y, z = _normalize(vector)
     s = np.sin(angle)
     c = np.cos(angle)
@@ -350,19 +366,29 @@ def rotate_to(other, a, b):
     if dot == 1:
         return other
     if dot == -1:
-        return rotate(other, _perpendicular(a), np.pi)
+        return rotate(other, np.pi, _perpendicular(a))
     angle = np.arccos(dot)
     v = _normalize(np.cross(b, a))
-    return rotate(other, v, angle)
+    return rotate(other, angle, v)
 
 @op3
 def orient(other, axis):
     return rotate_to(other, UP, axis)
 
 @op3
-def circular_array(other, count, vector=UP):
-    angles = [i / count * 2 * np.pi for i in range(count)]
-    return union(*[other.rotate(vector, a) for a in angles])
+def circular_array(other, count, offset):
+    other = other.translate(X * offset)
+    da = 2 * np.pi / count
+    def f(p):
+        x = p[:,0]
+        y = p[:,1]
+        z = p[:,2]
+        d = np.hypot(x, y)
+        a = np.arctan2(y, x) % da
+        d1 = other(_vec(np.cos(a - da) * d, np.sin(a - da) * d, z))
+        d2 = other(_vec(np.cos(a) * d, np.sin(a) * d, z))
+        return _min(d1, d2)
+    return f
 
 # Alterations
 
