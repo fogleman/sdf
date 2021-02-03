@@ -90,12 +90,26 @@ _max = np.maximum
 
 @sdf3
 def sphere(radius=1, center=ORIGIN):
+    """
+    Create a 3D sphere primitive with a given radius and centered on the given point
+    :param radius: Radius of the sphere
+    :param center: Center point of the sphere
+    :return: A 3D sphere primitive with the given parameters
+    """
     def f(p):
         return _length(p - center) - radius
     return f
 
 @sdf3
 def plane(normal=UP, point=ORIGIN):
+    """
+    Create an infinite 3D plane primitive centered on the given point, oriented relative to the given normal direction.
+    This plane will not be generated into a visible 3D model when exported, but can be used to split other SDFs
+
+    :param normal: Normal direction of the plane
+    :param center: Center point of the plane
+    :return: A 3D infinite plane primitive with the given parameters
+    """
     normal = _normalize(normal)
     def f(p):
         return np.dot(point - p, normal)
@@ -120,6 +134,13 @@ def slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None, k=None):
 
 @sdf3
 def box(size=1, center=ORIGIN):
+    """
+    Create a box primitive. Passing a single value as the size will result in a cube.
+
+    :param size: The lengths of each side of the box.
+    :param center: Center point of the box
+    :return: A 3D box/cube with the given parameters
+    """
     size = np.array(size) / 2
     def f(p):
         q = np.abs(p - center) - size
@@ -128,6 +149,13 @@ def box(size=1, center=ORIGIN):
 
 @sdf3
 def aabb(a, b):
+    """
+    Create an Axis Aligned Bounding Box primitive. 
+
+    :param a: Corner point of AABB
+    :param b: Opposing corner point of AABB
+    :return: An Axis Aligned Bounding Box from point A to point B
+    """
     a = np.array(a)
     b = np.array(b)
     size = b - a
