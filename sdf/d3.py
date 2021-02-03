@@ -103,12 +103,12 @@ def sphere(radius=1, center=ORIGIN):
 @sdf3
 def plane(normal=UP, point=ORIGIN):
     """
-    Create an infinite 3D plane primitive centered on the given point, oriented relative to the given normal direction.
-    This plane will not be generated into a visible 3D model when exported, but can be used to split other SDFs
+    Create an non-meshable plane primitive centered on the given point, oriented relative to the given normal direction.
+    This primitive will not be generated into a visible 3D model when exported, but can be used to modify other SDFs
 
     :param normal: Normal direction of the plane
     :param center: Center point of the plane
-    :return: A 3D infinite plane primitive with the given parameters
+    :return: A non-meshable infinite plane primitive with the given parameters
     """
     normal = _normalize(normal)
     def f(p):
@@ -154,7 +154,7 @@ def aabb(a, b):
 
     :param a: Corner point of AABB
     :param b: Opposing corner point of AABB
-    :return: An Axis Aligned Bounding Box from point A to point B
+    :return: An Axis Aligned Bounding Box from point 'a' to point 'b'
     """
     a = np.array(a)
     b = np.array(b)
@@ -179,6 +179,14 @@ def rounded_box(size, radius):
 
 @sdf3
 def bounding_box(b, e):
+    """
+    Create a (non-meshable?) bounding box primitive. TODO: Research params for this
+    This primitive will not be generated into a visible 3D model when exported, but can be used to modify other SDFs
+
+    :param b: TODO
+    :param e: TODO
+    :return: A 3D bounding box with the given parameters
+    """
     def g(a, b, c):
         return _length(_max(_vec(a, b, c), 0)) + _min(_max(a, _max(b, c)), 0)
     def f(p):
@@ -191,6 +199,13 @@ def bounding_box(b, e):
 
 @sdf3
 def torus(r1, r2):
+    """
+    Create a ring torus primitive. It has an arc of radius 'r2' at a distance r1 from the origin. 'r1' cannot equal 0.
+
+    :param r1: Radius of the toroidal path
+    :param r2: Radius of the poloidal path
+    :return: A 3D ring torus with the given parameters
+    """
     def f(p):
         xy = p[:,[0,1]]
         z = p[:,2]
@@ -201,6 +216,15 @@ def torus(r1, r2):
 
 @sdf3
 def capsule(a, b, radius):
+    """
+    Create a 3D capsule primitive. The capsule volume will surround a line from 'a' to 'b' with a radius of 'radius'.
+    A capsule from (0, 0, 0) to (1, 0, 0) with a radius of .5 will be a total of 2 units in length
+
+    :param a: First point of the capsule
+    :param b: Second point of the capsule
+    :param radius: Radius of the capsule
+    :return: A 3D capsule with the given parameters
+    """
     a = np.array(a)
     b = np.array(b)
     def f(p):
@@ -212,12 +236,28 @@ def capsule(a, b, radius):
 
 @sdf3
 def cylinder(radius):
+    """
+    Create a non-meshable cylinder primitive of infinite height.
+    This primitive will not be generated into a visible 3D model when exported, but can be used to modify other SDFs
+
+    :param radius: The radius of the cylinder
+    :return: A non-meshable cylinder of infinite height
+    """
     def f(p):
         return _length(p[:,[0,1]]) - radius;
     return f
 
 @sdf3
 def capped_cylinder(a, b, radius):
+    """
+    Create a 3D cylinder primitive. The cylinder volume will surround a line from 'a' to 'b' with a radius of 'radius'.
+    A capsule from (0, 0, 0) to (, 0, 1) with a radius of .5 will be a total of 1 unit in length
+
+    :param a: First point of the cylinder
+    :param b: Second point of the cylinder
+    :param radius: Radius of the cylinder
+    :return: A 3D cylinder with the given parameters
+    """
     a = np.array(a)
     b = np.array(b)
     def f(p):
