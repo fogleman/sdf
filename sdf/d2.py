@@ -80,7 +80,7 @@ def circle(radius=1, center=ORIGIN):
     return f
 
 @sdf2
-def plane(normal=UP, point=ORIGIN):
+def line(normal=UP, point=ORIGIN):
     normal = _normalize(normal)
     def f(p):
         return np.dot(point - p, normal)
@@ -90,20 +90,20 @@ def plane(normal=UP, point=ORIGIN):
 def slab(x0=None, y0=None, x1=None, y1=None, k=None):
     fs = []
     if x0 is not None:
-        fs.append(plane(X, (x0, 0)))
+        fs.append(line(X, (x0, 0)))
     if x1 is not None:
-        fs.append(plane(-X, (x1, 0)))
+        fs.append(line(-X, (x1, 0)))
     if y0 is not None:
-        fs.append(plane(Y, (0, y0)))
+        fs.append(line(Y, (0, y0)))
     if y1 is not None:
-        fs.append(plane(-Y, (0, y1)))
+        fs.append(line(-Y, (0, y1)))
     return intersection(*fs, k=k)
 
 @sdf2
-def box(size=1, center=ORIGIN):
-    size = np.array(size) / 2
+def rectangle(size=1, center=ORIGIN):
+    size = np.array(size)
     def f(p):
-        q = np.abs(p - center) - size
+        q = np.abs(p - center) - size / 2
         return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0)
     return f
 
@@ -113,7 +113,7 @@ def aabb(a, b):
     b = np.array(b)
     size = b - a
     offset = a + size / 2
-    return box(size).translate(offset)
+    return rectangle(size).translate(offset)
 
 @sdf2
 def rounded_box(size, radius, center=ORIGIN):
