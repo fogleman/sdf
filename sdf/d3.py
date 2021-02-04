@@ -378,7 +378,7 @@ def ellipsoid(size):
 @sdf3
 def pyramid(h):
     """
-    Create a 3D ellipsoid primitive with a base length of 1 unit and height 'h'
+    Create a 3D pyramid primitive with a base length of 1 unit and height 'h'
 
     :param h: Height of the pyramid
     :return: A 3D pyramid with the given parameters
@@ -408,6 +408,12 @@ def pyramid(h):
 
 @sdf3
 def tetrahedron(r):
+    """
+    Create a 3D tetrahedron primitive
+
+    :param r: Unused (TODO: ?)
+    :return: A 3D tetrahedron with the given parameters
+    """
     def f(p):
         x = p[:,0]
         y = p[:,1]
@@ -417,12 +423,24 @@ def tetrahedron(r):
 
 @sdf3
 def octahedron(r):
+    """
+    Create a 3D octahedron primitive
+
+    :param r: Radius of the primitive
+    :return: A 3D octahedron with the given parameters
+    """
     def f(p):
         return (np.sum(np.abs(p), axis=1) - r) * np.tan(np.radians(30))
     return f
 
 @sdf3
 def dodecahedron(r):
+    """
+    Create a 3D dodecahedron primitive
+
+    :param r: Radius of the primitive
+    :return: A 3D dodecahedron with the given parameters
+    """
     x, y, z = _normalize(((1 + np.sqrt(5)) / 2, 1, 0))
     def f(p):
         p = np.abs(p / r)
@@ -435,6 +453,12 @@ def dodecahedron(r):
 
 @sdf3
 def icosahedron(r):
+    """
+    Create a 3D icosahedron primitive
+
+    :param r: Radius of the primitive
+    :return: A 3D icosahedron with the given parameters
+    """
     x, y, z = _normalize(((np.sqrt(5) + 3) / 2, 1, 0))
     w = np.sqrt(3) / 3
     def f(p):
