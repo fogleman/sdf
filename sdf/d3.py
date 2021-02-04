@@ -117,6 +117,19 @@ def plane(normal=UP, point=ORIGIN):
 
 @sdf3
 def slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None, k=None):
+    """
+    Create an non-meshable slab primitive. It extends out to infinity on any undefined planes. It's meant to be intersected with other shapes to cut them.
+    This primitive will not be generated into a visible 3D model when exported, but can be used to modify other SDFs
+
+    :param x0: x position of a plane oriented normal to the X axis
+    :param y0: y position of a plane oriented relative to the Y axis
+    :param z0: z position of a plane oriented normal to the Z axis
+    :param x1: x position of a plane oriented normal to the -X axis
+    :param y1: y position of a plane oriented normal to the -Y axis
+    :param z1: z position of a plane oriented normal to the -Z axis
+    :param k: 
+    :return: A non-meshable slab primitive with the given parameters
+    """
     fs = []
     if x0 is not None:
         fs.append(plane(X, (x0, 0, 0)))
@@ -280,6 +293,14 @@ def capped_cylinder(a, b, radius):
 
 @sdf3
 def rounded_cylinder(ra, rb, h):
+    """
+    Create a 3D rounded cylinder primitive, centered at (0, 0, 0)
+
+    :param ra: Radius of the cylinder
+    :param rb: Radius of the cylinder fillet
+    :param h: Height of the cylinder
+    :return: A 3D rounded cylinder with the given parameters
+    """
     def f(p):
         d = _vec(
             _length(p[:,[0,1]]) - ra + rb,
@@ -291,6 +312,15 @@ def rounded_cylinder(ra, rb, h):
 
 @sdf3
 def capped_cone(a, b, ra, rb):
+    """
+    Create a 3D capped cone primitive with flat, circular tips.
+
+    :param a: First point of the cone
+    :param b: Second point of the cone
+    :param ra: Radius of circular cone tip at Point A
+    :param rb: Radius of circular cone tip at Point B
+    :return: A 3D capped cone with the given parameters
+    """
     a = np.array(a)
     b = np.array(b)
     def f(p):
@@ -313,6 +343,15 @@ def capped_cone(a, b, ra, rb):
 
 @sdf3
 def rounded_cone(r1, r2, h):
+    """
+    Create a 3D rounded cone primitive with spherical tips
+
+    :param a: First point of the cone
+    :param b: Second point of the cone
+    :param ra: Radius of spherical cone tip at Point A
+    :param rb: Radius of spherical cone tip at Point B
+    :return: A 3D rounded cone with the given parameters
+    """
     def f(p):
         q = _vec(_length(p[:,[0,1]]), p[:,2])
         b = (r1 - r2) / h
@@ -326,6 +365,12 @@ def rounded_cone(r1, r2, h):
 
 @sdf3
 def ellipsoid(size):
+    """
+    Create a 3D ellipsoid primitive
+
+    :param size: An array of (X,Y,Z) describing the half-size of each axis. Can also be a single number, resulting in a sphere.
+    :return: A 3D ellipsoid with the given parameters
+    """
     size = np.array(size)
     def f(p):
         k0 = _length(p / size)
@@ -335,6 +380,12 @@ def ellipsoid(size):
 
 @sdf3
 def pyramid(h):
+    """
+    Create a 3D ellipsoid primitive with a base length of 1 unit and height 'h'
+
+    :param h: Height of the pyramid
+    :return: A 3D pyramid with the given parameters
+    """
     def f(p):
         a = np.abs(p[:,[0,1]]) - 0.5
         w = a[:,1] > a[:,0]
