@@ -187,18 +187,15 @@ def rounded_box(size, radius):
     return f
 
 @sdf3
-
-def bounding_box(b, e):
-    """
-    Create a (non-meshable?) bounding box primitive. TODO: Research params for this
-    This primitive will not be generated into a visible 3D model when exported, but can be used to modify other SDFs
-
-    :param b: TODO
-    :param e: TODO
-    :return: A 3D bounding box with the given parameters
-    """
-
 def wireframe_box(size, thickness):
+    """
+    Create a wireframe box primitive. Passing a single value as 'size' will result in a cube. 
+    Axis Aligned Bounding Box
+
+    :param size: The lengths of each side of the box (x, y, z)
+    :param thickness: Thickness of the wires making up the box
+    :return: A 3D wirefram box/cube with the given parameters
+    """
     size = np.array(size)
     def g(a, b, c):
         return _length(_max(_vec(a, b, c), 0)) + _min(_max(a, _max(b, c)), 0)
