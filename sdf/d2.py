@@ -2,7 +2,7 @@ import functools
 import numpy as np
 import operator
 
-from . import dn, d3
+from . import dn, d3, ease
 
 # Constants
 
@@ -80,7 +80,7 @@ def circle(radius=1, center=ORIGIN):
     return f
 
 @sdf2
-def plane(normal=UP, point=ORIGIN):
+def line(normal=UP, point=ORIGIN):
     normal = _normalize(normal)
     def f(p):
         return np.dot(point - p, normal)
@@ -90,30 +90,28 @@ def plane(normal=UP, point=ORIGIN):
 def slab(x0=None, y0=None, x1=None, y1=None, k=None):
     fs = []
     if x0 is not None:
-        fs.append(plane(X, (x0, 0)))
+        fs.append(line(X, (x0, 0)))
     if x1 is not None:
-        fs.append(plane(-X, (x1, 0)))
+        fs.append(line(-X, (x1, 0)))
     if y0 is not None:
-        fs.append(plane(Y, (0, y0)))
+        fs.append(line(Y, (0, y0)))
     if y1 is not None:
-        fs.append(plane(-Y, (0, y1)))
+        fs.append(line(-Y, (0, y1)))
     return intersection(*fs, k=k)
 
 @sdf2
-def box(size=1, center=ORIGIN):
-    size = np.array(size) / 2
+def rectangle(size=1, center=ORIGIN, a=None, b=None):
+    if a is not None and b is not None:
+        a = np.array(a)
+        b = np.array(b)
+        size = b - a
+        center = a + size / 2
+        return rectangle(size, center)
+    size = np.array(size)
     def f(p):
-        q = np.abs(p - center) - size
+        q = np.abs(p - center) - size / 2
         return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0)
     return f
-
-@sdf2
-def aabb(a, b):
-    a = np.array(a)
-    b = np.array(b)
-    size = b - a
-    offset = a + size / 2
-    return box(size).translate(offset)
 
 @sdf2
 def rounded_box(size, radius, center=ORIGIN):
@@ -129,7 +127,7 @@ def rounded_box(size, radius, center=ORIGIN):
         r[np.logical_and(x > 0, y <= 0)] = r1
         r[np.logical_and(x <= 0, y <= 0)] = r2
         r[np.logical_and(x <= 0, y > 0)] = r3
-        q = np.abs(p) - size + r
+        q = np.abs(p) - size / 2 + r
         return (
             _min(_max(q[:,0], q[:,1]), 0).reshape((-1, 1)) +
             _length(_max(q, 0)).reshape((-1, 1)) - r)
@@ -229,6 +227,17 @@ def elongate(other, size):
 def extrude(other, h):
     def f(p):
         d = other(p[:,[0,1]])
+        w = _vec(d.reshape(-1), np.abs(p[:,2]) - h / 2)
+        return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w, 0))
+    return f
+
+@op23
+def extrude_to(a, b, h, e=ease.linear):
+    def f(p):
+        d1 = a(p[:,[0,1]])
+        d2 = b(p[:,[0,1]])
+        t = e(np.clip(p[:,2] / h, -0.5, 0.5) + 0.5)
+        d = d1 + (d2 - d1) * t.reshape((-1, 1))
         w = _vec(d.reshape(-1), np.abs(p[:,2]) - h / 2)
         return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w, 0))
     return f

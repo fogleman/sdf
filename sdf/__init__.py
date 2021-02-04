@@ -1,5 +1,7 @@
 from . import d2, d3, ease
 
+from .util import *
+
 from .d2 import *
 
 from .d3 import *
