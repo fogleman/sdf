@@ -443,6 +443,17 @@ def transition(f0, f1, p0=-Z, p1=Z, e=ease.linear):
         return t * d2 + (1 - t) * d1
     return f
 
+@op3
+def transition_radial(f0, f1, r0=0, r1=1, e=ease.linear):
+    def f(p):
+        d1 = f0(p)
+        d2 = f1(p)
+        r = np.hypot(p[:,0], p[:,1])
+        t = np.clip((r - r0) / (r1 - r0), 0, 1)
+        t = e(t).reshape((-1, 1))
+        return t * d2 + (1 - t) * d1
+    return f
+
 # 3D => 2D Operations
 
 @op32
