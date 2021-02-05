@@ -431,6 +431,18 @@ def bend(other, k):
     return f
 
 @op3
+def bend_linear(other, p0, p1, v, e=ease.linear):
+    p0 = np.array(p0)
+    p1 = np.array(p1)
+    v = -np.array(v)
+    ab = p1 - p0
+    def f(p):
+        t = np.clip(np.dot(p - p0, ab) / np.dot(ab, ab), 0, 1)
+        t = e(t).reshape((-1, 1))
+        return other(p + t * v)
+    return f
+
+@op3
 def bend_radial(other, r0, r1, dz, e=ease.linear):
     def f(p):
         x = p[:,0]
