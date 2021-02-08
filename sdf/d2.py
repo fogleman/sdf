@@ -171,6 +171,29 @@ def rounded_x(w, r):
         return _length(p - q) - r
     return f
 
+@sdf2
+def polygon(points):
+    points = [np.array(p) for p in points]
+    def f(p):
+        n = len(points)
+        d = _dot(p - points[0], p - points[0])
+        s = np.ones(len(p))
+        for i in range(n):
+            j = (i + n - 1) % n
+            vi = points[i]
+            vj = points[j]
+            e = vj - vi
+            w = p - vi
+            b = w - e * np.clip(np.dot(w, e) / np.dot(e, e), 0, 1).reshape((-1, 1))
+            d = _min(d, _dot(b, b))
+            c1 = p[:,1] >= vi[1]
+            c2 = p[:,1] < vj[1]
+            c3 = e[0] * w[:,1] > e[1] * w[:,0]
+            c = _vec(c1, c2, c3)
+            s = np.where(np.all(c, axis=1) | np.all(~c, axis=1), -s, s)
+        return s * np.sqrt(d)
+    return f
+
 # Positioning
 
 @op2

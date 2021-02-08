@@ -579,6 +579,30 @@ def bend(other, k):
     return f
 
 @op3
+def bend_linear(other, p0, p1, v, e=ease.linear):
+    p0 = np.array(p0)
+    p1 = np.array(p1)
+    v = -np.array(v)
+    ab = p1 - p0
+    def f(p):
+        t = np.clip(np.dot(p - p0, ab) / np.dot(ab, ab), 0, 1)
+        t = e(t).reshape((-1, 1))
+        return other(p + t * v)
+    return f
+
+@op3
+def bend_radial(other, r0, r1, dz, e=ease.linear):
+    def f(p):
+        x = p[:,0]
+        y = p[:,1]
+        z = p[:,2]
+        r = np.hypot(x, y)
+        t = np.clip((r - r0) / (r1 - r0), 0, 1)
+        z = z + dz * e(t)
+        return other(_vec(x, y, z))
+    return f
+
+@op3
 def transition(f0, f1, p0=-Z, p1=Z, e=ease.linear):
     p0 = np.array(p0)
     p1 = np.array(p1)
@@ -587,6 +611,17 @@ def transition(f0, f1, p0=-Z, p1=Z, e=ease.linear):
         d1 = f0(p)
         d2 = f1(p)
         t = np.clip(np.dot(p - p0, ab) / np.dot(ab, ab), 0, 1)
+        t = e(t).reshape((-1, 1))
+        return t * d2 + (1 - t) * d1
+    return f
+
+@op3
+def transition_radial(f0, f1, r0=0, r1=1, e=ease.linear):
+    def f(p):
+        d1 = f0(p)
+        d2 = f1(p)
+        r = np.hypot(p[:,0], p[:,1])
+        t = np.clip((r - r0) / (r1 - r0), 0, 1)
         t = e(t).reshape((-1, 1))
         return t * d2 + (1 - t) * d1
     return f
