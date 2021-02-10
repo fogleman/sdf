@@ -68,10 +68,13 @@ def shell(other, thickness):
         return np.abs(other(p)) - thickness
     return f
 
-def repeat(other, count, spacing):
-    count = np.array(count)
+def repeat(other, spacing, count=None):
+    count = np.array(count) if count is not None else None
     spacing = np.array(spacing)
     def f(p):
-        q = p - spacing * np.clip(np.round(p / spacing), -count, count)
+        if count is None:
+            q = p - spacing * np.round(p / spacing)
+        else:
+            q = p - spacing * np.clip(np.round(p / spacing), -count, count)
         return other(q)
     return f
