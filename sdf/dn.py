@@ -68,13 +68,23 @@ def shell(other, thickness):
         return np.abs(other(p)) - thickness
     return f
 
-def repeat(other, spacing, count=None):
+def repeat(other, spacing, count=None, stagger=False):
     count = np.array(count) if count is not None else None
     spacing = np.array(spacing)
     def f(p):
         if count is None:
-            q = p - spacing * np.round(p / spacing)
+            i = np.round(p / spacing)
         else:
-            q = p - spacing * np.clip(np.round(p / spacing), -count, count)
+            i = np.clip(np.round(p / spacing), -count, count)
+        if stagger:
+            # TODO: more configurable staggering
+            i1 = np.where((i[:,0] % 2 == 0).reshape((-1, 1)), i, i + [0, 0.5, 0])
+            i2 = np.where((i[:,0] % 2 == 0).reshape((-1, 1)), i, i - [0, 0.5, 0])
+            q1 = p - spacing * i1
+            q2 = p - spacing * i2
+            d1 = other(q1)
+            d2 = other(q2)
+            return _min(d1, d2)
+        q = p - spacing * i
         return other(q)
     return f
