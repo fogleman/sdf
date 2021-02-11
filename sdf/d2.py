@@ -244,6 +244,12 @@ def elongate(other, size):
         return other(_max(q, 0)) + w
     return f
 
+@op2
+def round(other, r):
+    def f(p):
+        return other(p)-r
+    return f
+
 # 2D => 3D Operations
 
 @op23
