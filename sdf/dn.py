@@ -1,3 +1,4 @@
+import itertools
 import numpy as np
 
 _min = np.minimum
@@ -68,23 +69,36 @@ def shell(other, thickness):
         return np.abs(other(p)) - thickness
     return f
 
-def repeat(other, spacing, count=None, stagger=False):
+def repeat(other, spacing, count=None, padding=0):
     count = np.array(count) if count is not None else None
     spacing = np.array(spacing)
+
+    def neighbors(dim, padding, spacing):
+        try:
+            padding = [padding[i] for i in range(dim)]
+        except Exception:
+            padding = [padding] * dim
+        try:
+            spacing = [spacing[i] for i in range(dim)]
+        except Exception:
+            spacing = [spacing] * dim
+        for i, s in enumerate(spacing):
+            if s == 0:
+                padding[i] = 0
+        axes = [list(range(-p, p + 1)) for p in padding]
+        return list(itertools.product(*axes))
+
     def f(p):
+        q = np.divide(p, spacing, out=np.zeros_like(p), where=spacing != 0)
         if count is None:
-            i = np.round(p / spacing)
+            index = np.round(q)
         else:
-            i = np.clip(np.round(p / spacing), -count, count)
-        if stagger:
-            # TODO: more configurable staggering
-            i1 = np.where((i[:,0] % 2 == 0).reshape((-1, 1)), i, i + [0, 0.5, 0])
-            i2 = np.where((i[:,0] % 2 == 0).reshape((-1, 1)), i, i - [0, 0.5, 0])
-            q1 = p - spacing * i1
-            q2 = p - spacing * i2
-            d1 = other(q1)
-            d2 = other(q2)
-            return _min(d1, d2)
-        q = p - spacing * i
-        return other(q)
+            index = np.clip(np.round(q), -count, count)
+
+        indexes = [index + n for n in neighbors(p.shape[-1], padding, spacing)]
+        A = [other(p - spacing * i) for i in indexes]
+        a = A[0]
+        for b in A[1:]:
+            a = _min(a, b)
+        return a
     return f
