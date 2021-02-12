@@ -64,6 +64,16 @@ def negate(other):
         return -other(p)
     return f
 
+def dilate(other, r):
+    def f(p):
+        return other(p) - r
+    return f
+
+def erode(other, r):
+    def f(p):
+        return other(p) + r
+    return f
+
 def shell(other, thickness):
     def f(p):
         return np.abs(other(p)) - thickness
