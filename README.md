@@ -180,7 +180,7 @@ favorite language Python.
 - [sdf/stl.py](https://github.com/fogleman/sdf/blob/main/sdf/stl.py): Code for writing a binary [STL file](https://en.wikipedia.org/wiki/STL_(file_format)).
 - [sdf/util.py](https://github.com/fogleman/sdf/blob/main/sdf/util.py): Utility constants and functions.
 
-# SDF Implementation
+## SDF Implementation
 
 It is reasonable to write your own SDFs beyond those provided by the
 built-in library. Browse the SDF implementations to understand how they are
