@@ -19,3 +19,10 @@ generate(f, 'example')
 # sphere
 f = sphere(1)
 generate(f, 'sphere')
+
+# box
+f = box(1)
+generate(f, 'box')
+
+f = box((1, 2, 3))
+generate(f, 'box2')
