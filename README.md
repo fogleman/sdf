@@ -396,7 +396,8 @@ f = sphere().translate((0, 0, 2))
 `scale(other, factor)`
 
 ```python
-f = sphere().scale((1, 2, 3))
+f = sphere().scale(2)
+f = sphere().scale((1, 2, 3)) # non-uniform scaling
 ```
 
 ### rotate
@@ -418,4 +419,62 @@ f = capped_cylinder(-Z, Z, 0.5).rotate(pi / 4, X)
 ```python
 c = capped_cylinder(-Z, Z, 0.25)
 f = c.orient(X) | c.orient(Y) | c.orient(Z)
+```
+
+## Boolean Operations
+
+The following primitives `a` and `b` are used in all of the following
+boolean operations.
+
+```python
+a = box((3, 3, 0.5))
+b = sphere()
+```
+
+### union
+
+<img width=128 align="right" src="docs/images/union.png">
+
+```python
+f = a | b
+```
+
+### difference
+
+<img width=128 align="right" src="docs/images/difference.png">
+
+```python
+f = a - b
+```
+
+### intersection
+
+<img width=128 align="right" src="docs/images/intersection.png">
+
+```python
+f = a & b
+```
+
+### smooth_union
+
+<img width=128 align="right" src="docs/images/smooth_union.png">
+
+```python
+f = a | b.k(0.25)
+```
+
+### smooth_difference
+
+<img width=128 align="right" src="docs/images/smooth_difference.png">
+
+```python
+f = a - b.k(0.25)
+```
+
+### smooth_intersection
+
+<img width=128 align="right" src="docs/images/smooth_intersection.png">
+
+```python
+f = a & b.k(0.25)
 ```

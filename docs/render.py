@@ -114,3 +114,33 @@ generate(f, 'rotate')
 c = capped_cylinder(-Z, Z, 0.25)
 f = c.orient(X) | c.orient(Y) | c.orient(Z)
 generate(f, 'orient')
+
+
+# boolean operations
+
+a = box((3, 3, 0.5))
+b = sphere()
+
+# union
+f = a | b
+generate(f, 'union')
+
+# difference
+f = a - b
+generate(f, 'difference')
+
+# intersection
+f = a & b
+generate(f, 'intersection')
+
+# smooth union
+f = a | b.k(0.25)
+generate(f, 'smooth_union')
+
+# smooth difference
+f = a - b.k(0.25)
+generate(f, 'smooth_difference')
+
+# smooth intersection
+f = a & b.k(0.25)
+generate(f, 'smooth_intersection')
