@@ -166,8 +166,8 @@ algorithm to generate a mesh from the [Signed Distance Function](https://en.wiki
 This would normally be abysmally slow in Python. However, numpy is used to
 evaluate the SDF on entire batches of points simultaneously. Furthermore,
 multiple threads are used to process batches in parallel. The result is
-surprisingly fast. Meshes of adequate detail can still be quite large in
-terms of number of triangles.
+surprisingly fast (for marching cubes). Meshes of adequate detail can
+still be quite large in terms of number of triangles.
 
 The core "engine" of the `sdf` library is very small and can be found in
 [mesh.py](https://github.com/fogleman/sdf/blob/main/sdf/mesh.py).
