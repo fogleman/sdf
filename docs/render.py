@@ -52,3 +52,36 @@ generate(f, 'capped_cylinder')
 # rounded_cylinder(ra, rb, h)
 f = rounded_cylinder(0.5, 0.1, 2)
 generate(f, 'rounded_cylinder')
+
+# capped_cone(a, b, ra, rb)
+f = capped_cone(-Z, Z, 1, 0.5)
+generate(f, 'capped_cone')
+
+# rounded_cone(r1, r2, h)
+f = rounded_cone(0.75, 0.25, 2)
+generate(f, 'rounded_cone')
+
+# ellipsoid(size)
+f = ellipsoid((1, 2, 3))
+generate(f, 'ellipsoid')
+
+# pyramid(h)
+f = pyramid(1)
+generate(f, 'pyramid')
+
+# tetrahedron(r)
+f = tetrahedron(1)
+generate(f, 'tetrahedron')
+
+# octahedron(r)
+f = octahedron(1)
+generate(f, 'octahedron')
+
+# dodecahedron(r)
+f = dodecahedron(1)
+generate(f, 'dodecahedron')
+
+# icosahedron(r)
+f = icosahedron(1)
+generate(f, 'icosahedron')
+
