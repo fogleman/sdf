@@ -61,35 +61,6 @@ python example.py # should generate a file named out.stl
 You can skip the installation if you always run scripts that import `sdf`
 from the root folder.
 
-## How it Works
-
-The code simply uses the [Marching Cubes](https://en.wikipedia.org/wiki/Marching_cubes)
-algorithm to generate a mesh from the [Signed Distance Function](https://en.wikipedia.org/wiki/Signed_distance_function).
-
-This would normally be abysmally slow in Python. However, numpy is used to
-evaluate the SDF on entire batches of points simultaneously. Furthermore,
-multiple threads are used to process batches in parallel. The result is
-surprisingly fast. Meshes of adequate detail can still be quite large in
-terms of number of triangles.
-
-The core "engine" of the `sdf` library is very small and can be found in
-[mesh.py](https://github.com/fogleman/sdf/blob/main/sdf/mesh.py).
-
-In short, there is nothing algorithmically revolutionary here. The goal is
-to provide a simple, fun, and easy-to-use API for generating 3D models in our
-favorite language Python.
-
-## Files
-
-- [sdf/d2.py](https://github.com/fogleman/sdf/blob/main/sdf/d2.py): 2D signed distance functions
-- [sdf/d3.py](https://github.com/fogleman/sdf/blob/main/sdf/d3.py): 3D signed distance functions
-- [sdf/dn.py](https://github.com/fogleman/sdf/blob/main/sdf/dn.py): Dimension-agnostic signed distance functions
-- [sdf/ease.py](https://github.com/fogleman/sdf/blob/main/sdf/ease.py): [Easing functions](https://easings.net/) that operate on numpy arrays. Some SDFs take an easing function as a parameter.
-- [sdf/mesh.py](https://github.com/fogleman/sdf/blob/main/sdf/mesh.py): The core mesh-generation engine. Also includes code for estimating the bounding box of an SDF and for plotting a 2D slice of an SDF with matplotlib.
-- [sdf/progress.py](https://github.com/fogleman/sdf/blob/main/sdf/progress.py): A console progress bar.
-- [sdf/stl.py](https://github.com/fogleman/sdf/blob/main/sdf/stl.py): Code for writing a binary [STL file](https://en.wikipedia.org/wiki/STL_(file_format)).
-- [sdf/util.py](https://github.com/fogleman/sdf/blob/main/sdf/util.py): Utility constants and functions.
-
 ## Bounds
 
 The bounding box of the SDF is automatically estimated. Inexact SDFs such as
@@ -171,4 +142,58 @@ also specify the bounds to plot.
 
 <br clear="right">
 
-## Functions
+## How it Works
+
+The code simply uses the [Marching Cubes](https://en.wikipedia.org/wiki/Marching_cubes)
+algorithm to generate a mesh from the [Signed Distance Function](https://en.wikipedia.org/wiki/Signed_distance_function).
+
+This would normally be abysmally slow in Python. However, numpy is used to
+evaluate the SDF on entire batches of points simultaneously. Furthermore,
+multiple threads are used to process batches in parallel. The result is
+surprisingly fast. Meshes of adequate detail can still be quite large in
+terms of number of triangles.
+
+The core "engine" of the `sdf` library is very small and can be found in
+[mesh.py](https://github.com/fogleman/sdf/blob/main/sdf/mesh.py).
+
+In short, there is nothing algorithmically revolutionary here. The goal is
+to provide a simple, fun, and easy-to-use API for generating 3D models in our
+favorite language Python.
+
+## Files
+
+- [sdf/d2.py](https://github.com/fogleman/sdf/blob/main/sdf/d2.py): 2D signed distance functions
+- [sdf/d3.py](https://github.com/fogleman/sdf/blob/main/sdf/d3.py): 3D signed distance functions
+- [sdf/dn.py](https://github.com/fogleman/sdf/blob/main/sdf/dn.py): Dimension-agnostic signed distance functions
+- [sdf/ease.py](https://github.com/fogleman/sdf/blob/main/sdf/ease.py): [Easing functions](https://easings.net/) that operate on numpy arrays. Some SDFs take an easing function as a parameter.
+- [sdf/mesh.py](https://github.com/fogleman/sdf/blob/main/sdf/mesh.py): The core mesh-generation engine. Also includes code for estimating the bounding box of an SDF and for plotting a 2D slice of an SDF with matplotlib.
+- [sdf/progress.py](https://github.com/fogleman/sdf/blob/main/sdf/progress.py): A console progress bar.
+- [sdf/stl.py](https://github.com/fogleman/sdf/blob/main/sdf/stl.py): Code for writing a binary [STL file](https://en.wikipedia.org/wiki/STL_(file_format)).
+- [sdf/util.py](https://github.com/fogleman/sdf/blob/main/sdf/util.py): Utility constants and functions.
+
+## Function Reference
+
+### Sphere
+
+<img width=128 align="right" src="docs/images/sphere.png">
+
+`sphere(radius=1, center=ORIGIN)`
+
+```python
+f = sphere() # unit sphere
+f = sphere(2) # specify radius
+f = sphere(1, (1, 2, 3)) # translated sphere
+```
+
+### Box
+
+<img width=128 align="right" src="docs/images/box.png">
+<img width=128 align="right" src="docs/images/box2.png">
+
+`box(size=1, center=ORIGIN, a=None, b=None)`
+
+```python
+f = box(1) # all side lengths = 1
+f = box((1, 2, 3)) # different side lengths
+f = box(a=(-1, -1, -1), b=(3, 4, 5)) # specified by bounds
+```
