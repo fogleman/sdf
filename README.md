@@ -14,7 +14,7 @@ Special thanks to [Inigo Quilez](https://iquilezles.org/) for his excellent docu
 
 Here is a complete example that generates the model shown. This is the
 canonical [Constructive Solid Geometry](https://en.wikipedia.org/wiki/Constructive_solid_geometry)
-example.
+example. Note the use of operators for union, intersection, and difference.
 
 ```python
 from sdf import *
