@@ -32,3 +32,7 @@ generate(f, 'box2')
 # rounded_box(size, radius)
 f = rounded_box((1, 2, 3), 0.25)
 generate(f, 'rounded_box')
+
+# wireframe_box(size, thickness)
+f = wireframe_box((1, 2, 3), 0.05)
+generate(f, 'wireframe_box')
