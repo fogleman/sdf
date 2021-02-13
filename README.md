@@ -439,6 +439,8 @@ b = sphere()
 f = a | b
 ```
 
+<br clear="right">
+
 ### difference
 
 <img width=128 align="right" src="docs/images/difference.png">
@@ -446,6 +448,8 @@ f = a | b
 ```python
 f = a - b
 ```
+
+<br clear="right">
 
 ### intersection
 
@@ -455,6 +459,8 @@ f = a - b
 f = a & b
 ```
 
+<br clear="right">
+
 ### smooth_union
 
 <img width=128 align="right" src="docs/images/smooth_union.png">
@@ -462,6 +468,8 @@ f = a & b
 ```python
 f = a | b.k(0.25)
 ```
+
+<br clear="right">
 
 ### smooth_difference
 
@@ -471,6 +479,8 @@ f = a | b.k(0.25)
 f = a - b.k(0.25)
 ```
 
+<br clear="right">
+
 ### smooth_intersection
 
 <img width=128 align="right" src="docs/images/smooth_intersection.png">
@@ -478,3 +488,5 @@ f = a - b.k(0.25)
 ```python
 f = a & b.k(0.25)
 ```
+
+<br clear="right">
