@@ -180,6 +180,47 @@ favorite language Python.
 - [sdf/stl.py](https://github.com/fogleman/sdf/blob/main/sdf/stl.py): Code for writing a binary [STL file](https://en.wikipedia.org/wiki/STL_(file_format)).
 - [sdf/util.py](https://github.com/fogleman/sdf/blob/main/sdf/util.py): Utility constants and functions.
 
+# SDF Implementation
+
+It is reasonable to write your own SDFs beyond those provided by the
+built-in library. Browse the SDF implementations to understand how they are
+implemented. Here are some simple examples:
+
+```python
+@sdf3
+def sphere(radius=1, center=ORIGIN):
+    def f(p):
+        return np.linalg.norm(p - center, axis=1) - radius
+    return f
+```
+
+An SDF is simply a function that takes a numpy array of points and returns
+the signed distance for each of those points. They are wrapped with the
+`@sdf3` decorator (or `@sdf2` for 2D SDFs) which make boolean operators work,
+add the `save` method, add the operators like `translate`, etc.
+
+```python
+@op3
+def translate(other, offset):
+    def f(p):
+        return other(p - offset)
+    return f
+```
+
+An SDF that operates on another SDF (like the above `translate`) should use
+the `@op3` decorator instead. This will register the function such that SDFs
+can be chained together like:
+
+```python
+f = sphere(1).translate((1, 2, 3))
+```
+
+Instead of what would otherwise be required:
+
+```python
+f = translate(sphere(1), (1, 2, 3))
+```
+
 # Function Reference
 
 ## 3D Primitives
