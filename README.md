@@ -146,6 +146,9 @@ f.show_slice(z=0)
 You can specify a slice plane at any X, Y, or Z coordinate. You can
 also specify the bounds to plot.
 
+Note that `matplotlib` is only imported if this function is called, so it
+isn't strictly required as a dependency.
+
 <br clear="right">
 
 ## How it Works
