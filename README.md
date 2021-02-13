@@ -28,7 +28,7 @@ f.save('out.stl')
 ```
 
 Yes, that's really the entire code! You can 3D print that model or use it
-in a 3D game.
+in a 3D application.
 
 ## Requirements
 
