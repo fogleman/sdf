@@ -502,6 +502,8 @@ f = intersection(a, b, k=0.25) # equivalent
 
 <br clear="right">
 
+## Repetition
+
 ### repeat
 
 <img width=128 align="right" src="docs/images/repeat.png">
