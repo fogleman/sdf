@@ -431,12 +431,18 @@ a = box((3, 3, 0.5))
 b = sphere()
 ```
 
+The named versions (`union`, `difference`, `intersection`) can all take
+one or more SDFs as input. They all take a `k` parameter to define the amount
+of smoothing to apply. When using operators (`|`, `-`, `&`) the smoothing can
+still be applied via the `.k(...)` function.
+
 ### union
 
 <img width=128 align="right" src="docs/images/union.png">
 
 ```python
 f = a | b
+f = union(a, b) # equivalent
 ```
 
 <br clear="right">
@@ -447,6 +453,7 @@ f = a | b
 
 ```python
 f = a - b
+f = difference(a, b) # equivalent
 ```
 
 <br clear="right">
@@ -457,6 +464,7 @@ f = a - b
 
 ```python
 f = a & b
+f = intersection(a, b) # equivalent
 ```
 
 <br clear="right">
@@ -467,6 +475,7 @@ f = a & b
 
 ```python
 f = a | b.k(0.25)
+f = union(a, b, k=0.25) # equivalent
 ```
 
 <br clear="right">
@@ -477,6 +486,7 @@ f = a | b.k(0.25)
 
 ```python
 f = a - b.k(0.25)
+f = difference(a, b, k=0.25) # equivalent
 ```
 
 <br clear="right">
@@ -487,6 +497,7 @@ f = a - b.k(0.25)
 
 ```python
 f = a & b.k(0.25)
+f = intersection(a, b, k=0.25) # equivalent
 ```
 
 <br clear="right">
