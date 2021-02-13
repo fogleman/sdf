@@ -222,8 +222,11 @@ def sample_slice(
 
 def show_slice(*args, **kwargs):
     import matplotlib.pyplot as plt
+    show_abs = kwargs.pop('abs', False)
     a, extent, axes = sample_slice(*args, **kwargs)
-    im = plt.imshow(np.abs(a), extent=extent, origin='lower')
+    if show_abs:
+        a = np.abs(a)
+    im = plt.imshow(a, extent=extent, origin='lower')
     plt.xlabel(axes[0])
     plt.ylabel(axes[1])
     plt.colorbar(im)
