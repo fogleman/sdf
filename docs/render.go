@@ -48,8 +48,12 @@ func main() {
 		log.Fatal(err)
 	}
 
-	// fit mesh in a bi-unit cube centered at the origin
-	mesh.BiUnitCube()
+	// scale mesh to fit in a bi-unit cube centered at the origin
+	// but do not translate it
+	box := mesh.BoundingBox()
+	h := box.Max.Abs().Max(box.Min.Abs())
+	s := V(1, 1, 1).Div(h).MinComponent()
+	mesh.Transform(Scale(V(s, s, s)))
 
 	// create rendering context
 	context := NewContext(width*aa, height*aa)

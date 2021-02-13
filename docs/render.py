@@ -85,3 +85,14 @@ generate(f, 'dodecahedron')
 f = icosahedron(1)
 generate(f, 'icosahedron')
 
+# plane(normal=UP, point=ORIGIN)
+f = sphere() & plane()
+generate(f, 'plane')
+
+# slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None, k=None)
+f = sphere() & slab(z0=-0.5, z1=0.5, x0=0)
+generate(f, 'slab')
+
+# cylinder(radius)
+f = sphere() - cylinder(0.5)
+generate(f, 'cylinder')
