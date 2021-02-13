@@ -145,4 +145,14 @@ The SDF is sampled in batches using worker threads. By default,
 f.save('out.stl', workers=1) # only use one worker thread
 ```
 
+### Without Saving
+
+You can of course generate a mesh without writing it to an STL file:
+
+```python
+points = f.generate() # takes the same optional arguments as `save`
+print(len(points)) # print number of points (3x the number of triangles)
+print(points[:3]) # print the vertices of the first triangle
+```
+
 ## Functions
