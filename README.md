@@ -136,7 +136,7 @@ they shouldn't have been). To avoid this, you can disable sparse sampling:
 f.save('out.stl', sparse=False) # force all batches to be completely sampled
 ```
 
-### Worker Threads
+## Worker Threads
 
 The SDF is sampled in batches using worker threads. By default,
 `multiprocessing.cpu_count()` worker threads are used. This can be overridden:
@@ -145,7 +145,7 @@ The SDF is sampled in batches using worker threads. By default,
 f.save('out.stl', workers=1) # only use one worker thread
 ```
 
-### Without Saving
+## Without Saving
 
 You can of course generate a mesh without writing it to an STL file:
 
@@ -154,5 +154,21 @@ points = f.generate() # takes the same optional arguments as `save`
 print(len(points)) # print number of points (3x the number of triangles)
 print(points[:3]) # print the vertices of the first triangle
 ```
+
+## Visualizing the SDF
+
+<img width=350 align="right" src="docs/images/show_slice.png">
+
+You can plot a visualization of a 2D slice of the SDF using matplotlib.
+This can be useful for debugging purposes.
+
+```python
+f.show_slice(z=0)
+```
+
+You can specify a slice plane at any X, Y, or Z coordinate. You can
+also specify the bounds to plot.
+
+<br clear="right">
 
 ## Functions
