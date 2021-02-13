@@ -55,7 +55,7 @@ pip install -e .
 Confirm that it works:
 
 ```bash
-python example.py # should generate a file named out.stl
+python examples/example.py # should generate a file named out.stl
 ```
 
 You can skip the installation if you always run scripts that import `sdf`
