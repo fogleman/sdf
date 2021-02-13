@@ -96,3 +96,21 @@ generate(f, 'slab')
 # cylinder(radius)
 f = sphere() - cylinder(0.5)
 generate(f, 'cylinder')
+
+# translate(other, offset)
+f = sphere().translate((0, 0, 2))
+generate(f, 'translate')
+
+# scale(other, factor)
+f = sphere().scale((1, 2, 3))
+generate(f, 'scale')
+
+# rotate(other, angle, vector=Z)
+# rotate_to(other, a, b)
+f = capped_cylinder(-Z, Z, 0.5).rotate(pi / 4, X)
+generate(f, 'rotate')
+
+# orient(other, axis)
+c = capped_cylinder(-Z, Z, 0.25)
+f = c.orient(X) | c.orient(Y) | c.orient(Z)
+generate(f, 'orient')
