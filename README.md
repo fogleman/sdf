@@ -376,3 +376,46 @@ f = sphere() & slab(z0=-0.5, z1=0.5, x0=0)
 ```python
 f = sphere() - cylinder(0.5)
 ```
+
+## Positioning
+
+### translate
+
+<img width=128 align="right" src="docs/images/translate.png">
+
+`translate(other, offset)`
+
+```python
+f = sphere().translate((0, 0, 2))
+```
+
+### scale
+
+<img width=128 align="right" src="docs/images/scale.png">
+
+`scale(other, factor)`
+
+```python
+f = sphere().scale((1, 2, 3))
+```
+
+### rotate
+
+<img width=128 align="right" src="docs/images/rotate.png">
+
+`rotate(other, angle, vector=Z)`
+
+```python
+f = capped_cylinder(-Z, Z, 0.5).rotate(pi / 4, X)
+```
+
+### orient
+
+<img width=128 align="right" src="docs/images/orient.png">
+
+`orient(other, axis)`
+
+```python
+c = capped_cylinder(-Z, Z, 0.25)
+f = c.orient(X) | c.orient(Y) | c.orient(Z)
+```
