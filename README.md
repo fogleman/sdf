@@ -105,12 +105,39 @@ f.save('out.stl', step=0.01)
 f.save('out.stl', step=(0.01, 0.02, 0.03)) # non-uniform resolution
 ```
 
-Or you can specify how many points to sample:
+Or you can specify approximately how many points to sample:
 
 ```python
 f.save('out.stl', samples=2**24) # sample about 16M points
 ```
 
 By default, `samples=2**22` is used.
+
+## Batches
+
+The SDF is sampled in batches. By default the batches have `32**3 = 32768`
+points each. This batch size can be overridden:
+
+```python
+f.save('out.stl', batch_size=64) # instead of 32
+```
+
+The code attempts to skip any batches that are far away from the surface of
+the mesh. Inexact SDFs such as non-uniform scaling may cause issues with this
+process, resulting in holes in the output mesh (where batches were skipped when
+they shouldn't have been). To avoid this, you can disable sparse sampling:
+
+```python
+f.save('out.stl', sparse=False) # force all batches to be completely sampled
+```
+
+### Worker Threads
+
+The SDF is sampled in batches using worker threads. By default,
+`multiprocessing.cpu_count()` worker threads are used. This can be overridden:
+
+```python
+f.save('out.stl', workers=1) # only use one worker thread
+```
 
 ## Functions
