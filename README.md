@@ -1,6 +1,6 @@
 # sdf
 
-Generate 3D meshes (STLs) based on SDFs (signed distance functions) with a
+Generate 3D meshes based on SDFs (signed distance functions) with a
 dirt simple Python API.
 
 Special thanks to [Inigo Quilez](https://iquilezles.org/) for his excellent documentation on signed distance functions:
