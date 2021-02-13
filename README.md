@@ -171,7 +171,15 @@ favorite language Python.
 - [sdf/stl.py](https://github.com/fogleman/sdf/blob/main/sdf/stl.py): Code for writing a binary [STL file](https://en.wikipedia.org/wiki/STL_(file_format)).
 - [sdf/util.py](https://github.com/fogleman/sdf/blob/main/sdf/util.py): Utility constants and functions.
 
-## Function Reference
+## More Examples
+
+| [gearlike.py](examples/gearlike.py) | [knurling.py](examples/knurling.py) | [blobby.py](examples/blobby.py) | [weave.py](examples/weave.py) |
+| --- | --- | --- | --- |
+| ![gearlike](docs/images/gearlike.png) | ![knurling](docs/images/knurling.png) | ![blobby](docs/images/blobby.png) | ![weave](docs/images/weave.png) |
+
+# Function Reference
+
+## 3D Primitives
 
 ### sphere
 
@@ -292,6 +300,8 @@ f = ellipsoid((1, 2, 3))
 f = pyramid(1)
 ```
 
+## Platonic Solids
+
 ### tetrahedron
 
 <img width=128 align="right" src="docs/images/tetrahedron.png">
@@ -331,6 +341,11 @@ f = dodecahedron(1)
 ```python
 f = icosahedron(1)
 ```
+
+## Infinite 3D Primitives
+
+The following SDFs extend to infinity in some or all axes.
+They can only effectively be used in combination with other shapes, as shown in the examples below.
 
 ### plane
 
