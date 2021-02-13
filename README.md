@@ -501,3 +501,23 @@ f = intersection(a, b, k=0.25) # equivalent
 ```
 
 <br clear="right">
+
+### repeat
+
+<img width=128 align="right" src="docs/images/repeat.png">
+
+`repeat(other, spacing, count=None, padding=0)`
+
+```python
+f = sphere().repeat(3, (1, 1, 0))
+```
+
+### circular_array
+
+<img width=128 align="right" src="docs/images/circular_array.png">
+
+`circular_array(other, count, offset)`
+
+```python
+f = capped_cylinder(-Z, Z, 0.5).circular_array(8, 4)
+```

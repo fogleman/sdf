@@ -115,7 +115,6 @@ c = capped_cylinder(-Z, Z, 0.25)
 f = c.orient(X) | c.orient(Y) | c.orient(Z)
 generate(f, 'orient')
 
-
 # boolean operations
 
 a = box((3, 3, 0.5))
@@ -144,3 +143,11 @@ generate(f, 'smooth_difference')
 # smooth intersection
 f = a & b.k(0.25)
 generate(f, 'smooth_intersection')
+
+# repeat(other, spacing, count=None, padding=0)
+f = sphere().repeat(3, (1, 1, 0))
+generate(f, 'repeat')
+
+# circular_array(other, count, offset)
+f = capped_cylinder(-Z, Z, 0.5).circular_array(8, 4)
+generate(f, 'circular_array')
