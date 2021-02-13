@@ -173,7 +173,7 @@ favorite language Python.
 
 ## Function Reference
 
-### Sphere
+### sphere
 
 <img width=128 align="right" src="docs/images/sphere.png">
 
@@ -185,7 +185,7 @@ f = sphere(2) # specify radius
 f = sphere(1, (1, 2, 3)) # translated sphere
 ```
 
-### Box
+### box
 
 <img width=128 align="right" src="docs/images/box2.png">
 
@@ -197,7 +197,7 @@ f = box((1, 2, 3)) # different side lengths
 f = box(a=(-1, -1, -1), b=(3, 4, 5)) # specified by bounds
 ```
 
-### Rounded Box
+### rounded_box
 
 <img width=128 align="right" src="docs/images/rounded_box.png">
 
