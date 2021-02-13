@@ -132,6 +132,12 @@ print(len(points)) # print number of points (3x the number of triangles)
 print(points[:3]) # print the vertices of the first triangle
 ```
 
+If you want to save an STL after `generate`, just use:
+
+```python
+write_binary_stl(path, points)
+```
+
 ## Visualizing the SDF
 
 <img width=350 align="right" src="docs/images/show_slice.png">
