@@ -331,3 +331,33 @@ f = dodecahedron(1)
 ```python
 f = icosahedron(1)
 ```
+
+### plane
+
+<img width=128 align="right" src="docs/images/plane.png">
+
+`plane(normal=UP, point=ORIGIN)`
+
+```python
+f = sphere() & plane()
+```
+
+### slab
+
+<img width=128 align="right" src="docs/images/slab.png">
+
+`slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None, k=None)`
+
+```python
+f = sphere() & slab(z0=-0.5, z1=0.5, x0=0)
+```
+
+### cylinder
+
+<img width=128 align="right" src="docs/images/cylinder.png">
+
+`cylinder(radius)`
+
+```python
+f = sphere() - cylinder(0.5)
+```
