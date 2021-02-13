@@ -416,6 +416,9 @@ f = capped_cylinder(-Z, Z, 0.5).rotate(pi / 4, X)
 
 `orient(other, axis)`
 
+`orient` rotates the shape such that whatever was pointing in the +Z direction
+is now pointing in the specified direction.
+
 ```python
 c = capped_cylinder(-Z, Z, 0.25)
 f = c.orient(X) | c.orient(Y) | c.orient(Z)
@@ -509,6 +512,12 @@ f = intersection(a, b, k=0.25) # equivalent
 <img width=128 align="right" src="docs/images/repeat.png">
 
 `repeat(other, spacing, count=None, padding=0)`
+
+`repeat` can repeat the underlying SDF infinitely or a finite number of times.
+The number of repetitions must be odd, and the count specifies the number of
+repeats per each side. If the repeated elements overlap or come close together,
+you made need to specify a `padding` greater than zero to compute a correct
+SDF.
 
 ```python
 f = sphere().repeat(3, (1, 1, 0))
