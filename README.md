@@ -41,7 +41,12 @@ from the root folder.
 
 ## Example
 
-Here is a complete example that generates the model shown.
+Here is a complete example that generates the model shown. This is the
+canonical [Constructive Solid Geometry](https://en.wikipedia.org/wiki/Constructive_solid_geometry)
+example.
+
+Yes, that's really the entire code! You can 3D print that model or use it
+in a 3D game.
 
 ```python
 from sdf import *
