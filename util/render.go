@@ -11,7 +11,7 @@ import (
 )
 
 const (
-	scale  = 4
+	aa     = 4
 	width  = 1024
 	height = 1024
 	near   = 1
@@ -24,7 +24,7 @@ var (
 	up     = V(0, 0, 1)
 
 	axisLight  = V(1, 1, 1)
-	modelLight = V(0.75, 0.25, 1).Normalize()
+	modelLight = V(0.75, 0.25, 1)
 
 	xColor      = HexColor("BF1506")
 	yColor      = HexColor("5ABF56")
@@ -52,8 +52,8 @@ func main() {
 	mesh.BiUnitCube()
 
 	// create rendering context
-	context := NewContext(width*scale, height*scale)
-	context.ClearColorBufferWith(Transparent)
+	context := NewContext(width*aa, height*aa)
+	context.ClearColorBufferWith(background)
 
 	// create transformation matrix
 	matrix := LookAt(eye, center, up)
