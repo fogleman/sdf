@@ -10,7 +10,9 @@ Special thanks to [Inigo Quilez](https://iquilezles.org/) for his excellent docu
 
 ## Example
 
-Here is a complete example that generates the model shown below. This is the
+<img width=350 align="right" src="docs/images/example.png">
+
+Here is a complete example that generates the model shown. This is the
 canonical [Constructive Solid Geometry](https://en.wikipedia.org/wiki/Constructive_solid_geometry)
 example.
 
@@ -27,8 +29,6 @@ f.save('out.stl')
 
 Yes, that's really the entire code! You can 3D print that model or use it
 in a 3D game.
-
-![Example](docs/images/example.png)
 
 ## Requirements
 
