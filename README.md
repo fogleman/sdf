@@ -197,3 +197,13 @@ f = box(1) # all side lengths = 1
 f = box((1, 2, 3)) # different side lengths
 f = box(a=(-1, -1, -1), b=(3, 4, 5)) # specified by bounds
 ```
+
+### Rounded Box
+
+<img width=128 align="right" src="docs/images/rounded_box.png">
+
+`rounded_box(size, radius)`
+
+```python
+f = rounded_box((1, 2, 3), 0.25)
+```
