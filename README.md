@@ -70,6 +70,10 @@ terms of number of triangles.
 The core "engine" of the `sdf` library is very small and can be found in
 [mesh.py](https://github.com/fogleman/sdf/blob/main/sdf/mesh.py).
 
+In short, there is nothing algorithmically revolutionary here. The goal is
+to provide a simple, fun, and easy-to-use API for generating 3D models in our
+favorite language Python.
+
 ## Files
 
 - [sdf/d2.py](https://github.com/fogleman/sdf/blob/main/sdf/d2.py): 2D signed distance functions
