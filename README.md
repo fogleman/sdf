@@ -8,6 +8,28 @@ Special thanks to [Inigo Quilez](https://iquilezles.org/) for his excellent docu
 - [3D Signed Distance Functions](https://iquilezles.org/www/articles/distfunctions/distfunctions.htm)
 - [2D Signed Distance Functions](https://iquilezles.org/www/articles/distfunctions2d/distfunctions2d.htm)
 
+## Example
+
+Here is a complete example that generates the model shown. This is the
+canonical [Constructive Solid Geometry](https://en.wikipedia.org/wiki/Constructive_solid_geometry)
+example.
+
+Yes, that's really the entire code! You can 3D print that model or use it
+in a 3D game.
+
+```python
+from sdf import *
+
+f = sphere(1) & box(1.5)
+
+c = cylinder(0.5)
+f -= c.orient(X) | c.orient(Y) | c.orient(Z)
+
+f.save('out.stl')
+```
+
+![Example](docs/images/example.png)
+
 ## Requirements
 
 Note that the dependencies will be automatically installed by setup.py when
@@ -38,28 +60,6 @@ python example.py # should generate a file named out.stl
 
 You can skip the installation if you always run scripts that import `sdf`
 from the root folder.
-
-## Example
-
-Here is a complete example that generates the model shown. This is the
-canonical [Constructive Solid Geometry](https://en.wikipedia.org/wiki/Constructive_solid_geometry)
-example.
-
-Yes, that's really the entire code! You can 3D print that model or use it
-in a 3D game.
-
-```python
-from sdf import *
-
-f = sphere(1) & box(1.5)
-
-c = cylinder(0.5)
-f -= c.orient(X) | c.orient(Y) | c.orient(Z)
-
-f.save('out.stl')
-```
-
-![Example](docs/images/example.png)
 
 ## How it Works
 
