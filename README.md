@@ -187,7 +187,6 @@ f = sphere(1, (1, 2, 3)) # translated sphere
 
 ### Box
 
-<img width=128 align="right" src="docs/images/box.png">
 <img width=128 align="right" src="docs/images/box2.png">
 
 `box(size=1, center=ORIGIN, a=None, b=None)`
@@ -206,4 +205,49 @@ f = box(a=(-1, -1, -1), b=(3, 4, 5)) # specified by bounds
 
 ```python
 f = rounded_box((1, 2, 3), 0.25)
+```
+
+### wireframe_box
+<img width=128 align="right" src="docs/images/wireframe_box.png">
+
+`wireframe_box(size, thickness)`
+
+```python
+f = wireframe_box((1, 2, 3), 0.05)
+```
+
+### torus
+<img width=128 align="right" src="docs/images/torus.png">
+
+`torus(r1, r2)`
+
+```python
+f = torus(1, 0.25)
+```
+
+### capsule
+<img width=128 align="right" src="docs/images/capsule.png">
+
+`capsule(a, b, radius)`
+
+```python
+f = capsule(-Z, Z, 0.5)
+```
+
+### capped_cylinder
+<img width=128 align="right" src="docs/images/capped_cylinder.png">
+
+`capped_cylinder(a, b, radius)`
+
+```python
+f = capped_cylinder(-Z, Z, 0.5)
+```
+
+### rounded_cylinder
+<img width=128 align="right" src="docs/images/rounded_cylinder.png">
+
+`rounded_cylinder(ra, rb, h)`
+
+```python
+f = rounded_cylinder(0.5, 0.1, 2)
 ```
