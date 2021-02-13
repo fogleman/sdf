@@ -114,7 +114,7 @@ def rectangle(size=1, center=ORIGIN, a=None, b=None):
     return f
 
 @sdf2
-def rounded_box(size, radius, center=ORIGIN):
+def rounded_rectangle(size, radius, center=ORIGIN):
     try:
         r0, r1, r2, r3 = radius
     except TypeError:

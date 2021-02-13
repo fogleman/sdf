@@ -535,3 +535,40 @@ f = sphere().repeat(3, (1, 1, 0))
 ```python
 f = capped_cylinder(-Z, Z, 0.5).circular_array(8, 4)
 ```
+
+## 2D to 3D Operations
+
+### extrude
+### extrude_to
+### revolve
+
+## 3D to 2D Operations
+
+### slice
+
+## 2D Primitives
+
+### circle
+### line
+### rectangle
+### rounded_rectangle
+### equilateral_triangle
+### hexagon
+### rounded_x
+### polygon
+
+## More
+
+### elongate
+### twist
+### bend
+### bend_linear
+### bend_radial
+### transition
+### transition_radial
+
+### blend
+### negate
+### dilate
+### erode
+### shell
