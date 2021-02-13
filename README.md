@@ -251,3 +251,83 @@ f = capped_cylinder(-Z, Z, 0.5)
 ```python
 f = rounded_cylinder(0.5, 0.1, 2)
 ```
+
+### capped_cone
+
+<img width=128 align="right" src="docs/images/capped_cone.png">
+
+`capped_cone(a, b, ra, rb)`
+
+```python
+f = capped_cone(-Z, Z, 1, 0.5)
+```
+
+### rounded_cone
+
+<img width=128 align="right" src="docs/images/rounded_cone.png">
+
+`rounded_cone(r1, r2, h)`
+
+```python
+f = rounded_cone(0.75, 0.25, 2)
+```
+
+### ellipsoid
+
+<img width=128 align="right" src="docs/images/ellipsoid.png">
+
+`ellipsoid(size)`
+
+```python
+f = ellipsoid((1, 2, 3))
+```
+
+### pyramid
+
+<img width=128 align="right" src="docs/images/pyramid.png">
+
+`pyramid(h)`
+
+```python
+f = pyramid(1)
+```
+
+### tetrahedron
+
+<img width=128 align="right" src="docs/images/tetrahedron.png">
+
+`tetrahedron(r)`
+
+```python
+f = tetrahedron(1)
+```
+
+### octahedron
+
+<img width=128 align="right" src="docs/images/octahedron.png">
+
+`octahedron(r)`
+
+```python
+f = octahedron(1)
+```
+
+### dodecahedron
+
+<img width=128 align="right" src="docs/images/dodecahedron.png">
+
+`dodecahedron(r)`
+
+```python
+f = dodecahedron(1)
+```
+
+### icosahedron
+
+<img width=128 align="right" src="docs/images/icosahedron.png">
+
+`icosahedron(r)`
+
+```python
+f = icosahedron(1)
+```
