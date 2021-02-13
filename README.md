@@ -141,6 +141,7 @@ This can be useful for debugging purposes.
 
 ```python
 f.show_slice(z=0)
+f.show_slice(z=0, abs=True) # show abs(f)
 ```
 
 You can specify a slice plane at any X, Y, or Z coordinate. You can
