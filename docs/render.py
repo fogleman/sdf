@@ -36,3 +36,19 @@ generate(f, 'rounded_box')
 # wireframe_box(size, thickness)
 f = wireframe_box((1, 2, 3), 0.05)
 generate(f, 'wireframe_box')
+
+# torus(r1, r2)
+f = torus(1, 0.25)
+generate(f, 'torus')
+
+# capsule(a, b, radius)
+f = capsule(-Z, Z, 0.5)
+generate(f, 'capsule')
+
+# capped_cylinder(a, b, radius)
+f = capped_cylinder(-Z, Z, 0.5)
+generate(f, 'capped_cylinder')
+
+# rounded_cylinder(ra, rb, h)
+f = rounded_cylinder(0.5, 0.1, 2)
+generate(f, 'rounded_cylinder')
