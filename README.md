@@ -10,12 +10,9 @@ Special thanks to [Inigo Quilez](https://iquilezles.org/) for his excellent docu
 
 ## Example
 
-Here is a complete example that generates the model shown. This is the
+Here is a complete example that generates the model shown below. This is the
 canonical [Constructive Solid Geometry](https://en.wikipedia.org/wiki/Constructive_solid_geometry)
 example.
-
-Yes, that's really the entire code! You can 3D print that model or use it
-in a 3D game.
 
 ```python
 from sdf import *
@@ -27,6 +24,9 @@ f -= c.orient(X) | c.orient(Y) | c.orient(Z)
 
 f.save('out.stl')
 ```
+
+Yes, that's really the entire code! You can 3D print that model or use it
+in a 3D game.
 
 ![Example](docs/images/example.png)
 
