@@ -22,15 +22,19 @@ following the directions below.
 Use the commands below to clone the repository and install the `sdf` library
 in a Python virtualenv.
 
-    git clone https://github.com/fogleman/sdf.git
-    cd sdf
-    virtualenv env
-    . env/bin/activate
-    pip install -e .
+```bash
+git clone https://github.com/fogleman/sdf.git
+cd sdf
+virtualenv env
+. env/bin/activate
+pip install -e .
+```
 
 Confirm that it works:
 
-    python example.py # should generate a file named out.stl
+```bash
+python example.py # should generate a file named out.stl
+```
 
 You can skip the installation if you always run scripts that import `sdf`
 from the root folder.
@@ -39,14 +43,16 @@ from the root folder.
 
 Here is a complete example that generates the model shown.
 
-    from sdf import *
+```python
+from sdf import *
 
-    f = sphere(1) & box(1.5)
+f = sphere(1) & box(1.5)
 
-    c = cylinder(0.5)
-    f -= c.orient(X) | c.orient(Y) | c.orient(Z)
+c = cylinder(0.5)
+f -= c.orient(X) | c.orient(Y) | c.orient(Z)
 
-    f.save('out.stl')
+f.save('out.stl')
+```
 
 ![Example](docs/images/example.png)
 
