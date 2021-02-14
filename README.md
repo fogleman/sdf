@@ -608,10 +608,10 @@ f = intersection(a, b, k=0.25) # equivalent
 `repeat(other, spacing, count=None, padding=0)`
 
 `repeat` can repeat the underlying SDF infinitely or a finite number of times.
-The number of repetitions must be odd, and the count specifies the number of
-repeats per each side. If the repeated elements overlap or come close together,
-you made need to specify a `padding` greater than zero to compute a correct
-SDF.
+If finite, the number of repetitions must be odd, because the count specifies
+the number of copies to make on each side of the origin. If the repeated
+elements overlap or come close together, you made need to specify a `padding`
+greater than zero to compute a correct SDF.
 
 ```python
 f = sphere().repeat(3, (1, 1, 0))
@@ -622,6 +622,12 @@ f = sphere().repeat(3, (1, 1, 0))
 <img width=128 align="right" src="docs/images/circular_array.png">
 
 `circular_array(other, count, offset)`
+
+`circular_array` makes `count` copies of the underlying SDF, arranged in a
+circle around the Z axis. `offset` specifies how far to translate the shape
+in X before arraying it. The underlying SDF is only evaluated twice (instead
+of `count` times), so this is more performant than instantiating `count` copies
+of a shape.
 
 ```python
 f = capped_cylinder(-Z, Z, 0.5).circular_array(8, 4)
