@@ -91,6 +91,8 @@ $ meshview your-mesh.stl
 
 See the meshview [README](https://github.com/fogleman/meshview) for more complete installation instructions.
 
+On macOS you can just use the built-in Quick Look (press spacebar after selecting the STL file in Finder) in a pinch.
+
 # API
 
 In all of the below examples, `f` is any 3D SDF, such as:
