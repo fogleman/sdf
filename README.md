@@ -700,12 +700,46 @@ f = box().transition_radial(sphere(), e=ease.in_out_quad)
 ## 2D to 3D Operations
 
 ### extrude
+
+<img width=128 align="right" src="docs/images/extrude.png">
+
+`extrude(other, h)`
+
+```python
+f = hexagon(1).extrude(1)
+```
+
 ### extrude_to
+
+<img width=128 align="right" src="docs/images/extrude_to.png">
+
+`extrude_to(a, b, h, e=ease.linear)`
+
+```python
+f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)
+```
+
 ### revolve
+
+<img width=128 align="right" src="docs/images/revolve.png">
+
+`revolve(other, offset=0)`
+
+```python
+f = hexagon(1).revolve(3)
+```
 
 ## 3D to 2D Operations
 
 ### slice
+
+<img width=128 align="right" src="docs/images/slice.png">
+
+`slice(other)`
+
+```python
+f = example.translate((0, 0, 0.55)).slice().extrude(0.1)
+```
 
 ## 2D Primitives
 
