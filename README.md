@@ -105,7 +105,7 @@ f = sphere()
 
 The bounding box of the SDF is automatically estimated. Inexact SDFs such as
 non-uniform scaling may cause issues with this process. In that case you can
-specify the bounds manually:
+specify the bounds to sample manually:
 
 ```python
 f.save('out.stl', bounds=((-1, -1, -1), (1, 1, 1)))
@@ -113,7 +113,7 @@ f.save('out.stl', bounds=((-1, -1, -1), (1, 1, 1)))
 
 ## Resolution
 
-The resolution of the mesh is also handled automatically. There are two ways
+The resolution of the mesh is also computed automatically. There are two ways
 to specify the resolution. You can set the resolution directly with `step`:
 
 ```python
@@ -128,6 +128,9 @@ f.save('out.stl', samples=2**24) # sample about 16M points
 ```
 
 By default, `samples=2**22` is used.
+
+*Tip*: Use the default resolution while developing your SDF. Then when you're done,
+crank up the resolution for your final output.
 
 ## Batches
 
