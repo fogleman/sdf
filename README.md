@@ -69,6 +69,8 @@ from the root folder.
 
 ## Viewing the Mesh
 
+<img width=350 align="right" src="docs/images/meshview.png">
+
 Find and install a 3D mesh viewer for your platform, such as [MeshLab](https://www.meshlab.net/)
 
 I have developed and use my own cross-platform mesh viewer called [meshview](https://github.com/fogleman/meshview).
