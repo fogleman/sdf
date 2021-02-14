@@ -93,6 +93,12 @@ See the meshview [README](https://github.com/fogleman/meshview) for more complet
 
 # API
 
+In all of the below examples, `f` is any 3D SDF, such as:
+
+```python
+f = sphere()
+```
+
 ## Bounds
 
 The bounding box of the SDF is automatically estimated. Inexact SDFs such as
