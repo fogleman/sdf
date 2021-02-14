@@ -196,3 +196,19 @@ generate(f, 'transition_linear')
 # transition_radial(f0, f1, r0=0, r1=1, e=ease.linear)
 f = box().transition_radial(sphere(), e=ease.in_out_quad)
 generate(f, 'transition_radial')
+
+# extrude(other, h)
+f = hexagon(1).extrude(1)
+generate(f, 'extrude')
+
+# extrude_to(a, b, h, e=ease.linear)
+f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)
+generate(f, 'extrude_to')
+
+# revolve(other, offset=0)
+f = hexagon(1).revolve(3)
+generate(f, 'revolve')
+
+# slice(other)
+f = example.translate((0, 0, 0.55)).slice().extrude(0.1)
+generate(f, 'slice')
