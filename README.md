@@ -405,6 +405,8 @@ They can only effectively be used in combination with other shapes, as shown in 
 
 `plane(normal=UP, point=ORIGIN)`
 
+`plane` is an infinite plane, with one side being positive (outside) and one side being negative (inside).
+
 ```python
 f = sphere() & plane()
 ```
@@ -415,6 +417,8 @@ f = sphere() & plane()
 
 `slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None, k=None)`
 
+`slab` is useful for cutting a shape on one or more axis-aligned planes.
+
 ```python
 f = sphere() & slab(z0=-0.5, z1=0.5, x0=0)
 ```
@@ -424,6 +428,8 @@ f = sphere() & slab(z0=-0.5, z1=0.5, x0=0)
 <img width=128 align="right" src="docs/images/cylinder.png">
 
 `cylinder(radius)`
+
+`cylinder` is an infinite cylinder along the Z axis.
 
 ```python
 f = sphere() - cylinder(0.5)
@@ -446,6 +452,8 @@ f = sphere().translate((0, 0, 2))
 <img width=128 align="right" src="docs/images/scale.png">
 
 `scale(other, factor)`
+
+Note that non-uniform scaling is an inexact SDF.
 
 ```python
 f = sphere().scale(2)
@@ -487,7 +495,7 @@ b = sphere()
 ```
 
 The named versions (`union`, `difference`, `intersection`) can all take
-one or more SDFs as input. They all take a `k` parameter to define the amount
+one or more SDFs as input. They all take an optional `k` parameter to define the amount
 of smoothing to apply. When using operators (`|`, `-`, `&`) the smoothing can
 still be applied via the `.k(...)` function.
 
