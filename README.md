@@ -67,6 +67,28 @@ python examples/example.py # should generate a file named out.stl
 You can skip the installation if you always run scripts that import `sdf`
 from the root folder.
 
+## Viewing the Mesh
+
+Find and install a 3D mesh viewer for your platform, such as [MeshLab](https://www.meshlab.net/)
+
+I have developed and use my own cross-platform mesh viewer called [meshview](https://github.com/fogleman/meshview).
+Installation is easy if you have [Go](https://golang.org/) and [glfw](https://www.glfw.org/) installed:
+
+```bash
+$ brew install go glfw # on macOS with homebrew
+$ go get -u github.com/fogleman/meshview/cmd/meshview
+```
+
+Then you can view any mesh from the command line with:
+
+```bash
+$ meshview your-mesh.stl
+```
+
+See the meshview [README](https://github.com/fogleman/meshview) for more complete installation instructions.
+
+# API
+
 ## Bounds
 
 The bounding box of the SDF is automatically estimated. Inexact SDFs such as
