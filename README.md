@@ -32,6 +32,8 @@ in a 3D application.
 
 ## More Examples
 
+Have a cool example? Submit a PR!
+
 | [gearlike.py](examples/gearlike.py) | [knurling.py](examples/knurling.py) | [blobby.py](examples/blobby.py) | [weave.py](examples/weave.py) |
 | --- | --- | --- | --- |
 | ![gearlike](docs/images/gearlike.png) | ![knurling](docs/images/knurling.png) | ![blobby](docs/images/blobby.png) | ![weave](docs/images/weave.png) |
