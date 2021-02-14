@@ -69,11 +69,11 @@ from the root folder.
 
 ## Viewing the Mesh
 
-<img width=350 align="right" src="docs/images/meshview.png">
+<img width=250 align="right" src="docs/images/meshview.png">
 
-Find and install a 3D mesh viewer for your platform, such as [MeshLab](https://www.meshlab.net/)
+Find and install a 3D mesh viewer for your platform, such as [MeshLab](https://www.meshlab.net/).
 
-I have developed and use my own cross-platform mesh viewer called [meshview](https://github.com/fogleman/meshview).
+I have developed and use my own cross-platform mesh viewer called [meshview](https://github.com/fogleman/meshview) (see screenshot).
 Installation is easy if you have [Go](https://golang.org/) and [glfw](https://www.glfw.org/) installed:
 
 ```bash
