@@ -16,6 +16,7 @@ def generate(f, name, samples=2**26):
 f = sphere(1) & box(1.5)
 c = cylinder(0.5)
 f -= c.orient(X) | c.orient(Y) | c.orient(Z)
+example = f
 generate(f, 'example')
 
 # sphere(radius=1, center=ORIGIN)
@@ -151,3 +152,19 @@ generate(f, 'repeat')
 # circular_array(other, count, offset)
 f = capped_cylinder(-Z, Z, 0.5).circular_array(8, 4)
 generate(f, 'circular_array')
+
+# blend(a, *bs, k=0.5)
+f = sphere().blend(box())
+generate(f, 'blend')
+
+# dilate(other, r)
+f = example.dilate(0.1)
+generate(f, 'dilate')
+
+# erode(other, r)
+f = example.erode(0.1)
+generate(f, 'erode')
+
+# shell(other, thickness)
+f = sphere().shell(0.05) & plane(-Z)
+generate(f, 'shell')

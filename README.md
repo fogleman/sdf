@@ -585,6 +585,48 @@ f = sphere().repeat(3, (1, 1, 0))
 f = capped_cylinder(-Z, Z, 0.5).circular_array(8, 4)
 ```
 
+## Miscellaneous
+
+### blend
+
+<img width=128 align="right" src="docs/images/blend.png">
+
+`blend(a, *bs, k=0.5)`
+
+```python
+f = sphere().blend(box())
+```
+
+### dilate
+
+<img width=128 align="right" src="docs/images/dilate.png">
+
+`dilate(other, r)`
+
+```python
+f = example.dilate(0.1)
+```
+
+### erode
+
+<img width=128 align="right" src="docs/images/erode.png">
+
+`erode(other, r)`
+
+```python
+f = example.erode(0.1)
+```
+
+### shell
+
+<img width=128 align="right" src="docs/images/shell.png">
+
+`shell(other, thickness)`
+
+```python
+f = sphere().shell(0.05) & plane(-Z)
+```
+
 ## 2D to 3D Operations
 
 ### extrude
@@ -615,9 +657,3 @@ f = capped_cylinder(-Z, Z, 0.5).circular_array(8, 4)
 ### bend_radial
 ### transition_linear
 ### transition_radial
-
-### blend
-### negate
-### dilate
-### erode
-### shell
