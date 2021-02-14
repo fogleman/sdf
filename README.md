@@ -627,6 +627,76 @@ f = example.erode(0.1)
 f = sphere().shell(0.05) & plane(-Z)
 ```
 
+### elongate
+
+<img width=128 align="right" src="docs/images/elongate.png">
+
+`elongate(other, size)`
+
+```python
+f = example.elongate((0.25, 0.5, 0.75))
+```
+
+### twist
+
+<img width=128 align="right" src="docs/images/twist.png">
+
+`twist(other, k)`
+
+```python
+f = box().twist(pi / 2)
+```
+
+### bend
+
+<img width=128 align="right" src="docs/images/bend.png">
+
+`bend(other, k)`
+
+```python
+f = box().bend(1)
+```
+
+### bend_linear
+
+<img width=128 align="right" src="docs/images/bend_linear.png">
+
+`bend_linear(other, p0, p1, v, e=ease.linear)`
+
+```python
+f = capsule(-Z * 2, Z * 2, 0.25).bend_linear(-Z, Z, X, ease.in_out_quad)
+```
+
+### bend_radial
+
+<img width=128 align="right" src="docs/images/bend_radial.png">
+
+`bend_radial(other, r0, r1, dz, e=ease.linear)`
+
+```python
+f = box((5, 5, 0.25)).bend_radial(1, 2, -1, ease.in_out_quad)
+```
+
+### transition_linear
+
+<img width=128 align="right" src="docs/images/transition_linear.png">
+
+`transition_linear(f0, f1, p0=-Z, p1=Z, e=ease.linear)`
+
+```python
+f = box().transition_linear(sphere(), e=ease.in_out_quad)
+```
+
+### transition_radial
+
+<img width=128 align="right" src="docs/images/transition_radial.png">
+
+`transition_radial(f0, f1, r0=0, r1=1, e=ease.linear)`
+
+```python
+f = box().transition_radial(sphere(), e=ease.in_out_quad)
+```
+
 ## 2D to 3D Operations
 
 ### extrude
@@ -647,13 +717,3 @@ f = sphere().shell(0.05) & plane(-Z)
 ### hexagon
 ### rounded_x
 ### polygon
-
-## More
-
-### elongate
-### twist
-### bend
-### bend_linear
-### bend_radial
-### transition_linear
-### transition_radial
