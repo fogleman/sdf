@@ -455,7 +455,7 @@ def bend_radial(other, r0, r1, dz, e=ease.linear):
     return f
 
 @op3
-def transition(f0, f1, p0=-Z, p1=Z, e=ease.linear):
+def transition_linear(f0, f1, p0=-Z, p1=Z, e=ease.linear):
     p0 = np.array(p0)
     p1 = np.array(p1)
     ab = p1 - p0

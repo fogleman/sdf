@@ -613,7 +613,7 @@ f = capped_cylinder(-Z, Z, 0.5).circular_array(8, 4)
 ### bend
 ### bend_linear
 ### bend_radial
-### transition
+### transition_linear
 ### transition_radial
 
 ### blend
