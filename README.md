@@ -201,8 +201,9 @@ def sphere(radius=1, center=ORIGIN):
     return f
 ```
 
-An SDF is simply a function that takes a numpy array of points and returns
-the signed distance for each of those points. They are wrapped with the
+An SDF is simply a function that takes a numpy array of points with shape `(N, 3)`
+for 3D SDFs or shape `(N, 2)` for 2D SDFs and returns the signed distance for each
+of those points as an array of shape `(N, 1)`. They are wrapped with the
 `@sdf3` decorator (or `@sdf2` for 2D SDFs) which make boolean operators work,
 add the `save` method, add the operators like `translate`, etc.
 
