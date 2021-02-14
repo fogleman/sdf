@@ -1,7 +1,7 @@
 from sdf import *
 import os
 
-def generate(f, name, samples=2**26):
+def generate(f, name, samples=2**26, **kwargs):
     os.makedirs('models', exist_ok=True)
     os.makedirs('images', exist_ok=True)
     stl_path = 'models/%s.stl' % name
@@ -9,7 +9,7 @@ def generate(f, name, samples=2**26):
     if os.path.exists(png_path):
         return
     render_cmd = './render %s %s' % (stl_path, png_path)
-    f.save(stl_path, samples=samples)
+    f.save(stl_path, samples=samples, **kwargs)
     os.system(render_cmd)
 
 # example
@@ -168,3 +168,31 @@ generate(f, 'erode')
 # shell(other, thickness)
 f = sphere().shell(0.05) & plane(-Z)
 generate(f, 'shell')
+
+# elongate(other, size)
+f = example.elongate((0.25, 0.5, 0.75))
+generate(f, 'elongate')
+
+# twist(other, k)
+f = box().twist(pi / 2)
+generate(f, 'twist')
+
+# bend(other, k)
+f = box().bend(1)
+generate(f, 'bend')
+
+# bend_linear(other, p0, p1, v, e=ease.linear)
+f = capsule(-Z * 2, Z * 2, 0.25).bend_linear(-Z, Z, X, ease.in_out_quad)
+generate(f, 'bend_linear')
+
+# bend_radial(other, r0, r1, dz, e=ease.linear)
+f = box((5, 5, 0.25)).bend_radial(1, 2, -1, ease.in_out_quad)
+generate(f, 'bend_radial', sparse=False)
+
+# transition_linear(f0, f1, p0=-Z, p1=Z, e=ease.linear)
+f = box().transition_linear(sphere(), e=ease.in_out_quad)
+generate(f, 'transition_linear')
+
+# transition_radial(f0, f1, r0=0, r1=1, e=ease.linear)
+f = box().transition_radial(sphere(), e=ease.in_out_quad)
+generate(f, 'transition_radial')

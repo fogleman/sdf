@@ -450,7 +450,7 @@ def bend_radial(other, r0, r1, dz, e=ease.linear):
         z = p[:,2]
         r = np.hypot(x, y)
         t = np.clip((r - r0) / (r1 - r0), 0, 1)
-        z = z + dz * e(t)
+        z = z - dz * e(t)
         return other(_vec(x, y, z))
     return f
 
