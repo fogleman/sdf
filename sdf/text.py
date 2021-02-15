@@ -13,15 +13,17 @@ def text(name, text, width=None, height=None, texture_point_size=512):
     font = ImageFont.truetype(name, texture_point_size)
 
     # compute texture bounds
-    p = 16
+    p = 0.05
     x0, y0, x1, y1 = font.getbbox(text)
-    w = x1 - x0 + 1 + p * 2
-    h = y1 - y0 + 1 + p * 2
+    px = int((x1 - x0) * p)
+    py = int((y1 - y0) * p)
+    w = x1 - x0 + 1 + px * 2
+    h = y1 - y0 + 1 + py * 2
 
     # render to 1-bit image
     im = Image.new('1', (w, h))
     draw = ImageDraw.Draw(im)
-    draw.text((p - x0, p - y0), text, font=font, fill=255)
+    draw.text((px - x0, py - y0), text, font=font, fill=255)
 
     # convert to numpy array and apply distance transform
     a = np.array(im)
