@@ -267,6 +267,18 @@ Instead of what would otherwise be required:
 f = translate(sphere(1), (1, 2, 3))
 ```
 
+## Remember, it's Python!
+
+<img width=250 align="right" src="docs/images/customizable_box.png">
+
+Remember, this is Python, so it's fully programmable. You can and should split up your
+model into parameterized sub-components, for example. You can use for loops and
+conditionals wherever applicable. The sky is the limit!
+
+See the [customizable box example](examples/customizable_box.py) for some starting ideas.
+
+<br clear="right">
+
 # Function Reference
 
 ## 3D Primitives
