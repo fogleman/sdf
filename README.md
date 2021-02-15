@@ -46,7 +46,9 @@ following the directions below.
 
 - Python 3
 - numpy
+- Pillow
 - scikit-image
+- scipy
 
 ## Installation
 

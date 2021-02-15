@@ -7,7 +7,7 @@ setup(
     author='Michael Fogleman',
     author_email='michael.fogleman@gmail.com',
     packages=['sdf'],
-    install_requires=['numpy', 'scikit-image'],
+    install_requires=['numpy', 'scikit-image', 'scipy', 'Pillow'],
     license='MIT',
     classifiers=(
         'Development Status :: 3 - Alpha',
