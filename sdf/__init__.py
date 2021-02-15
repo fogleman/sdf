@@ -6,6 +6,10 @@ from .d2 import *
 
 from .d3 import *
 
+from .text import (
+    text,
+)
+
 from .mesh import (
     generate,
     save,
