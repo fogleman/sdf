@@ -212,3 +212,8 @@ generate(f, 'revolve')
 # slice(other)
 f = example.translate((0, 0, 0.55)).slice().extrude(0.1)
 generate(f, 'slice')
+
+# text(name, text, width=None, height=None, texture_point_size=512)
+f = rounded_box((7, 2, 0.2), 0.1)
+f -= text('Georgia', 'Hello, World!').extrude(0.2).rotate(pi).translate(0.1 * Z)
+generate(f, 'text')
