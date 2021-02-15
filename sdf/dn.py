@@ -76,7 +76,7 @@ def erode(other, r):
 
 def shell(other, thickness):
     def f(p):
-        return np.abs(other(p)) - thickness
+        return np.abs(other(p)) - thickness / 2
     return f
 
 def repeat(other, spacing, count=None, padding=0):
