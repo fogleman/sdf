@@ -487,6 +487,21 @@ f = sphere() & slab(z0=-0.5, z1=0.5, x0=0)
 f = sphere() - cylinder(0.5)
 ```
 
+## Text
+
+Yes, even text is supported!
+
+![Text](docs/images/text-large.png)
+
+<img width=128 align="right" src="docs/images/text.png">
+
+`text(name, text, width=None, height=None, texture_point_size=512)`
+
+```python
+f = rounded_box((7, 2, 0.2), 0.1)
+f -= text('Georgia', 'Hello, World!').extrude(0.2).rotate(pi).translate(0.1 * Z)
+```
+
 ## Positioning
 
 ### translate
