@@ -17,13 +17,16 @@ def text(name, text, width=None, height=None, texture_point_size=512):
     x0, y0, x1, y1 = font.getbbox(text)
     px = int((x1 - x0) * p)
     py = int((y1 - y0) * p)
-    w = x1 - x0 + 1 + px * 2
-    h = y1 - y0 + 1 + py * 2
+    tw = x1 - x0 + 1 + px * 2
+    th = y1 - y0 + 1 + py * 2
 
     # render to 1-bit image
-    im = Image.new('1', (w, h))
+    im = Image.new('1', (tw, th))
     draw = ImageDraw.Draw(im)
     draw.text((px - x0, py - y0), text, font=font, fill=255)
+
+    # save debug image
+    # im.save('text.png')
 
     # convert to numpy array and apply distance transform
     a = np.array(im)
@@ -40,8 +43,9 @@ def text(name, text, width=None, height=None, texture_point_size=512):
     # im.save('text.png')
 
     # compute world bounds
-    h, w = texture.shape
-    aspect = w / h
+    pw = tw - px * 2
+    ph = th - py * 2
+    aspect = pw / ph
     if width is None and height is None:
         height = 1
     if width is None:
@@ -54,7 +58,7 @@ def text(name, text, width=None, height=None, texture_point_size=512):
     y1 = height / 2
 
     # scale texture distances
-    scale = width / w
+    scale = width / tw
     texture *= scale
 
     # prepare fallback rectangle
@@ -66,11 +70,11 @@ def text(name, text, width=None, height=None, texture_point_size=512):
         u = (x - x0) / (x1 - x0)
         v = (y - y0) / (y1 - y0)
         v = 1 - v
-        i = np.round(u * w).astype(int)
-        j = np.round(v * h).astype(int)
-        d = np.take(texture, j * w + i, mode='clip')
+        i = np.round(u * pw + px).astype(int)
+        j = np.round(v * ph + py).astype(int)
+        d = np.take(texture, j * tw + i, mode='clip')
         q = rectangle(p).reshape(-1)
-        outside = (i < 0) | (i >= w) | (j < 0) | (j >= h)
+        outside = (i < 0) | (i >= tw) | (j < 0) | (j >= th)
         d[outside] = q[outside]
         return d
 
