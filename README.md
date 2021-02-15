@@ -499,8 +499,13 @@ Yes, even text is supported!
 `text(name, text, width=None, height=None, texture_point_size=512)`
 
 ```python
-f = rounded_box((7, 2, 0.2), 0.1)
-f -= text('Georgia', 'Hello, World!').extrude(0.2).rotate(pi).translate(0.1 * Z)
+FONT = 'Arial'
+TEXT = 'Hello, world!'
+
+w, h = measure_text(FONT, TEXT)
+
+f = rounded_box((w + 1, h + 1, 0.2), 0.1)
+f -= text(FONT, TEXT).extrude(1)
 ```
 
 ## Positioning
