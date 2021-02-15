@@ -4,8 +4,19 @@ import numpy as np
 
 from . import d2
 
-# TODO: add text measuring capability
 # TODO: add support for newlines?
+
+def measure_text(name, text, width=None, height=None):
+    font = ImageFont.truetype(name, 96)
+    x0, y0, x1, y1 = font.getbbox(text)
+    aspect = (x1 - x0) / (y1 - y0)
+    if width is None and height is None:
+        height = 1
+    if width is None:
+        width = height * aspect
+    if height is None:
+        height = width / aspect
+    return (width, height)
 
 @d2.sdf2
 def text(name, text, width=None, height=None, texture_point_size=512):
