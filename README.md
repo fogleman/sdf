@@ -784,6 +784,19 @@ f = box().transition_linear(sphere(), e=ease.in_out_quad)
 f = box().transition_radial(sphere(), e=ease.in_out_quad)
 ```
 
+### wrap_around
+
+<img width=128 align="right" src="docs/images/wrap_around.png">
+
+`wrap_around(other, x0, x1, r=None, e=ease.linear)`
+
+```python
+FONT = 'Arial'
+TEXT = ' wrap_around ' * 3
+w, h = measure_text(FONT, TEXT)
+f = text(FONT, TEXT).extrude(0.1).orient(Y).wrap_around(-w / 2, w / 2)
+```
+
 ## 2D to 3D Operations
 
 ### extrude
