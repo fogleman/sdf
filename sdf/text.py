@@ -5,6 +5,7 @@ import numpy as np
 from . import d2
 
 # TODO: add support for newlines?
+# TODO: compute texture_point_size based on mesh resolution
 
 def measure_text(name, text, width=None, height=None):
     font = ImageFont.truetype(name, 96)
