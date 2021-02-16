@@ -25,7 +25,7 @@ def text(name, text, width=None, height=None, texture_point_size=512):
     font = ImageFont.truetype(name, texture_point_size)
 
     # compute texture bounds
-    p = 0.05
+    p = 0.2
     x0, y0, x1, y1 = font.getbbox(text)
     px = int((x1 - x0) * p)
     py = int((y1 - y0) * p)

@@ -478,6 +478,27 @@ def transition_radial(f0, f1, r0=0, r1=1, e=ease.linear):
         return t * d2 + (1 - t) * d1
     return f
 
+@op3
+def wrap_around(other, x0, x1, r=None, e=ease.linear):
+    p0 = X * x0
+    p1 = X * x1
+    v = Y
+    if r is None:
+        r = np.linalg.norm(p1 - p0) / (2 * np.pi)
+    def f(p):
+        x = p[:,0]
+        y = p[:,1]
+        z = p[:,2]
+        d = np.hypot(x, y) - r
+        d = d.reshape((-1, 1))
+        a = np.arctan2(y, x)
+        t = (a + np.pi) / (2 * np.pi)
+        t = e(t).reshape((-1, 1))
+        q = p0 + (p1 - p0) * t + v * d
+        q[:,2] = z
+        return other(q)
+    return f
+
 # 3D => 2D Operations
 
 @op32
