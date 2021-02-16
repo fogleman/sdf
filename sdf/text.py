@@ -83,12 +83,35 @@ def text(name, text, width=None, height=None, texture_point_size=512):
         u = (x - x0) / (x1 - x0)
         v = (y - y0) / (y1 - y0)
         v = 1 - v
-        i = np.round(u * pw + px).astype(int)
-        j = np.round(v * ph + py).astype(int)
-        d = np.take(texture, j * tw + i, mode='clip')
+        i = u * pw + px
+        j = v * ph + py
+        d = bilinear_interpolate(texture, i, j)
         q = rectangle(p).reshape(-1)
         outside = (i < 0) | (i >= tw) | (j < 0) | (j >= th)
         d[outside] = q[outside]
         return d
 
     return f
+
+def bilinear_interpolate(a, x, y):
+    x0 = np.floor(x).astype(int)
+    x1 = x0 + 1
+    y0 = np.floor(y).astype(int)
+    y1 = y0 + 1
+
+    x0 = np.clip(x0, 0, a.shape[1] - 1)
+    x1 = np.clip(x1, 0, a.shape[1] - 1)
+    y0 = np.clip(y0, 0, a.shape[0] - 1)
+    y1 = np.clip(y1, 0, a.shape[0] - 1)
+
+    pa = a[y0, x0]
+    pb = a[y1, x0]
+    pc = a[y0, x1]
+    pd = a[y1, x1]
+
+    wa = (x1 - x) * (y1 - y)
+    wb = (x1 - x) * (y - y0)
+    wc = (x - x0) * (y1 - y)
+    wd = (x - x0) * (y - y0)
+
+    return wa * pa + wb * pb + wc * pc + wd * pd
