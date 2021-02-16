@@ -217,3 +217,10 @@ generate(f, 'slice')
 f = rounded_box((7, 2, 0.2), 0.1)
 f -= text('Georgia', 'Hello, World!').extrude(0.2).rotate(pi).translate(0.1 * Z)
 generate(f, 'text')
+
+# wrap_around(other, x0, x1, r=None, e=ease.linear)
+FONT = 'Arial'
+TEXT = ' wrap_around ' * 3
+w, h = measure_text(FONT, TEXT)
+f = text(FONT, TEXT).extrude(0.1).orient(Y).wrap_around(-w / 2, w / 2)
+generate(f, 'wrap_around')
