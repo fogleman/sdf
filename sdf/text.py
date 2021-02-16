@@ -74,7 +74,8 @@ def text(name, text, width=None, height=None, texture_point_size=512):
     texture *= scale
 
     # prepare fallback rectangle
-    rectangle = d2.rectangle((width / 2, height / 2)) # TODO: is this ok?
+    # TODO: reduce size based on mesh resolution instead of dividing by 2
+    rectangle = d2.rectangle((width / 2, height / 2))
 
     def f(p):
         x = p[:,0]
