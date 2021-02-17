@@ -85,7 +85,7 @@ def text(name, text, width=None, height=None, texture_point_size=512):
         v = 1 - v
         i = u * pw + px
         j = v * ph + py
-        d = bilinear_interpolate(texture, i, j)
+        d = _bilinear_interpolate(texture, i, j)
         q = rectangle(p).reshape(-1)
         outside = (i < 0) | (i >= tw-1) | (j < 0) | (j >= th-1)
         d[outside] = q[outside]
@@ -93,7 +93,7 @@ def text(name, text, width=None, height=None, texture_point_size=512):
 
     return f
 
-def bilinear_interpolate(a, x, y):
+def _bilinear_interpolate(a, x, y):
     x0 = np.floor(x).astype(int)
     x1 = x0 + 1
     y0 = np.floor(y).astype(int)
