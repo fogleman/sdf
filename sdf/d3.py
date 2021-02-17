@@ -90,12 +90,26 @@ _max = np.maximum
 
 @sdf3
 def sphere(radius=1, center=ORIGIN):
+    """
+    Create a 3D sphere primitive with a given radius and centered on the given point
+    :param radius: Radius of the sphere
+    :param center: Center point of the sphere
+    :return: A 3D sphere primitive with the given parameters
+    """
     def f(p):
         return _length(p - center) - radius
     return f
 
 @sdf3
 def plane(normal=UP, point=ORIGIN):
+    """
+    Create an non-meshable plane primitive centered on the given point, oriented relative to the given normal direction.
+    This primitive will not be generated into a visible 3D model when exported, but can be used to modify other SDFs
+
+    :param normal: Normal direction of the plane
+    :param center: Center point of the plane
+    :return: A non-meshable infinite plane primitive with the given parameters
+    """
     normal = _normalize(normal)
     def f(p):
         return np.dot(point - p, normal)
@@ -103,6 +117,19 @@ def plane(normal=UP, point=ORIGIN):
 
 @sdf3
 def slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None, k=None):
+    """
+    Create an non-meshable slab primitive. It extends out to infinity on any undefined planes. It's meant to be intersected with other shapes to cut them.
+    This primitive will not be generated into a visible 3D model when exported, but can be used to modify other SDFs
+
+    :param x0: x position of a plane oriented normal to the X axis
+    :param y0: y position of a plane oriented relative to the Y axis
+    :param z0: z position of a plane oriented normal to the Z axis
+    :param x1: x position of a plane oriented normal to the -X axis
+    :param y1: y position of a plane oriented normal to the -Y axis
+    :param z1: z position of a plane oriented normal to the -Z axis
+    :param k: 
+    :return: A non-meshable slab primitive with the given parameters
+    """
     fs = []
     if x0 is not None:
         fs.append(plane(X, (x0, 0, 0)))
@@ -120,6 +147,17 @@ def slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None, k=None):
 
 @sdf3
 def box(size=1, center=ORIGIN, a=None, b=None):
+    """
+    Create a box primitive. Passing a single value as 'size' will result in a cube. 
+    Passing an (x, y, z) point as 'a' and 'b' will override 'size' and instead return an
+    Axis Aligned Bounding Box
+
+    :param size: The lengths of each side of the box.
+    :param center: Center point of the box
+    :param a: Corner point of AABB
+    :param b: Opposing corner point of AABB
+    :return: A 3D box/cube with the given parameters
+    """
     if a is not None and b is not None:
         a = np.array(a)
         b = np.array(b)
@@ -132,8 +170,16 @@ def box(size=1, center=ORIGIN, a=None, b=None):
         return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0)
     return f
 
+
 @sdf3
 def rounded_box(size, radius):
+    """
+    Create a rounded box primitive. Passing a single value as the size will result in a cube.
+
+    :param size: The lengths of each side of the box.
+    :param radius: Center point of the box
+    :return: A 3D box/cube with the given parameters
+    """
     size = np.array(size)
     def f(p):
         q = np.abs(p) - size / 2 + radius
@@ -142,6 +188,14 @@ def rounded_box(size, radius):
 
 @sdf3
 def wireframe_box(size, thickness):
+    """
+    Create a wireframe box primitive. Passing a single value as 'size' will result in a cube. 
+    Axis Aligned Bounding Box
+
+    :param size: The lengths of each side of the box (x, y, z)
+    :param thickness: Thickness of the wires making up the box
+    :return: A 3D wirefram box/cube with the given parameters
+    """
     size = np.array(size)
     def g(a, b, c):
         return _length(_max(_vec(a, b, c), 0)) + _min(_max(a, _max(b, c)), 0)
@@ -155,6 +209,13 @@ def wireframe_box(size, thickness):
 
 @sdf3
 def torus(r1, r2):
+    """
+    Create a ring torus primitive. It has an arc of radius 'r2' at a distance r1 from the origin. 'r1' cannot equal 0.
+
+    :param r1: Radius of the toroidal path
+    :param r2: Radius of the poloidal path
+    :return: A 3D ring torus with the given parameters
+    """
     def f(p):
         xy = p[:,[0,1]]
         z = p[:,2]
@@ -165,6 +226,15 @@ def torus(r1, r2):
 
 @sdf3
 def capsule(a, b, radius):
+    """
+    Create a 3D capsule primitive. The capsule volume will surround a line from 'a' to 'b' with a radius of 'radius'.
+    A capsule from (0, 0, 0) to (1, 0, 0) with a radius of .5 will be a total of 2 units in length
+
+    :param a: First point of the capsule
+    :param b: Second point of the capsule
+    :param radius: Radius of the capsule
+    :return: A 3D capsule with the given parameters
+    """
     a = np.array(a)
     b = np.array(b)
     def f(p):
@@ -176,12 +246,28 @@ def capsule(a, b, radius):
 
 @sdf3
 def cylinder(radius):
+    """
+    Create a non-meshable cylinder primitive of infinite height.
+    This primitive will not be generated into a visible 3D model when exported, but can be used to modify other SDFs
+
+    :param radius: The radius of the cylinder
+    :return: A non-meshable cylinder of infinite height
+    """
     def f(p):
         return _length(p[:,[0,1]]) - radius;
     return f
 
 @sdf3
 def capped_cylinder(a, b, radius):
+    """
+    Create a 3D cylinder primitive. The cylinder volume will surround a line from 'a' to 'b' with a radius of 'radius'.
+    A capsule from (0, 0, 0) to (, 0, 1) with a radius of .5 will be a total of 1 unit in length
+
+    :param a: First point of the cylinder
+    :param b: Second point of the cylinder
+    :param radius: Radius of the cylinder
+    :return: A 3D cylinder with the given parameters
+    """
     a = np.array(a)
     b = np.array(b)
     def f(p):
@@ -204,6 +290,14 @@ def capped_cylinder(a, b, radius):
 
 @sdf3
 def rounded_cylinder(ra, rb, h):
+    """
+    Create a 3D rounded cylinder primitive, centered at (0, 0, 0)
+
+    :param ra: Radius of the cylinder
+    :param rb: Radius of the cylinder fillet
+    :param h: Height of the cylinder
+    :return: A 3D rounded cylinder with the given parameters
+    """
     def f(p):
         d = _vec(
             _length(p[:,[0,1]]) - ra + rb,
@@ -215,6 +309,15 @@ def rounded_cylinder(ra, rb, h):
 
 @sdf3
 def capped_cone(a, b, ra, rb):
+    """
+    Create a 3D capped cone primitive with flat, circular tips.
+
+    :param a: First point of the cone
+    :param b: Second point of the cone
+    :param ra: Radius of circular cone tip at Point A
+    :param rb: Radius of circular cone tip at Point B
+    :return: A 3D capped cone with the given parameters
+    """
     a = np.array(a)
     b = np.array(b)
     def f(p):
@@ -237,6 +340,15 @@ def capped_cone(a, b, ra, rb):
 
 @sdf3
 def rounded_cone(r1, r2, h):
+    """
+    Create a 3D rounded cone primitive with spherical tips
+
+    :param a: First point of the cone
+    :param b: Second point of the cone
+    :param ra: Radius of spherical cone tip at Point A
+    :param rb: Radius of spherical cone tip at Point B
+    :return: A 3D rounded cone with the given parameters
+    """
     def f(p):
         q = _vec(_length(p[:,[0,1]]), p[:,2])
         b = (r1 - r2) / h
@@ -250,6 +362,12 @@ def rounded_cone(r1, r2, h):
 
 @sdf3
 def ellipsoid(size):
+    """
+    Create a 3D ellipsoid primitive
+
+    :param size: An array of (X,Y,Z) describing the half-size of each axis. Can also be a single number, resulting in a sphere.
+    :return: A 3D ellipsoid with the given parameters
+    """
     size = np.array(size)
     def f(p):
         k0 = _length(p / size)
@@ -259,6 +377,12 @@ def ellipsoid(size):
 
 @sdf3
 def pyramid(h):
+    """
+    Create a 3D pyramid primitive with a base length of 1 unit and height 'h'
+
+    :param h: Height of the pyramid
+    :return: A 3D pyramid with the given parameters
+    """
     def f(p):
         a = np.abs(p[:,[0,1]]) - 0.5
         w = a[:,1] > a[:,0]
@@ -284,6 +408,12 @@ def pyramid(h):
 
 @sdf3
 def tetrahedron(r):
+    """
+    Create a 3D tetrahedron primitive
+
+    :param r: Unused (TODO: ?)
+    :return: A 3D tetrahedron with the given parameters
+    """
     def f(p):
         x = p[:,0]
         y = p[:,1]
@@ -293,12 +423,24 @@ def tetrahedron(r):
 
 @sdf3
 def octahedron(r):
+    """
+    Create a 3D octahedron primitive
+
+    :param r: Radius of the primitive
+    :return: A 3D octahedron with the given parameters
+    """
     def f(p):
         return (np.sum(np.abs(p), axis=1) - r) * np.tan(np.radians(30))
     return f
 
 @sdf3
 def dodecahedron(r):
+    """
+    Create a 3D dodecahedron primitive
+
+    :param r: Radius of the primitive
+    :return: A 3D dodecahedron with the given parameters
+    """
     x, y, z = _normalize(((1 + np.sqrt(5)) / 2, 1, 0))
     def f(p):
         p = np.abs(p / r)
@@ -311,6 +453,12 @@ def dodecahedron(r):
 
 @sdf3
 def icosahedron(r):
+    """
+    Create a 3D icosahedron primitive
+
+    :param r: Radius of the primitive
+    :return: A 3D icosahedron with the given parameters
+    """
     x, y, z = _normalize(((np.sqrt(5) + 3) / 2, 1, 0))
     w = np.sqrt(3) / 3
     def f(p):
