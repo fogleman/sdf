@@ -311,6 +311,7 @@ def dodecahedron(r):
 
 @sdf3
 def icosahedron(r):
+    r *= 0.8506507174597755
     x, y, z = _normalize(((np.sqrt(5) + 3) / 2, 1, 0))
     w = np.sqrt(3) / 3
     def f(p):
