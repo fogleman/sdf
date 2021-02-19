@@ -8,6 +8,7 @@ from .d3 import *
 
 from .text import (
     measure_text,
+    image,
     text,
 )
 

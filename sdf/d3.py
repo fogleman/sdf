@@ -376,7 +376,7 @@ def orient(other, axis):
     return rotate_to(other, UP, axis)
 
 @op3
-def circular_array(other, count, offset):
+def circular_array(other, count, offset=0):
     other = other.translate(X * offset)
     da = 2 * np.pi / count
     def f(p):
@@ -483,7 +483,7 @@ def transition_radial(f0, f1, r0=0, r1=1, e=ease.linear):
 def wrap_around(other, x0, x1, r=None, e=ease.linear):
     p0 = X * x0
     p1 = X * x1
-    v = Y
+    v = -Y
     if r is None:
         r = np.linalg.norm(p1 - p0) / (2 * np.pi)
     def f(p):

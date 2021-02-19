@@ -7,6 +7,8 @@ from . import d2
 # TODO: add support for newlines?
 # TODO: compute texture_point_size based on mesh resolution
 
+PIXELS = 2 ** 22
+
 def measure_text(name, text, width=None, height=None):
     font = ImageFont.truetype(name, 96)
     x0, y0, x1, y1 = font.getbbox(text)
@@ -20,7 +22,10 @@ def measure_text(name, text, width=None, height=None):
     return (width, height)
 
 @d2.sdf2
-def text(name, text, width=None, height=None, texture_point_size=512):
+def text(
+        name, text, width=None, height=None,
+        pixels=PIXELS, texture_point_size=512):
+
     # load font file
     font = ImageFont.truetype(name, texture_point_size)
 
@@ -32,15 +37,22 @@ def text(name, text, width=None, height=None, texture_point_size=512):
     tw = x1 - x0 + 1 + px * 2
     th = y1 - y0 + 1 + py * 2
 
-    # render to 1-bit image
-    im = Image.new('1', (tw, th))
+    # render text to image
+    im = Image.new('L', (tw, th))
     draw = ImageDraw.Draw(im)
     draw.text((px - x0, py - y0), text, font=font, fill=255)
+
+    # resize image
+    factor = (pixels / (tw * th)) ** 0.5
+    tw, th = int(round(tw * factor)), int(round(th * factor))
+    px, py = int(round(px * factor)), int(round(py * factor))
+    im = im.resize((tw, th))
 
     # save debug image
     # im.save('text.png')
 
     # convert to numpy array and apply distance transform
+    im = im.convert('1')
     a = np.array(im)
     inside = -nd.distance_transform_edt(a)
     outside = nd.distance_transform_edt(~a)
@@ -53,6 +65,75 @@ def text(name, text, width=None, height=None, texture_point_size=512):
     # texture = (texture + x) / (2 * x) * 255
     # im = Image.fromarray(texture.astype('uint8'))
     # im.save('text.png')
+
+    # compute world bounds
+    pw = tw - px * 2
+    ph = th - py * 2
+    aspect = pw / ph
+    if width is None and height is None:
+        height = 1
+    if width is None:
+        width = height * aspect
+    if height is None:
+        height = width / aspect
+    x0 = -width / 2
+    y0 = -height / 2
+    x1 = width / 2
+    y1 = height / 2
+
+    # scale texture distances
+    scale = width / tw
+    texture *= scale
+
+    # prepare fallback rectangle
+    # TODO: reduce size based on mesh resolution instead of dividing by 2
+    rectangle = d2.rectangle((width / 2, height / 2))
+
+    def f(p):
+        x = p[:,0]
+        y = p[:,1]
+        u = (x - x0) / (x1 - x0)
+        v = (y - y0) / (y1 - y0)
+        v = 1 - v
+        i = u * pw + px
+        j = v * ph + py
+        d = _bilinear_interpolate(texture, i, j)
+        q = rectangle(p).reshape(-1)
+        outside = (i < 0) | (i >= tw-1) | (j < 0) | (j >= th-1)
+        d[outside] = q[outside]
+        return d
+
+    return f
+
+@d2.sdf2
+def image(path, width=None, height=None, pixels=PIXELS):
+    # load image
+    im = Image.open(path).convert('L')
+
+    # resize image
+    tw, th = im.size
+    factor = (pixels / (tw * th)) ** 0.5
+    tw, th = int(round(tw * factor)), int(round(th * factor))
+    im = im.resize((tw, th))
+
+    # compute texture bounds
+    px = py = 0
+    tw, th = im.size
+
+    # convert to numpy array and apply distance transform
+    im = im.convert('1')
+    a = np.array(im)
+    inside = -nd.distance_transform_edt(a)
+    outside = nd.distance_transform_edt(~a)
+    texture = np.zeros(a.shape)
+    texture[a] = inside[a]
+    texture[~a] = outside[~a]
+
+    # save debug image
+    # lo, hi = texture.min(), texture.max()
+    # a = (texture - lo) / (hi - lo) * 255
+    # im = Image.fromarray(a.astype('uint8'))
+    # im.save('image.png')
 
     # compute world bounds
     pw = tw - px * 2
