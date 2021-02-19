@@ -5,7 +5,7 @@ import numpy as np
 from . import d2
 
 # TODO: add support for newlines?
-# TODO: compute texture_point_size based on mesh resolution
+# TODO: reduce repetitive code between `text` and `image`
 
 PIXELS = 2 ** 22
 
@@ -22,12 +22,10 @@ def measure_text(name, text, width=None, height=None):
     return (width, height)
 
 @d2.sdf2
-def text(
-        name, text, width=None, height=None,
-        pixels=PIXELS, texture_point_size=512):
+def text(font_name, text, width=None, height=None, pixels=PIXELS, points=512):
 
     # load font file
-    font = ImageFont.truetype(name, texture_point_size)
+    font = ImageFont.truetype(font_name, points)
 
     # compute texture bounds
     p = 0.2
@@ -42,11 +40,12 @@ def text(
     draw = ImageDraw.Draw(im)
     draw.text((px - x0, py - y0), text, font=font, fill=255)
 
-    # resize image
+    # downscale image if necessary
     factor = (pixels / (tw * th)) ** 0.5
-    tw, th = int(round(tw * factor)), int(round(th * factor))
-    px, py = int(round(px * factor)), int(round(py * factor))
-    im = im.resize((tw, th))
+    if factor < 1:
+        tw, th = int(round(tw * factor)), int(round(th * factor))
+        px, py = int(round(px * factor)), int(round(py * factor))
+        im = im.resize((tw, th))
 
     # save debug image
     # im.save('text.png')
@@ -61,9 +60,9 @@ def text(
     texture[~a] = outside[~a]
 
     # save debug image
-    # x = max(abs(texture.min()), abs(texture.max()))
-    # texture = (texture + x) / (2 * x) * 255
-    # im = Image.fromarray(texture.astype('uint8'))
+    # lo, hi = texture.min(), texture.max()
+    # a = (texture - lo) / (hi - lo) * 255
+    # im = Image.fromarray(a.astype('uint8'))
     # im.save('text.png')
 
     # compute world bounds
@@ -106,19 +105,26 @@ def text(
     return f
 
 @d2.sdf2
-def image(path, width=None, height=None, pixels=PIXELS):
-    # load image
-    im = Image.open(path).convert('L')
+def image(thing, width=None, height=None, pixels=PIXELS):
+    # load input image
+    if isinstance(thing, str):
+        im = Image.open(thing)
+    elif isinstance(thing, (np.ndarray, np.generic)):
+        im = Image.fromarray(thing)
+    else:
+        im = Image.fromarray(np.array(thing))
 
-    # resize image
-    tw, th = im.size
-    factor = (pixels / (tw * th)) ** 0.5
-    tw, th = int(round(tw * factor)), int(round(th * factor))
-    im = im.resize((tw, th))
-
-    # compute texture bounds
+    # convert image to grayscale
+    im = im.convert('L')
     px = py = 0
     tw, th = im.size
+
+    # downscale image if necessary
+    factor = (pixels / (tw * th)) ** 0.5
+    if factor < 1:
+        tw, th = int(round(tw * factor)), int(round(th * factor))
+        px, py = int(round(px * factor)), int(round(py * factor))
+        im = im.resize((tw, th))
 
     # convert to numpy array and apply distance transform
     im = im.convert('1')
