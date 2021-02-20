@@ -72,8 +72,9 @@ def _sdf(width, height, pixels, px, py, im):
     texture[~a] = outside[~a]
 
     # save debug image
-    # lo, hi = texture.min(), texture.max()
-    # a = (texture - lo) / (hi - lo) * 255
+    # a = np.abs(texture)
+    # lo, hi = a.min(), a.max()
+    # a = (a - lo) / (hi - lo) * 255
     # im = Image.fromarray(a.astype('uint8'))
     # im.save('debug.png')
 
