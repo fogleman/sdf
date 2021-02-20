@@ -23,7 +23,6 @@ def measure_text(name, text, width=None, height=None):
 
 @d2.sdf2
 def text(font_name, text, width=None, height=None, pixels=PIXELS, points=512):
-
     # load font file
     font = ImageFont.truetype(font_name, points)
 
@@ -40,69 +39,7 @@ def text(font_name, text, width=None, height=None, pixels=PIXELS, points=512):
     draw = ImageDraw.Draw(im)
     draw.text((px - x0, py - y0), text, font=font, fill=255)
 
-    # downscale image if necessary
-    factor = (pixels / (tw * th)) ** 0.5
-    if factor < 1:
-        tw, th = int(round(tw * factor)), int(round(th * factor))
-        px, py = int(round(px * factor)), int(round(py * factor))
-        im = im.resize((tw, th))
-
-    # save debug image
-    # im.save('text.png')
-
-    # convert to numpy array and apply distance transform
-    im = im.convert('1')
-    a = np.array(im)
-    inside = -nd.distance_transform_edt(a)
-    outside = nd.distance_transform_edt(~a)
-    texture = np.zeros(a.shape)
-    texture[a] = inside[a]
-    texture[~a] = outside[~a]
-
-    # save debug image
-    # lo, hi = texture.min(), texture.max()
-    # a = (texture - lo) / (hi - lo) * 255
-    # im = Image.fromarray(a.astype('uint8'))
-    # im.save('text.png')
-
-    # compute world bounds
-    pw = tw - px * 2
-    ph = th - py * 2
-    aspect = pw / ph
-    if width is None and height is None:
-        height = 1
-    if width is None:
-        width = height * aspect
-    if height is None:
-        height = width / aspect
-    x0 = -width / 2
-    y0 = -height / 2
-    x1 = width / 2
-    y1 = height / 2
-
-    # scale texture distances
-    scale = width / tw
-    texture *= scale
-
-    # prepare fallback rectangle
-    # TODO: reduce size based on mesh resolution instead of dividing by 2
-    rectangle = d2.rectangle((width / 2, height / 2))
-
-    def f(p):
-        x = p[:,0]
-        y = p[:,1]
-        u = (x - x0) / (x1 - x0)
-        v = (y - y0) / (y1 - y0)
-        v = 1 - v
-        i = u * pw + px
-        j = v * ph + py
-        d = _bilinear_interpolate(texture, i, j)
-        q = rectangle(p).reshape(-1)
-        outside = (i < 0) | (i >= tw-1) | (j < 0) | (j >= th-1)
-        d[outside] = q[outside]
-        return d
-
-    return f
+    return _sdf(width, height, pixels, px, py, im)
 
 @d2.sdf2
 def image(thing, width=None, height=None, pixels=PIXELS):
@@ -113,10 +50,10 @@ def image(thing, width=None, height=None, pixels=PIXELS):
         im = Image.fromarray(thing)
     else:
         im = Image.fromarray(np.array(thing))
-
-    # convert image to grayscale
     im = im.convert('L')
-    px = py = 0
+    return _sdf(width, height, pixels, 0, 0, im)
+
+def _sdf(width, height, pixels, px, py, im):
     tw, th = im.size
 
     # downscale image if necessary
@@ -139,7 +76,7 @@ def image(thing, width=None, height=None, pixels=PIXELS):
     # lo, hi = texture.min(), texture.max()
     # a = (texture - lo) / (hi - lo) * 255
     # im = Image.fromarray(a.astype('uint8'))
-    # im.save('image.png')
+    # im.save('debug.png')
 
     # compute world bounds
     pw = tw - px * 2
