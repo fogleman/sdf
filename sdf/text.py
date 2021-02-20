@@ -5,7 +5,6 @@ import numpy as np
 from . import d2
 
 # TODO: add support for newlines?
-# TODO: reduce repetitive code between `text` and `image`
 
 PIXELS = 2 ** 22
 
