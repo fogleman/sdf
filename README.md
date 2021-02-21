@@ -45,6 +45,7 @@ Note that the dependencies will be automatically installed by setup.py when
 following the directions below.
 
 - Python 3
+- matplotlib
 - meshio
 - numpy
 - Pillow

@@ -8,6 +8,7 @@ setup(
     author_email='michael.fogleman@gmail.com',
     packages=['sdf'],
     install_requires=[
+        'matplotlib',
         'meshio',
         'numpy',
         'scikit-image',
