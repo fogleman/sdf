@@ -150,7 +150,17 @@ def generate(
 
 def save(path, *args, **kwargs):
     points = generate(*args, **kwargs)
-    stl.write_binary_stl(path, points)
+    if path.lower().endswith('.stl'):
+        stl.write_binary_stl(path, points)
+    else:
+        mesh = _mesh(points)
+        mesh.write(path)
+
+def _mesh(points):
+    import meshio
+    points, cells = np.unique(points, axis=0, return_inverse=True)
+    cells = [('triangle', cells.reshape((-1, 3)))]
+    return meshio.Mesh(points, cells)
 
 def _debug_triangles(X, Y, Z):
     x0, x1 = X[0], X[-1]
