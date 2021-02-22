@@ -504,7 +504,7 @@ Yes, even text is supported!
 
 <img width=128 align="right" src="docs/images/text.png">
 
-`text(name, text, width=None, height=None, texture_point_size=512)`
+`text(font_name, text, width=None, height=None, pixels=PIXELS, points=512)`
 
 ```python
 FONT = 'Arial'
@@ -520,6 +520,23 @@ Note: [PIL.ImageFont](https://pillow.readthedocs.io/en/stable/reference/ImageFon
 which is used to load fonts, does not search for the font by name on all operating systems.
 For example, on Ubuntu the full path to the font has to be provided.
 (e.g. `/usr/share/fonts/truetype/freefont/FreeMono.ttf`)
+
+## Images
+
+Image masks can be extruded and incorporated into your 3D model.
+
+![Image Mask](docs/images/butterfly.png)
+
+`image(path_or_array, width=None, height=None, pixels=PIXELS)`
+
+```python
+IMAGE = 'examples/butterfly.png'
+
+w, h = measure_image(IMAGE)
+
+f = rounded_box((w * 1.1, h * 1.1, 0.1), 0.05)
+f |= image(IMAGE).extrude(1) & slab(z0=0, z1=0.075)
+```
 
 ## Positioning
 
