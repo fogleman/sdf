@@ -502,8 +502,6 @@ Yes, even text is supported!
 
 ![Text](docs/images/text-large.png)
 
-<img width=128 align="right" src="docs/images/text.png">
-
 `text(font_name, text, width=None, height=None, pixels=PIXELS, points=512)`
 
 ```python
