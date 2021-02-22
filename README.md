@@ -542,6 +542,8 @@ w, h = measure_text(FONT, TEXT)
 f = rounded_box((w + 1, h + 1, 0.2), 0.1)
 f -= text(FONT, TEXT).extrude(1)
 ```
+Note: PIL ImageFont, which is used to load fonts, is not searching for the font by name on all operating systems.
+E.g. on Ubuntu the full path to the font has to be provided. (`/usr/share/fonts/truetype/freefont/FreeMono.ttf` or `/usr/share/fonts/truetype/roboto/unhinted/RobotoCondensed-Regular.ttf` etc)
 
 ## Positioning
 
