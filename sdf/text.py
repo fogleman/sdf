@@ -8,10 +8,29 @@ from . import d2
 
 PIXELS = 2 ** 22
 
+def _load_image(thing):
+    if isinstance(thing, str):
+        return Image.open(thing)
+    elif isinstance(thing, (np.ndarray, np.generic)):
+        return Image.fromarray(thing)
+    return Image.fromarray(np.array(thing))
+
 def measure_text(name, text, width=None, height=None):
     font = ImageFont.truetype(name, 96)
     x0, y0, x1, y1 = font.getbbox(text)
     aspect = (x1 - x0) / (y1 - y0)
+    if width is None and height is None:
+        height = 1
+    if width is None:
+        width = height * aspect
+    if height is None:
+        height = width / aspect
+    return (width, height)
+
+def measure_image(thing, width=None, height=None):
+    im = _load_image(thing)
+    w, h = im.size
+    aspect = w / h
     if width is None and height is None:
         height = 1
     if width is None:
@@ -42,14 +61,7 @@ def text(font_name, text, width=None, height=None, pixels=PIXELS, points=512):
 
 @d2.sdf2
 def image(thing, width=None, height=None, pixels=PIXELS):
-    # load input image
-    if isinstance(thing, str):
-        im = Image.open(thing)
-    elif isinstance(thing, (np.ndarray, np.generic)):
-        im = Image.fromarray(thing)
-    else:
-        im = Image.fromarray(np.array(thing))
-    im = im.convert('L')
+    im = _load_image(thing).convert('L')
     return _sdf(width, height, pixels, 0, 0, im)
 
 def _sdf(width, height, pixels, px, py, im):
