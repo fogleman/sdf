@@ -1,7 +1,7 @@
 from sdf import *
 
 def section(z0, z1, d0, d1, e=ease.linear):
-    f = cylinder(d0/2).transition(
+    f = cylinder(d0/2).transition_linear(
         cylinder(d1/2), Z * z0, Z * z1, e)
     return f & slab(z0=z0, z1=z1)
 
