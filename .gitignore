@@ -1,3 +1,5 @@
 /sdf.egg-info
 *.stl
+__pycache__
+*.pyc
 
