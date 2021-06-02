@@ -201,6 +201,11 @@ generate(f, 'transition_radial')
 f = hexagon(1).extrude(1)
 generate(f, 'extrude')
 
+# circular_extrude(other, h)
+f = hexagon(1).circular_extrude()
+generate(f, 'circular_extrude')
+
+# extrude_to(a, b, h, e=ease.linear)
 # extrude_to(a, b, h, e=ease.linear)
 f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)
 generate(f, 'extrude_to')

@@ -842,6 +842,16 @@ f = text(FONT, TEXT).extrude(0.1).orient(Y).wrap_around(-w / 2, w / 2)
 f = hexagon(1).extrude(1)
 ```
 
+### circular_extrude
+
+<img width=128 align="right" src="docs/images/circular_extrude.png">
+
+`circular_extrude(other)`
+
+```python
+f = hexagon(1).circular_extrude()
+```
+
 ### extrude_to
 
 <img width=128 align="right" src="docs/images/extrude_to.png">

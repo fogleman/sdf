@@ -255,6 +255,13 @@ def extrude(other, h):
     return f
 
 @op23
+def circular_extrude(other):
+    def f(p):
+        r = np.linalg.norm(p[:,[0,1]], axis=1)
+        return other(np.column_stack((r,p[:,2])))
+    return f
+
+@op23
 def extrude_to(a, b, h, e=ease.linear):
     def f(p):
         d1 = a(p[:,[0,1]])
