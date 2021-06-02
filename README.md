@@ -41,6 +41,7 @@ Have a cool example? Submit a PR!
 
 More examples!
 | ![pawn](docs/images/pawn.png) |
+| --- |
 | [pawn.py](examples/pawn.py) |
 
 ## Requirements
