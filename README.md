@@ -39,6 +39,10 @@ Have a cool example? Submit a PR!
 | ![gearlike](docs/images/gearlike.png) | ![knurling](docs/images/knurling.png) | ![blobby](docs/images/blobby.png) | ![weave](docs/images/weave.png) |
 | ![gearlike](docs/images/gearlike.jpg) | ![knurling](docs/images/knurling.jpg) | ![blobby](docs/images/blobby.jpg) | ![weave](docs/images/weave.jpg) |
 
+More examples!
+| ![pawn](docs/images/pawn.png) |
+| [pawn.py](examples/pawn.py) |
+
 ## Requirements
 
 Note that the dependencies will be automatically installed by setup.py when
