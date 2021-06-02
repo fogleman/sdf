@@ -24,8 +24,8 @@ f = sphere(1)
 generate(f, 'sphere')
 
 # box(size=1, center=ORIGIN, a=None, b=None)
-f = box(1)
-generate(f, 'box')
+#f = box(1)
+#generate(f, 'cube')
 
 f = box((1, 2, 3))
 generate(f, 'box2')
@@ -202,7 +202,7 @@ f = hexagon(1).extrude(1)
 generate(f, 'extrude')
 
 # circular_extrude(other, h)
-f = hexagon(1).circular_extrude()
+f = hexagon(1).translate([3,0]).circular_extrude()
 generate(f, 'circular_extrude')
 
 # extrude_to(a, b, h, e=ease.linear)

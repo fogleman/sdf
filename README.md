@@ -318,7 +318,7 @@ f = sphere(1, (1, 2, 3)) # translated sphere
 `box(size=1, center=ORIGIN, a=None, b=None)`
 
 ```python
-f = box(1) # all side lengths = 1
+f = box(1) # all side lengths = 1, like a cube
 f = box((1, 2, 3)) # different side lengths
 f = box(a=(-1, -1, -1), b=(3, 4, 5)) # specified by bounds
 ```
@@ -849,7 +849,7 @@ f = hexagon(1).extrude(1)
 `circular_extrude(other)`
 
 ```python
-f = hexagon(1).circular_extrude()
+f = hexagon(1).translate([3,0]).circular_extrude()
 ```
 
 ### extrude_to
