@@ -71,6 +71,41 @@ def _vec(*arrs):
 _min = np.minimum
 _max = np.maximum
 
+def _wn(pnts, poly):
+    # Winding number algorithm
+    #print("points: {}".format(pnts.shape))
+    x0 = poly[-1,0]  # polygon `from` coordinates
+    y0 = poly[-1,1]  # polygon `from` coordinates
+    x1 = poly[0,0]   # polygon `to` coordinates
+    y1 = poly[0,1]   # polygon `to` coordinates
+    x = pnts[:,0]         # point coordinates
+    y = pnts[:,1]         # point coordinates
+    y_y0 = y - y0
+    x_x0 = x - x0
+    diff_ = (x1 - x0) * y_y0 - (y1 - y0) * x_x0  # diff => einsum in original
+    chk1 = (y_y0 >= 0.0)
+    chk2 = np.less(y[:, None], y1)  # pnts[:, 1][:, None], poly[1:, 1])
+    chk3 = np.sign(diff_).astype(np.int)
+    pos = (chk1 & chk2 & (chk3 > 0)).sum(axis=1, dtype=int)
+    neg = (~chk1 & ~chk2 & (chk3 < 0)).sum(axis=1, dtype=int)
+    #print("wn size: {} {}".format(pos.shape,neg.shape))
+    return pos - neg
+    #print("wn : {}".format(wn))
+    #out_ = pnts[np.nonzero(wn)]
+    #if return_winding:
+    #    return out_, wn
+    #return out_
+
+#def _mindist(a, b):
+#    outside = (a > 0) || (b > 0)
+#    ret = np.array(len(a))
+#    for out, i in enumerate(outside):
+#      if (out):
+#        ret[i] = min(max(a[i], 0), max(b[i], 0))
+#      else:
+#        ret[i] = max(a[i], b[i])
+#    return ret
+
 # Primitives
 
 @sdf2
@@ -194,6 +229,31 @@ def polygon(points):
         return s * np.sqrt(d)
     return f
 
+@sdf2
+def filled_polygon(points):
+    wn_points = np.array(points)
+    points = [np.array(p) for p in points]
+    print("points: {}".format(wn_points[0,:]))
+    def f(p):
+        n = len(points)
+        d = _dot(p - points[0], p - points[0])
+        s = np.ones(len(p))
+        for i in range(n):
+            j = (i + n - 1) % n
+            vi = points[i]
+            vj = points[j]
+            e = vj - vi
+            w = p - vi
+            b = w - e * np.clip(np.dot(w, e) / np.dot(e, e), 0, 1).reshape((-1, 1))
+            d = _min(d, _dot(b, b))
+            c1 = p[:,1] >= vi[1]
+            c2 = p[:,1] < vj[1]
+            c3 = e[0] * w[:,1] > e[1] * w[:,0]
+            c = _vec(c1, c2, c3)
+            s = np.where(np.all(c, axis=1) | np.all(~c, axis=1), -s, s)
+        return s * np.sqrt(d) * (_wn(p, wn_points)==0)
+    return f
+
 # Positioning
 
 @op2
@@ -255,11 +315,14 @@ def extrude(other, h):
     return f
 
 @op23
-def circular_extrude(other):
+def rounded_extrude(other,h,radius=1):
     def f(p):
-        r = np.linalg.norm(p[:,[0,1]], axis=1)
-        return other(np.column_stack((r,p[:,2])))
+        d = other(p[:,[0,1]])
+        w = _vec(d.reshape(-1), np.abs(p[:,2]) - h / 2)
+        th = radius * (w[:,0] > -radius) * (w[:,1] > -radius)
+        return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w+np.stack((th,th),axis=1), 0)) - th
     return f
+
 
 @op23
 def extrude_to(a, b, h, e=ease.linear):
@@ -278,6 +341,37 @@ def revolve(other, offset=0):
         xy = p[:,[0,1]]
         q = _vec(_length(xy) - offset, p[:,2])
         return other(q)
+    return f
+
+@op23
+def helix_revolve(other, offset=0, pitch=1, rotations=1):
+    # Note: Use a negative pitch to reverse the helix direction.
+    abs_pitch = abs(pitch)
+    sgn_pitch = np.sign(pitch)
+    def f(p):
+        #a = -np.arctan2(-p[:,1], p[:,0]) / (sgn_pitch*2*np.pi) + 1/2
+        #z = p[:,2] - a*abs_pitch
+        #n = np.floor(z/abs_pitch)
+        #z -= (_max(n,0) - np.ceil(_max(n+a-rotations,0))) * abs_pitch
+
+        ## Climing distance
+        #xy = p[:,[0,1]]
+        #q = _vec(_length(xy) - offset, z)
+        #d = other(q)
+
+        # Base distance
+        base = other(p[:,[0,2]])
+        base_d = _vec(_length(np.hstack((base,_vec(p[:,1]))))) - 0.1
+        #print("shape: {} {}".format(base_d.shape,d.shape))
+
+        # Top distance
+        #base = other(p[:,[0,2]])
+        #base_d = _vec(_length(np.hstack((base,_vec(p[:,1])))))
+
+        return base_d
+        #return _min(d, base_d)
+        #w = _vec(d.reshape(-1), np.abs(p[:,2]) - h / 2)
+        #return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w, 0))
     return f
 
 # Common

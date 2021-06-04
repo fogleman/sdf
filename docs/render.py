@@ -201,11 +201,10 @@ generate(f, 'transition_radial')
 f = hexagon(1).extrude(1)
 generate(f, 'extrude')
 
-# circular_extrude(other, h)
-f = hexagon(1).translate([3,0]).circular_extrude()
-generate(f, 'circular_extrude')
+# rounded_extrude(other, h, radius=0):
+f = hexagon(10).rounded_extrude(5, radius=1)
+generate(f, 'rounded_extrude')
 
-# extrude_to(a, b, h, e=ease.linear)
 # extrude_to(a, b, h, e=ease.linear)
 f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)
 generate(f, 'extrude_to')
@@ -213,6 +212,10 @@ generate(f, 'extrude_to')
 # revolve(other, offset=0)
 f = hexagon(1).revolve(3)
 generate(f, 'revolve')
+
+# helix_revolve(other, offset=0, pitch=1):
+f = filled_polygon([[3,0],[4,0.5],[4,1],[3,1.5],[3,1]]).helix_revolve(pitch=3, rotations=6)
+generate(f, 'helix_revolve')
 
 # slice(other)
 f = example.translate((0, 0, 0.55)).slice().extrude(0.1)

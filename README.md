@@ -842,14 +842,14 @@ f = text(FONT, TEXT).extrude(0.1).orient(Y).wrap_around(-w / 2, w / 2)
 f = hexagon(1).extrude(1)
 ```
 
-### circular_extrude
+### rounded_extrude
 
-<img width=128 align="right" src="docs/images/circular_extrude.png">
+<img width=128 align="right" src="docs/images/rounded_extrude.png">
 
-`circular_extrude(other)`
+`rounded_extrude(other, h, radius=0)`
 
 ```python
-f = hexagon(1).translate([3,0]).circular_extrude()
+f = hexagon(1).rounded_extrude(1, radius=0.2)
 ```
 
 ### extrude_to
