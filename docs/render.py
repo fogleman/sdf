@@ -231,7 +231,7 @@ f = rounded_rectangle([1,2],0.2).extrude(0.1)
 generate(f, '2d_rounded_rectangle')
 
 # 2d equilateral_triangle
-f = equilateral_triangle().extrude(0.1)
+f = equilateral_triangle(3).extrude(0.1)
 generate(f, '2d_equilateral_triangle')
 
 # 2d n_gon

@@ -189,12 +189,12 @@ def rounded_rectangle(size, radius, center=ORIGIN):
     return f
 
 @sdf2
-def equilateral_triangle():
+def equilateral_triangle(r=1, center=ORIGIN):
     k = 3 ** 0.5
     def f(p):
         p = _vec(
-            np.abs(p[:,0]) - 1,
-            p[:,1] + 1 / k)
+            np.abs((p[:,0]-center[0])/r) - 1,
+            (p[:,1]-center[1])/r + 1 / k)
         w = p[:,0] + k * p[:,1] > 0
         q = _vec(
             p[:,0] - k * p[:,1],
@@ -203,7 +203,7 @@ def equilateral_triangle():
         p = _vec(
             p[:,0] - np.clip(p[:,0], -2, 0),
             p[:,1])
-        return -_length(p) * np.sign(p[:,1])
+        return -_length(p) * np.sign(p[:,1]) * r
     return f
 
 @sdf2

@@ -960,10 +960,10 @@ f = rounded_rectangle([1,2],0.2).extrude(0.1)
 
 <img width=128 align="right" src="docs/images/2d_equilateral_triangle.png">
 
-`equilateral_triangle()`
+`equilateral_triangle(r, center=ORIGIN)`
 
 ```python
-f = equilateral_triangle().extrude(0.1)
+f = equilateral_triangle(3).extrude(0.1)
 ```
 
 ### hexagon
