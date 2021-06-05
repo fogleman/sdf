@@ -74,30 +74,49 @@ _max = np.maximum
 def _wn(pnts, poly):
     # Winding number algorithm
     #print("points: {}".format(pnts.shape))
-    x0 = poly[-1,0]  # polygon `from` coordinates
-    y0 = poly[-1,1]  # polygon `from` coordinates
-    x1 = poly[0,0]   # polygon `to` coordinates
-    y1 = poly[0,1]   # polygon `to` coordinates
+    #print("points: {}".format(pnts))
+    #print("min: {}".format(np.min(poly, axis=0)))
+
+    x0 = poly[:-1,0]   # polygon `from` coordinates
+    y0 = poly[:-1,1]   # polygon `from` coordinates
+    x1 = poly[1 :,0]   # polygon `to` coordinates
+    y1 = poly[1 :,1]   # polygon `to` coordinates
+    #pp = np.atleast_2d(points).reshape(2, -1)
+    #del_tails = pp.T[:, None] - self.v[:, :-1].T  # shaped (n, m, 2)
+    #b1 = del_tails[:, :, 1] >= 0.0
+    #b2 = np.less.outer(pp[1], self.v[1, 1:])
+    #sides = np.sign(np.einsum("ijk, kj -> ij", del_tails, self._ie))
+    #wn_pos = (b1 & b2 & (sides > 0)).sum(axis=1, dtype=int)
+    #wn_neg = (~b1 & ~b2 & (sides < 0)).sum(axis=1, dtype=int)
+    #wn = wn_pos - wn_neg
+
     x = pnts[:,0]         # point coordinates
     y = pnts[:,1]         # point coordinates
-    y_y0 = y - y0
-    x_x0 = x - x0
+    #print("x0: {} y0: {} x1: {} y1: {} x: {} y: {}".format(x0,y0,x1,y1,x,y))
+    y_y0 = y[:,None] - y0
+    x_x0 = x[:,None] - x0
+    #print("y_y0: {}".format(y_y0))
+    #print("x_x0: {}".format(x_x0))
     diff_ = (x1 - x0) * y_y0 - (y1 - y0) * x_x0  # diff => einsum in original
     chk1 = (y_y0 >= 0.0)
     chk2 = np.less(y[:, None], y1)  # pnts[:, 1][:, None], poly[1:, 1])
     chk3 = np.sign(diff_).astype(np.int)
+    #print("chk1: {}".format(chk1))
     pos = (chk1 & chk2 & (chk3 > 0)).sum(axis=1, dtype=int)
     neg = (~chk1 & ~chk2 & (chk3 < 0)).sum(axis=1, dtype=int)
+    #print("pos: {}".format(pos))
+    #print("neg: {}".format(neg))
     #print("wn size: {} {}".format(pos.shape,neg.shape))
-    return pos - neg
+    return (pos - neg)
     #print("wn : {}".format(wn))
     #out_ = pnts[np.nonzero(wn)]
     #if return_winding:
     #    return out_, wn
     #return out_
 
-#def _mindist(a, b):
-#    outside = (a > 0) || (b > 0)
+def _mindist(a, b):
+    inside = (a < 0 and b < 0)
+    r = inside * _max(a,b) + _min(a,b)
 #    ret = np.array(len(a))
 #    for out, i in enumerate(outside):
 #      if (out):
@@ -122,7 +141,7 @@ def line(normal=UP, point=ORIGIN):
     return f
 
 @sdf2
-def slab(x0=None, y0=None, x1=None, y1=None, k=None):
+def crop(x0=None, y0=None, x1=None, y1=None, k=None):
     fs = []
     if x0 is not None:
         fs.append(line(X, (x0, 0)))
@@ -229,30 +248,36 @@ def polygon(points):
         return s * np.sqrt(d)
     return f
 
-@sdf2
-def filled_polygon(points):
-    wn_points = np.array(points)
-    points = [np.array(p) for p in points]
-    print("points: {}".format(wn_points[0,:]))
-    def f(p):
-        n = len(points)
-        d = _dot(p - points[0], p - points[0])
-        s = np.ones(len(p))
-        for i in range(n):
-            j = (i + n - 1) % n
-            vi = points[i]
-            vj = points[j]
-            e = vj - vi
-            w = p - vi
-            b = w - e * np.clip(np.dot(w, e) / np.dot(e, e), 0, 1).reshape((-1, 1))
-            d = _min(d, _dot(b, b))
-            c1 = p[:,1] >= vi[1]
-            c2 = p[:,1] < vj[1]
-            c3 = e[0] * w[:,1] > e[1] * w[:,0]
-            c = _vec(c1, c2, c3)
-            s = np.where(np.all(c, axis=1) | np.all(~c, axis=1), -s, s)
-        return s * np.sqrt(d) * (_wn(p, wn_points)==0)
-    return f
+#@sdf2
+#def in_polygon(points):
+#    wn_points = np.array(points)
+#    wn_points = np.vstack((wn_points, wn_points[0,:]))
+#    points = [np.array(p) for p in points]
+#    #print("poly: {}".format(wn_points))
+#    #print("result: {}".format(_wn(np.array([[0,1],[3.5,0],[3.9,1],[4.5,1],[3.5,2]]),wn_points)))
+#    #print("should be 0 0 1 0 0")
+#    def f(p):
+#        n = len(points)
+#        wn = (2*(np.mod(_wn(p, wn_points),2)==0))-1
+#        d = _dot(p - points[0], p - points[0])
+#        s = np.ones(len(p))
+#        for i in range(n):
+#            j = (i + n - 1) % n
+#            vi = points[i]
+#            vj = points[j]
+#            e = vj - vi
+#            w = p - vi
+#            b = w - e * np.clip(np.dot(w, e) / np.dot(e, e), 0, 1).reshape((-1, 1))
+#            d = _min(d, _dot(b, b))
+#            c1 = p[:,1] >= vi[1]
+#            c2 = p[:,1] < vj[1]
+#            #print("e: {}, w: {} c1: {} c2: {}".format(e.shape,w.shape,c1.shape,c2.shape))
+#            c3 = e[0] * w[:,1] > e[1] * w[:,0]
+#            #print("e: {}, w: {} c1: {} c2: {} c3: {}".format(e.shape,w.shape,c1.shape,c2.shape,c3.shape))
+#            c = _vec(c1, c2, c3)
+#            s = np.where(np.all(c, axis=1) | np.all(~c, axis=1), -s, s)
+#        return np.sqrt(d) * wn
+#    return f
 
 # Positioning
 
@@ -278,7 +303,7 @@ def scale(other, factor):
 def rotate(other, angle):
     s = np.sin(angle)
     c = np.cos(angle)
-    m = 1 - c
+    #m = 1 - c
     matrix = np.array([
         [c, -s],
         [s, c],
@@ -323,7 +348,6 @@ def rounded_extrude(other,h,radius=1):
         return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w+np.stack((th,th),axis=1), 0)) - th
     return f
 
-
 @op23
 def extrude_to(a, b, h, e=ease.linear):
     def f(p):
@@ -348,28 +372,42 @@ def helix_revolve(other, offset=0, pitch=1, rotations=1):
     # Note: Use a negative pitch to reverse the helix direction.
     abs_pitch = abs(pitch)
     sgn_pitch = np.sign(pitch)
-    def f(p):
-        #a = -np.arctan2(-p[:,1], p[:,0]) / (sgn_pitch*2*np.pi) + 1/2
-        #z = p[:,2] - a*abs_pitch
-        #n = np.floor(z/abs_pitch)
-        #z -= (_max(n,0) - np.ceil(_max(n+a-rotations,0))) * abs_pitch
+    s = np.sin(rotations*2*np.pi)
+    c = np.cos(rotations*2*np.pi)
+    top_rotation = np.array([
+        [c, s],
+        [-s, c],
+    ]).T
 
-        ## Climing distance
-        #xy = p[:,[0,1]]
+    
+    def f(p):
+        a = -np.arctan2(p[:,1], -p[:,0]) / (sgn_pitch*2*np.pi) + 1/2
+        z = p[:,2] - a*abs_pitch
+        n0 = np.floor(z/abs_pitch)
+        n1 = np.ceil(z/abs_pitch)
+        #z -= (_max(n,0) - np.ceil(_max(n+a-rotations,0))) * abs_pitch
+        z0 = z-(_max(n0,0) - np.ceil(_max(n0+a-rotations,0))) * abs_pitch
+        z1 = z-(_max(n1,0) - np.ceil(_max(n1+a-rotations,0))) * abs_pitch
+
+        # Climing distance
+        xy = p[:,[0,1]]
         #q = _vec(_length(xy) - offset, z)
-        #d = other(q)
+        d = _min(other(_vec(_length(xy) - offset, z0)),other(_vec(_length(xy) - offset, z1)))
 
         # Base distance
-        base = other(p[:,[0,2]])
-        base_d = _vec(_length(np.hstack((base,_vec(p[:,1]))))) - 0.1
-        #print("shape: {} {}".format(base_d.shape,d.shape))
+        d_xz = _max(other(p[:,[0,2]]),0)
+        base_d = _vec(_length(np.hstack((d_xz,_vec(p[:,1])))))
 
+        #np.dot(p, matrix)
         # Top distance
-        #base = other(p[:,[0,2]])
+        top_xy = np.dot(p[:,[0,1]], top_rotation)
+        d_xz = _max(other(np.hstack((top_xy[:,[0]],p[:,[2]]-pitch*rotations))),0)
+        top_d = _vec(_length(np.hstack((d_xz,_vec(top_xy[:,1])))))
         #base_d = _vec(_length(np.hstack((base,_vec(p[:,1])))))
 
-        return base_d
-        #return _min(d, base_d)
+        #return base_d
+        return _min(_min(d, base_d),top_d)
+        #return _min(top_d, base_d)
         #w = _vec(d.reshape(-1), np.abs(p[:,2]) - h / 2)
         #return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w, 0))
     return f

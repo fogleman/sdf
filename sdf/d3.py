@@ -344,6 +344,12 @@ def scale(other, factor):
     return f
 
 @op3
+def skin(other, depth):
+    def f(p):
+        return _max(other(p) - depth, 0)
+    return f
+
+@op3
 def rotate(other, angle, vector=Z):
     x, y, z = _normalize(vector)
     s = np.sin(angle)

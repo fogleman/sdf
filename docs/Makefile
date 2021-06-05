@@ -1,8 +1,9 @@
-all: req doc examples
+all: req go doc examples
 req:
 	python3 -m pip -q install scikit-image numpy
 	which cabextract || sudo yum install -q -y curl cabextract xorg-x11-font-utils fontconfig
 	[ -e /usr/share/fonts/msttcore/ ] || sudo yum install -q -y https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm
+go:
 	go build -o render render.go
 doc:
 	PYTHONPATH=.. python3 render.py

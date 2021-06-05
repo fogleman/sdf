@@ -4,7 +4,8 @@ import os
 def generate(f, name, samples=2**26, **kwargs):
     os.makedirs('models', exist_ok=True)
     os.makedirs('images', exist_ok=True)
-    stl_path = 'models/%s.stl' % name
+    #stl_path = 'models/%s.stl' % name
+    stl_path = '/dev/shm/%s.stl' % name
     png_path = 'images/%s.png' % name
     if os.path.exists(png_path):
         return
@@ -202,7 +203,7 @@ f = hexagon(1).extrude(1)
 generate(f, 'extrude')
 
 # rounded_extrude(other, h, radius=0):
-f = hexagon(10).rounded_extrude(5, radius=1)
+f = hexagon(10).rounded_extrude(5, radius=2)
 generate(f, 'rounded_extrude')
 
 # extrude_to(a, b, h, e=ease.linear)
@@ -213,9 +214,57 @@ generate(f, 'extrude_to')
 f = hexagon(1).revolve(3)
 generate(f, 'revolve')
 
+#f=polygon([[3,0],[4,0.5],[4,1],[3.5,1.5]])
+#print("result: {}".format(f(np.array([[0,1],[3.5,0],[3.9,1],[4.5,1],[3.5,2]]))))
+#print("should be 0 0 1 0 0")
+
 # helix_revolve(other, offset=0, pitch=1):
-f = filled_polygon([[3,0],[4,0.5],[4,1],[3,1.5],[3,1]]).helix_revolve(pitch=3, rotations=6)
+f = polygon([[3,0],[4,.5],[4,1],[3,1.5]]).helix_revolve(pitch=2, rotations=4.3)
 generate(f, 'helix_revolve')
+
+# 2d rectangle
+f = rectangle([1,2]).extrude(0.1)
+generate(f, '2d_rectangle')
+
+# 2d rounded_rectangle
+f = rounded_rectangle(1,0.2).extrude(0.1)
+generate(f, '2d_rounded_rectangle')
+
+# 2d equilateral_triangle
+#f = equilateral_triangle().extruce(0.1)
+#generate(f, '2d_equilateral_triangle')
+
+# 2d hexagon
+f = hexagon(2).extrude(0.1)
+generate(f, '2d_hexagon')
+
+# 2d circle
+f = circle(2).extrude(0.1)
+generate(f, '2d_circle')
+
+# 2d line
+f = (circle() & line()).extrude(0.1)
+generate(f, '2d_line')
+
+# 2d crop
+f = (circle() & crop(y0=-0.5, y1=0.5, x0=0)).extrude(0.1)
+generate(f, '2d_crop')
+
+# line
+#f = line(normal=[0,1], point=[0,0]).extrude(0.1).skin(0.1)
+#generate(f, '2d_line')
+
+# polygon
+f = polygon([[-16,-16],[14,-14],[0,12]]).extrude(0.1)
+generate(f, '2d_polygon')
+
+# rounded_x
+f = rounded_x(10,2).extrude(0.1)
+generate(f, '2d_rounded_x')
+
+# filled_polygon
+#f = filled_polygon([[-6,-6],[4,4],[0,6]]).extrude(0.1).skin(0.3)
+#generate(f, '2d_filled_polygon')
 
 # slice(other)
 f = example.translate((0, 0, 0.55)).slice().extrude(0.1)

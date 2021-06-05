@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path"
+	"strings"
 	"time"
 
 	. "github.com/fogleman/fauxgl"
@@ -33,6 +35,8 @@ var (
 	modelColor  = HexColor("2185C5")
 
 	background = Transparent
+
+	showAxis = true
 )
 
 func main() {
@@ -40,6 +44,19 @@ func main() {
 	args := os.Args[1:]
 	if len(args) != 2 {
 		log.Fatal("Usage: go run render.go input.stl output.png")
+	}
+
+	if strings.HasPrefix(path.Base(os.Args[1]), "2d_") {
+		fmt.Println("Using 2d perspective")
+		eye = V(0, 0, 4)
+		center = V(0, 0, 0)
+		up = V(0, 1, 0)
+		modelLight = V(0.5, 0.5, 2).Normalize()
+		showAxis = false
+		//eye = V(1.5, 1.5, 3)
+		//up = V(1, 0, 0)
+		//center = V(.5, .5, 0)
+		//zColor = Transparent
 	}
 
 	// load mesh
@@ -64,7 +81,7 @@ func main() {
 	matrix = matrix.Orthographic(-2, 2, -2, 2, near, far)
 
 	// render axes and origin
-	{
+	if showAxis {
 		shader := NewPhongShader(matrix, axisLight.Normalize(), eye)
 		shader.AmbientColor = Gray(0.4)
 		shader.DiffuseColor = Gray(0.7)

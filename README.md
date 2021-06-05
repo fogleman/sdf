@@ -460,6 +460,36 @@ f = dodecahedron(1)
 f = icosahedron(1)
 ```
 
+## Infinite 2D Primitives
+
+The following SDFs extend to infinity in some or all axes.
+They can only effectively be used in combination with other shapes, as shown in the examples below.
+
+### line
+
+<img width=128 align="right" src="docs/images/2d_line.png">
+
+`line(normal=UP, point=ORIGIN)`
+
+`line` is an infinite cut line, with one side being positive (outside) and one side being negative (inside).
+
+```python
+f = (circle() & line()).extrude(0.1)
+```
+
+### slab
+
+<img width=128 align="right" src="docs/images/2d_crop.png">
+
+`crop(x0=None, y0=None, x1=None, y1=None, k=None)`
+
+`crop` is useful for cutting a shape on one or more axis-aligned planes.
+
+```python
+f = (circle() & crop(y0=-0.5, y1=0.5, x0=0)).extrude(0.1)
+```
+
+
 ## Infinite 3D Primitives
 
 The following SDFs extend to infinity in some or all axes.
@@ -849,7 +879,7 @@ f = hexagon(1).extrude(1)
 `rounded_extrude(other, h, radius=0)`
 
 ```python
-f = hexagon(1).rounded_extrude(1, radius=0.2)
+f = hexagon(10).rounded_extrude(5, radius=2)
 ```
 
 ### extrude_to
@@ -872,6 +902,16 @@ f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)
 f = hexagon(1).revolve(3)
 ```
 
+### helix_revolve
+
+<img width=128 align="right" src="docs/images/helix_revolve.png">
+
+`helix_revolve(other, offset=0, pitch=1, rotations=1)`
+
+```python
+f = polygon([[3,0],[4,.5],[4,1],[3,1.5]]).helix_revolve(pitch=2, rotations=4.3)
+```
+
 ## 3D to 2D Operations
 
 ### slice
@@ -887,10 +927,72 @@ f = example.translate((0, 0, 0.55)).slice().extrude(0.1)
 ## 2D Primitives
 
 ### circle
-### line
+
+<img width=128 align="right" src="docs/images/2d_circle.png">
+
+`circle(radius=1, center=ORIGIN)`
+
+```python
+f = circle(2).extrude(0.1)
+```
+
 ### rectangle
+
+<img width=128 align="right" src="docs/images/2d_rectangle.png">
+
+`rectangle(size=1, center=ORIGIN, a=None, b=None)`
+
+```python
+f = rectangle([1,2]).extrude(0.1)
+```
+
 ### rounded_rectangle
+
+<img width=128 align="right" src="docs/images/2d_rounded_rectangle.png">
+
+`rounded_rectangle(size, radius, center=ORIGIN)`
+
+```python
+f = rounded_rectangle(1,0.2).extrude(0.1)
+```
+
 ### equilateral_triangle
+
+<img width=128 align="right" src="docs/images/2d_equilateral_triangle.png">
+
+`equilateral_triangle()`
+
+```python
+f = equilateral_triangle().extruce(0.1)
+```
+
 ### hexagon
+
+<img width=128 align="right" src="docs/images/2d_hexagon.png">
+
+`hexagon(r)`
+
+```python
+f = hexagon(2).extrude(0.1)
+```
+
 ### rounded_x
+
+<img width=128 align="right" src="docs/images/2d_rounded_x.png">
+
+`rounded_x(w, r)`
+
+```python
+f = rounded_x(10,2).extrude(0.1)
+```
+
 ### polygon
+
+<img width=128 align="right" src="docs/images/2d_polygon.png">
+
+`polygon(points)`
+
+```python
+f = polygon([[-16,-16],[14,-14],[0,12]]).extrude(0.1)
+```
+
