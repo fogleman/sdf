@@ -231,8 +231,12 @@ f = rounded_rectangle(1,0.2).extrude(0.1)
 generate(f, '2d_rounded_rectangle')
 
 # 2d equilateral_triangle
-#f = equilateral_triangle().extruce(0.1)
-#generate(f, '2d_equilateral_triangle')
+f = equilateral_triangle().extrude(0.1)
+generate(f, '2d_equilateral_triangle')
+
+# 2d n_gon
+f = equilateral_polygon(5,10).extrude(0.1)
+generate(f, '2d_equilateral_polygon')
 
 # 2d hexagon
 f = hexagon(2).extrude(0.1)

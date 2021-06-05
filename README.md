@@ -477,7 +477,7 @@ They can only effectively be used in combination with other shapes, as shown in 
 f = (circle() & line()).extrude(0.1)
 ```
 
-### slab
+### crop
 
 <img width=128 align="right" src="docs/images/2d_crop.png">
 
@@ -963,7 +963,7 @@ f = rounded_rectangle(1,0.2).extrude(0.1)
 `equilateral_triangle()`
 
 ```python
-f = equilateral_triangle().extruce(0.1)
+f = equilateral_triangle().extrude(0.1)
 ```
 
 ### hexagon
@@ -974,6 +974,16 @@ f = equilateral_triangle().extruce(0.1)
 
 ```python
 f = hexagon(2).extrude(0.1)
+```
+
+### equilateral_polygon
+
+<img width=128 align="right" src="docs/images/2d_equilateral_polygon.png">
+
+`equilateral_polygon(n, r)`
+
+```python
+f = equilateral_polygon(5,10).extrude(0.1)
 ```
 
 ### rounded_x

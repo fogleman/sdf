@@ -206,6 +206,33 @@ def equilateral_triangle():
     return f
 
 @sdf2
+def equilateral_polygon(n, r):
+    sw = np.tan(np.pi/n)*r
+    ang = np.pi/n
+    ang2 = 2*np.pi/n
+    #points = [np.array(p) for p in points]
+    def f(p):
+        a = np.arctan2(p[:,1], p[:,0])
+        edge = np.round(a / ang2) * ang2
+        s = np.sin(edge)
+        c = np.cos(edge)
+        x = c*p[:,0]+s*p[:,1] - r
+        y = _max(np.abs(-s*p[:,0]+c*p[:,1]) - sw, 0)
+        #rot = a - np.abs(np.mod(a,2*np.pi/n) - np.pi/n)
+        #s = np.sin(rot)
+        #c = np.cos(rot)
+        #matrix = np.array([
+        #    [c, -s],
+        #    [s, c],
+        #]).T
+        #pt = np.dot(p, matrix)
+        #x = pt[:,0] - r
+        #y = _min(pt[:,1] - sw,0)
+        #print("p: {} c: {} s: {} x: {} y: {}".format(p.shape,c.shape,s.shape,x.shape,y.shape))
+        return np.sign(x) * _length(_vec(x, y))
+    return f
+
+@sdf2
 def hexagon(r):
     def f(p):
         k = np.array((3 ** 0.5 / -2, 0.5, np.tan(np.pi / 6)))
