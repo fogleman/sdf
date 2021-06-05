@@ -161,19 +161,25 @@ def rectangle(size=1, center=ORIGIN, a=None, b=None):
         size = b - a
         center = a + size / 2
         return rectangle(size, center)
-    size = np.array(size)
+    size = np.abs(np.array(size))
     def f(p):
         q = np.abs(p - center) - size / 2
         return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0)
     return f
 
 @sdf2
-def rounded_rectangle(size, radius, center=ORIGIN):
+def rounded_rectangle(size=1, radius=0.1, center=ORIGIN, a=None, b=None):
+    if a is not None and b is not None:
+        a = np.array(a)
+        b = np.array(b)
+        size = b - a
+        center = a + size / 2
+        return rounded_rectangle(size, radius, center)
     try:
         r0, r1, r2, r3 = radius
     except TypeError:
         r0 = r1 = r2 = r3 = radius
-    size = np.array(size)
+    size = np.abs(np.array(size))
     def f(p):
         x = p[:,0]
         y = p[:,1]

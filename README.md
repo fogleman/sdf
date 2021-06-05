@@ -944,16 +944,20 @@ f = circle(2).extrude(0.1)
 
 ```python
 f = rectangle([1,2]).extrude(0.1)
+# or you can specify the corners:
+f = rectangle(a=[1,2],b=[-1,-2]).extrude(0.1)
 ```
 
 ### rounded_rectangle
 
 <img width=128 align="right" src="docs/images/2d_rounded_rectangle.png">
 
-`rounded_rectangle(size, radius, center=ORIGIN)`
+`rounded_rectangle(size=1, radius=0.1, center=ORIGIN, a=None, b=None)`
 
 ```python
 f = rounded_rectangle([1,2],0.2).extrude(0.1)
+# or you can specify the corners:
+f = rectangle(a=[1,2],b=[-1,-2],radius=0.2).extrude(0.1)
 ```
 
 ### equilateral_triangle
@@ -981,6 +985,10 @@ f = hexagon(2).extrude(0.1)
 <img width=128 align="right" src="docs/images/2d_equilateral_polygon.png">
 
 `equilateral_polygon(n, r)`
+
+`equilateral_polygon` makes a shape with equal sides, for example n=3 is a
+triangle, n=4 is square, n=5 is a pentagon, and so forth.  Note: The right edge
+will always be vertical.
 
 ```python
 f = equilateral_polygon(5,10).extrude(0.1)

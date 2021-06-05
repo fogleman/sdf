@@ -223,11 +223,13 @@ f = polygon([[3,0],[4,.5],[4,1],[3,1.5]]).helix_revolve(pitch=2, rotations=4.3)
 generate(f, 'helix_revolve')
 
 # 2d rectangle
-f = rectangle([1,2]).extrude(0.1)
+#f = rectangle([1,2]).extrude(0.1)
+f = rectangle(a=[1,2],b=[-1,-2]).extrude(0.1)
 generate(f, '2d_rectangle')
 
 # 2d rounded_rectangle
-f = rounded_rectangle([1,2],0.2).extrude(0.1)
+#f = rounded_rectangle([1,2],0.2).extrude(0.1)
+f = rounded_rectangle(a=[1,2],b=[-1,-2],radius=0.2).extrude(0.1)
 generate(f, '2d_rounded_rectangle')
 
 # 2d equilateral_triangle
