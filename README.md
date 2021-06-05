@@ -1003,6 +1003,6 @@ f = rounded_x(10,2).extrude(0.1)
 `polygon(points)`
 
 ```python
-f = polygon([[-16,-16],[14,-14],[0,12]]).extrude(0.1)
+f = polygon([[-16,-16],[14,-8],[0,12]]).extrude(0.1)
 ```
 
