@@ -259,7 +259,7 @@ generate(f, '2d_crop')
 #generate(f, '2d_line')
 
 # polygon
-f = polygon([[-16,-16],[14,-8],[0,12]]).extrude(0.1)
+f = polygon([[-16,-16],[14,-8],[3,4],[0,12]]).extrude(0.1)
 generate(f, '2d_polygon')
 
 # rounded_x
