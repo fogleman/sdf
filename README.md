@@ -953,7 +953,7 @@ f = rectangle([1,2]).extrude(0.1)
 `rounded_rectangle(size, radius, center=ORIGIN)`
 
 ```python
-f = rounded_rectangle(1,0.2).extrude(0.1)
+f = rounded_rectangle([1,2],0.2).extrude(0.1)
 ```
 
 ### equilateral_triangle

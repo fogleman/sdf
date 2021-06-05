@@ -227,7 +227,7 @@ f = rectangle([1,2]).extrude(0.1)
 generate(f, '2d_rectangle')
 
 # 2d rounded_rectangle
-f = rounded_rectangle(1,0.2).extrude(0.1)
+f = rounded_rectangle([1,2],0.2).extrude(0.1)
 generate(f, '2d_rounded_rectangle')
 
 # 2d equilateral_triangle

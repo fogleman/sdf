@@ -173,6 +173,7 @@ def rounded_rectangle(size, radius, center=ORIGIN):
         r0, r1, r2, r3 = radius
     except TypeError:
         r0 = r1 = r2 = r3 = radius
+    size = np.array(size)
     def f(p):
         x = p[:,0]
         y = p[:,1]
@@ -181,7 +182,7 @@ def rounded_rectangle(size, radius, center=ORIGIN):
         r[np.logical_and(x > 0, y <= 0)] = r1
         r[np.logical_and(x <= 0, y <= 0)] = r2
         r[np.logical_and(x <= 0, y > 0)] = r3
-        q = np.abs(p) - size / 2 + r
+        q = np.abs(p - center) - size / 2 + r
         return (
             _min(_max(q[:,0], q[:,1]), 0).reshape((-1, 1)) +
             _length(_max(q, 0)).reshape((-1, 1)) - r)
@@ -189,8 +190,8 @@ def rounded_rectangle(size, radius, center=ORIGIN):
 
 @sdf2
 def equilateral_triangle():
+    k = 3 ** 0.5
     def f(p):
-        k = 3 ** 0.5
         p = _vec(
             np.abs(p[:,0]) - 1,
             p[:,1] + 1 / k)
