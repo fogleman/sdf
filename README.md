@@ -899,16 +899,20 @@ f = hexagon(1).taper_extrude(1,30/180*np.pi)
 
 `extrude_to(a, b, h, e=ease.linear)`
 
-#### Changing forms
 ```python
 f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)
 ```
 
-#### Tapering
-A tapering of 10 degrees:
-<img width=128 align="right" src="docs/images/extrude_to_taper.png">
+### taper_extrude
+
+<img width=128 align="right" src="docs/images/taper_extrude.png">
+
+`taper_extrude(other, h, top=1, bottom=1, e=ease.linear)`
+
+In `taper_extrude`, the `top` and `bottom` are scaling factors applied to the 2D object.
+
 ```python
-f = rectangle(2).extrude_to(rectangle(2-2*np.tan(10/180*np.pi)), 2, ease.linear)
+f = rectangle(10).taper_extrude(6, top=0.8)
 ```
 
 

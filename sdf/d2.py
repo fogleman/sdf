@@ -383,6 +383,16 @@ def rounded_extrude(other,h,radius=1):
     return f
 
 @op23
+def taper_extrude(other, h, top=1, bottom=1, e=ease.linear):
+    def f(p):
+        q = e(np.clip(p[:,[2]]/h+1/2,0,1))
+        sc = ((1 - q)*top + q * bottom)
+        d = other(p[:,[0,1]] * sc) / sc
+        w = _vec(d.reshape(-1), np.abs(p[:,2]) - h / 2)
+        return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w, 0))
+    return f
+
+@op23
 def extrude_to(a, b, h, e=ease.linear):
     def f(p):
         d1 = a(p[:,[0,1]])
