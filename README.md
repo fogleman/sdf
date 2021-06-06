@@ -882,17 +882,6 @@ f = hexagon(1).extrude(1)
 f = hexagon(10).rounded_extrude(5, radius=2)
 ```
 
-### taper_extrude
-
-<img width=128 align="right" src="docs/images/rounded_extrude.png">
-
-`taper_extrude(other, h, angle)`
-
-```python
-# This is a 30 degree taper, use -30 to taper in the other direction
-f = hexagon(1).taper_extrude(1,30/180*np.pi)
-```
-
 ### extrude_to
 
 <img width=128 align="right" src="docs/images/extrude_to.png">
