@@ -882,6 +882,17 @@ f = hexagon(1).extrude(1)
 f = hexagon(10).rounded_extrude(5, radius=2)
 ```
 
+### taper_extrude
+
+<img width=128 align="right" src="docs/images/rounded_extrude.png">
+
+`taper_extrude(other, h, angle)`
+
+```python
+# This is a 30 degree taper, use -30 to taper in the other direction
+f = hexagon(1).taper_extrude(1,30/180*np.pi)
+```
+
 ### extrude_to
 
 <img width=128 align="right" src="docs/images/extrude_to.png">
@@ -925,6 +936,8 @@ f = example.translate((0, 0, 0.55)).slice().extrude(0.1)
 ```
 
 ## 2D Primitives
+
+Note: The examples 2D functions below are called and then extruded to show how to convert a 2D to a 3D.
 
 ### circle
 
@@ -986,8 +999,8 @@ f = hexagon(2).extrude(0.1)
 
 `equilateral_polygon(n, r)`
 
-`equilateral_polygon` makes a shape with equal sides, for example n=3 is a
-triangle, n=4 is square, n=5 is a pentagon, and so forth.  Note: The right edge
+`equilateral_polygon` makes a shape with equal sides, for example `n=3` is a
+triangle, `n=4` is square, `n=5` is a pentagon, and so forth.  Note: The right edge
 will always be vertical.
 
 ```python

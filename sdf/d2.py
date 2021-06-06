@@ -374,6 +374,15 @@ def extrude(other, h):
     return f
 
 @op23
+def taper_extrude(other, h, angle):
+    taper = np.sin(angle)
+    def f(p):
+        d = other(p[:,[0,1]]*np.max(1+np.clip(p[:,[2]],0,h)*taper,0))
+        w = _vec(d.reshape(-1), np.abs(p[:,2]) - h / 2)
+        return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w, 0))
+    return f
+
+@op23
 def rounded_extrude(other,h,radius=1):
     def f(p):
         d = other(p[:,[0,1]])
