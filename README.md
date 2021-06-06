@@ -903,6 +903,13 @@ f = hexagon(1).taper_extrude(1,30/180*np.pi)
 f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)
 ```
 
+Here is an example, showing a taper of 10 degrees:
+<img width=128 align="right" src="docs/images/extrude_to_taper.png">
+```python
+f = rectangle(2).extrude_to(rectangle(2*np.sin(10/180*np.pi)), 2, ease.linear)
+```
+
+
 ### revolve
 
 <img width=128 align="right" src="docs/images/revolve.png">

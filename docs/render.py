@@ -206,13 +206,12 @@ generate(f, 'extrude')
 f = hexagon(10).rounded_extrude(5, radius=2)
 generate(f, 'rounded_extrude')
 
-# taper_extrude(other, h, angle):
-f = hexagon(1).taper_extrude(1,30/180*np.pi)
-generate(f, 'taper_extrude')
-
 # extrude_to(a, b, h, e=ease.linear)
 f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)
 generate(f, 'extrude_to')
+
+f = rectangle(2).extrude_to(rectangle(2*np.sin(10/180*np.pi)), 2, ease.linear)
+generate(f, 'extrude_to_taper')
 
 # revolve(other, offset=0)
 f = hexagon(1).revolve(3)
