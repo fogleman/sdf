@@ -210,7 +210,7 @@ generate(f, 'rounded_extrude')
 f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)
 generate(f, 'extrude_to')
 
-f = rectangle(2).extrude_to(rectangle(2*np.sin(10/180*np.pi)), 2, ease.linear)
+f = rectangle(2).extrude_to(rectangle(2-2*np.tan(10/180*np.pi)), 2, ease.linear)
 generate(f, 'extrude_to_taper')
 
 # revolve(other, offset=0)
