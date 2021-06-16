@@ -677,7 +677,7 @@ f = intersection(a, b, k=0.25) # equivalent
 `repeat` can repeat the underlying SDF infinitely or a finite number of times.
 If finite, the number of repetitions must be odd, because the count specifies
 the number of copies to make on each side of the origin. If the repeated
-elements overlap or come close together, you made need to specify a `padding`
+elements overlap or come close together, you may need to specify a `padding`
 greater than zero to compute a correct SDF.
 
 ```python
