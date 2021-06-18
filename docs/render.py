@@ -272,9 +272,19 @@ generate(f, '2d_polygon')
 f = rounded_x(10,2).extrude(0.1)
 generate(f, '2d_rounded_x')
 
-# filled_polygon
-#f = filled_polygon([[-6,-6],[4,4],[0,6]]).extrude(0.1).skin(0.3)
-#generate(f, '2d_filled_polygon')
+# curved_polygon
+f = curved_polygon([[-2,0,0],[0,2,-2**0.5],[2,0,-2**0.5],[0,-2,0]]).extrude(0.1)
+generate(f, '2d_curved_polygon')
+
+
+# edge
+f = curved_polygon([
+   [-4,-1,0],[-6,-1,-1],[-6,1,-1],  [-4,1,-1], [-1,1,0],  # Left
+   [-1,4,0], [-1,6,-1], [1,6,-1],   [1,4,-1],  [1,1,0],   # Top
+   [4,1,0],  [6,1,-1],  [6,-1,-1],  [4,-1,-1], [1,-1,0],  # Right
+   [1,-8,0], [1,-10,-1],[-1,-10,-1],[-1,-8,-1],[-1,-1,0]  # Bottom
+   ]).edge(0.1).extrude(0.1)
+generate(f, '2d_edge')
 
 # slice(other)
 f = example.translate((0, 0, 0.55)).slice().extrude(0.1)

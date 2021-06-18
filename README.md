@@ -1040,12 +1040,12 @@ positive in the right hand rotation.  A curve_radius of 0 implies a straight lin
 `curved_polygon(points_with_curve)`
 
 ```python
-f = curved_polygon([[-2,0,0],[0,2,-2**0.5],[2,0,-2**0.5],[0,-2,0]])
+f = curved_polygon([[-2,0,0],[0,2,-2**0.5],[2,0,-2**0.5],[0,-2,0]]).extrude(0.1)
 ```
 
 ### edge
 
-<img width=128 align="right" src="docs/images/edge.png">
+<img width=128 align="right" src="docs/images/2d_edge.png">
 
 `edge(width)`
 
@@ -1056,6 +1056,6 @@ f = curved_polygon([
    [-1,4,0], [-1,6,-1], [1,6,-1],   [1,4,-1],  [1,1,0],   # Top
    [4,1,0],  [6,1,-1],  [6,-1,-1],  [4,-1,-1], [1,-1,0],  # Right
    [1,-8,0], [1,-10,-1],[-1,-10,-1],[-1,-8,-1],[-1,-1,0]  # Bottom
-   ]).edge(0.1)
+   ]).edge(0.1).extrude(0.1)
 ```
 
