@@ -56,14 +56,24 @@ def op23(f):
 
 # Helpers
 
-def _length(a):
-    return np.linalg.norm(a, axis=1)
+def _length(a, axis=1):
+    #return np.linalg.norm(a, axis=axis)
+    return np.sum(a * a, axis=axis) ** 0.5
+
+def _length2(a, axis=1):
+    return np.sum(a * a, axis=axis)
 
 def _normalize(a):
     return a / np.linalg.norm(a)
 
-def _dot(a, b):
-    return np.sum(a * b, axis=1)
+def _dot(a, b, axis=1):
+    return np.sum(a * b, axis=axis)
+
+def _unit(a, axis=1):
+    return a / _dot(a, a, axis=axis) ** 0.5
+
+def _T(a):
+    return np.transpose(a)
 
 def _vec(*arrs):
     return np.stack(arrs, axis=-1)
@@ -71,6 +81,7 @@ def _vec(*arrs):
 _min = np.minimum
 _max = np.maximum
 
+# Winding curve function, TODO: could be used for bounding box checks
 def _wn(pnts, poly):
     # Winding number algorithm
     #print("points: {}".format(pnts.shape))
@@ -116,14 +127,7 @@ def _wn(pnts, poly):
 
 def _mindist(a, b):
     inside = (a < 0 and b < 0)
-    r = inside * _max(a,b) + _min(a,b)
-#    ret = np.array(len(a))
-#    for out, i in enumerate(outside):
-#      if (out):
-#        ret[i] = min(max(a[i], 0), max(b[i], 0))
-#      else:
-#        ret[i] = max(a[i], b[i])
-#    return ret
+    r = np.where(inside, _max(a,b), _min(a,b))
 
 # Primitives
 
@@ -270,6 +274,8 @@ def polygon(points):
             j = (i + n - 1) % n
             vi = points[i]
             vj = points[j]
+            if np.array_equal(vi, vj):
+                continue 
             e = vj - vi
             w = p - vi
             b = w - e * np.clip(np.dot(w, e) / np.dot(e, e), 0, 1).reshape((-1, 1))
@@ -282,36 +288,96 @@ def polygon(points):
         return s * np.sqrt(d)
     return f
 
-#@sdf2
-#def in_polygon(points):
-#    wn_points = np.array(points)
-#    wn_points = np.vstack((wn_points, wn_points[0,:]))
-#    points = [np.array(p) for p in points]
-#    #print("poly: {}".format(wn_points))
-#    #print("result: {}".format(_wn(np.array([[0,1],[3.5,0],[3.9,1],[4.5,1],[3.5,2]]),wn_points)))
-#    #print("should be 0 0 1 0 0")
-#    def f(p):
-#        n = len(points)
-#        wn = (2*(np.mod(_wn(p, wn_points),2)==0))-1
-#        d = _dot(p - points[0], p - points[0])
-#        s = np.ones(len(p))
-#        for i in range(n):
-#            j = (i + n - 1) % n
-#            vi = points[i]
-#            vj = points[j]
-#            e = vj - vi
-#            w = p - vi
-#            b = w - e * np.clip(np.dot(w, e) / np.dot(e, e), 0, 1).reshape((-1, 1))
-#            d = _min(d, _dot(b, b))
-#            c1 = p[:,1] >= vi[1]
-#            c2 = p[:,1] < vj[1]
-#            #print("e: {}, w: {} c1: {} c2: {}".format(e.shape,w.shape,c1.shape,c2.shape))
-#            c3 = e[0] * w[:,1] > e[1] * w[:,0]
-#            #print("e: {}, w: {} c1: {} c2: {} c3: {}".format(e.shape,w.shape,c1.shape,c2.shape,c3.shape))
-#            c = _vec(c1, c2, c3)
-#            s = np.where(np.all(c, axis=1) | np.all(~c, axis=1), -s, s)
-#        return np.sqrt(d) * wn
-#    return f
+@sdf2
+def curved_polygon(points):
+    points = [np.array(pt) for pt in points]
+    #print("size p:{}".format(p.shape))
+    n = len(points)
+    centers = np.zeros((n, 2))
+    curve_left = np.zeros(n, dtype=bool)
+    for i in range(n):
+        if points[i][2] != 0:
+            j = (i + n - 1) % n
+            vi = points[i][0:2]
+            vj = points[j][0:2]
+            curve = points[i][2]
+            if np.array_equal(vi, vj):
+                continue
+            e = vj - vi
+
+            seg_len = np.sum(e*e)**0.5/2
+            if abs(curve) < seg_len:
+                raise Exception("radius too small on segment {} - {}".format(vi, vj))
+
+            # find the center point, radius vector, and if in circle
+            t = np.sign(curve) * _vec(-e[1],e[0])  # perpendicular to linesegment pointing away from center
+            middle = (vi + vj)/2
+            center = middle - ((curve**2 - seg_len**2) ** 0.5) * t / (np.dot(t,t) ** 0.5)
+            centers[i,:] = center
+            curve_left[i] = t[0] < 0
+    def f(p):
+        s = np.ones(len(p))
+        d = np.inf * s
+        for i in range(n):
+            j = (i + n - 1) % n
+            vi = points[i][0:2]
+            vj = points[j][0:2]
+            curve = points[i][2]
+            if np.array_equal(vi, vj):
+                continue
+            e = vj - vi
+            w = p - vi
+            if curve == 0:
+                b = w - e * np.clip(np.dot(w, e) / np.dot(e, e), 0, 1).reshape((-1, 1))
+                d = _min(d, _dot(b, b))
+                c1 = p[:,1] >= vi[1]
+                c2 = p[:,1] < vj[1]
+                c3 = e[0] * w[:,1] > e[1] * w[:,0]
+                c = _vec(c1, c2, c3)
+                s = np.where(np.all(c, axis=1) | np.all(~c, axis=1), -s, s)
+            else:
+                center = centers[i,:]
+                cl = curve_left[i]
+                pc = p - center
+                # build use rotation tensors to find point location with respect to arc
+                ri = (vi - center)
+                Tiy = ri[1]*pc[:,0]-ri[0]*pc[:,1]
+                rj = (vj - center)
+                Tjy = rj[1]*pc[:,0]-rj[0]*pc[:,1]
+                in_arc = np.logical_and(np.logical_xor(curve < 0, Tiy > 0), np.logical_xor(curve < 0, Tjy < 0))
+                # determine distance for in arc points
+                r = _length(pc[in_arc],axis=1)
+                d[in_arc] = _min((abs(curve)-r)**2,d[in_arc])
+
+                # distance to the arc endpoints
+                vi_d = _length2(p[~in_arc] - vi)  # we only really need to do one side
+                #vj_d = _length2(p[~in_arc] - vj)
+
+                # minimum distance to anchor
+                d[~in_arc] = _min(vi_d, d[~in_arc])
+
+                # check if x axis crossing exists and right handed if on the positive x axis
+                c1 = p[:,1] >= vi[1]
+                c2 = p[:,1] < vj[1]
+                # check if line segment crosses the positive side of the x axis
+                c3 = e[0] * w[:,1] > e[1] * w[:,0]
+
+                # check if point is in the arc circle
+                in_circle = np.zeros(len(p), dtype=bool)
+                in_circle[in_arc] = r < abs(curve)
+
+                c = _vec(c1, c2, c3)
+                sliver = _vec(p[:,1] < vj[1], p[:,1] < vi[1])
+
+                s = np.where(
+                    (~cl & in_circle) |
+                    (np.all( c, axis=1) & ~in_circle) | # right handed axis cross and not in circle
+                    (np.all(~c, axis=1) & ~in_circle) | # left handed axis cross and not in circle
+                    ((np.all(sliver, axis=1) | np.all(~sliver, axis=1)) & in_circle ) # in arc below or above
+                   , -s, s)
+        return s * np.sqrt(d)
+    return f
+
 
 # Positioning
 
@@ -331,6 +397,12 @@ def scale(other, factor):
     m = min(x, y)
     def f(p):
         return other(p / s) * m
+    return f
+
+@op2
+def edge(other, width):
+    def f(p):
+        return np.abs(other(p)) - width
     return f
 
 @op2

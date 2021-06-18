@@ -1029,3 +1029,33 @@ f = rounded_x(10,2).extrude(0.1)
 f = polygon([[-16,-16],[14,-8],[3,4],[0,12]]).extrude(0.1)
 ```
 
+### curved_polygon
+
+The points provided to the curve polygon are in the form of [x,y,curve_radius] where a
+curve_radius value of negative will create an arc in the left hand rotation and
+positive in the right hand rotation.  A curve_radius of 0 implies a straight line.
+
+<img width=128 align="right" src="docs/images/2d_curved_polygon.png">
+
+`curved_polygon(points_with_curve)`
+
+```python
+f = curved_polygon([[-2,0,0],[0,2,-2**0.5],[2,0,-2**0.5],[0,-2,0]])
+```
+
+### edge
+
+<img width=128 align="right" src="docs/images/edge.png">
+
+`edge(width)`
+
+```python
+
+f = curved_polygon([
+   [-4,-1,0],[-6,-1,-1],[-6,1,-1],  [-4,1,-1], [-1,1,0],  # Left
+   [-1,4,0], [-1,6,-1], [1,6,-1],   [1,4,-1],  [1,1,0],   # Top
+   [4,1,0],  [6,1,-1],  [6,-1,-1],  [4,-1,-1], [1,-1,0],  # Right
+   [1,-8,0], [1,-10,-1],[-1,-10,-1],[-1,-8,-1],[-1,-1,0]  # Bottom
+   ]).edge(0.1)
+```
+
