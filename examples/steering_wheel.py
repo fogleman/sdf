@@ -50,4 +50,4 @@ for i in range(len(spokes)):
 
 f = ring.rounded_extrude(depth,depth_r)
 
-f.save('steering_wheel_1.stl', samples=2**23)
+f.save('steering_wheel.stl', samples=2**23)
