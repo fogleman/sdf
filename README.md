@@ -40,9 +40,9 @@ Have a cool example? Submit a PR!
 | ![gearlike](docs/images/gearlike.jpg) | ![knurling](docs/images/knurling.jpg) | ![blobby](docs/images/blobby.jpg) | ![weave](docs/images/weave.jpg) |
 
 More examples!
-| ![pawn](docs/images/pawn.png) |
-| --- |
-| [pawn.py](examples/pawn.py) |
+| [pawn.py](examples/pawn.py) | [steering_wheel.py](examples/steering_wheel.py) |
+| --- | --- |
+| ![pawn](docs/images/pawn.png) | ![steering wheel](docs/images/steering_wheel.png) |
 
 ## Requirements
 

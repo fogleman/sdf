@@ -176,9 +176,9 @@ func main() {
 		//fmt.Println("minX", minX, "minY", minY, "maxX", maxX, "maxY", maxY)
 
 		image, _ = cutter.Crop(image, cutter.Config{
-			Width:  maxX - minX,
-			Height: maxY - minY,
-			Anchor: go_image.Point{minX, minY},
+			Width:  maxX - minX + 2,
+			Height: maxY - minY + 2,
+			Anchor: go_image.Point{minX - 1, minY - 1},
 			Mode:   cutter.TopLeft, // optional, default value
 		})
 	}
