@@ -964,9 +964,9 @@ f = circle(2).extrude(0.1)
 `rectangle(size=1, center=ORIGIN, a=None, b=None)`
 
 ```python
-f = rectangle([1,2]).extrude(0.1)
+f = rectangle([2,1]).extrude(0.1)
 # or you can specify the corners:
-f = rectangle(a=[1,2],b=[-1,-2]).extrude(0.1)
+f = rectangle(a=[-2,-1],b=[2,1]).extrude(0.1)
 ```
 
 ### rounded_rectangle
@@ -976,9 +976,9 @@ f = rectangle(a=[1,2],b=[-1,-2]).extrude(0.1)
 `rounded_rectangle(size=1, radius=0.1, center=ORIGIN, a=None, b=None)`
 
 ```python
-f = rounded_rectangle([1,2],0.2).extrude(0.1)
+f = rounded_rectangle([2,1],0.2).extrude(0.1)
 # or you can specify the corners:
-f = rectangle(a=[1,2],b=[-1,-2],radius=0.2).extrude(0.1)
+f = rectangle(a=[-2,-1],b=[2,1],radius=0.2).extrude(0.1)
 ```
 
 ### equilateral_triangle
