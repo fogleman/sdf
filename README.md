@@ -223,7 +223,7 @@ surprisingly fast (for marching cubes). Meshes of adequate detail can
 still be quite large in terms of number of triangles.
 
 The core "engine" of the `sdf` library is very small and can be found in
-[mesh.py](https://github.com/fogleman/sdf/blob/main/sdf/mesh.py).
+[mesh.py](sdf/mesh.py).
 
 In short, there is nothing algorithmically revolutionary here. The goal is
 to provide a simple, fun, and easy-to-use API for generating 3D models in our
@@ -231,15 +231,15 @@ favorite language Python.
 
 ## Files
 
-- [sdf/d2.py](https://github.com/fogleman/sdf/blob/main/sdf/d2.py): 2D signed distance functions
-- [sdf/d3.py](https://github.com/fogleman/sdf/blob/main/sdf/d3.py): 3D signed distance functions
-- [sdf/dn.py](https://github.com/fogleman/sdf/blob/main/sdf/dn.py): Dimension-agnostic signed distance functions
-- [sdf/ease.py](https://github.com/fogleman/sdf/blob/main/sdf/ease.py): [Easing functions](https://easings.net/) that operate on numpy arrays. Some SDFs take an easing function as a parameter.
-- [sdf/mesh.py](https://github.com/fogleman/sdf/blob/main/sdf/mesh.py): The core mesh-generation engine. Also includes code for estimating the bounding box of an SDF and for plotting a 2D slice of an SDF with matplotlib.
-- [sdf/progress.py](https://github.com/fogleman/sdf/blob/main/sdf/progress.py): A console progress bar.
-- [sdf/stl.py](https://github.com/fogleman/sdf/blob/main/sdf/stl.py): Code for writing a binary [STL file](https://en.wikipedia.org/wiki/STL_(file_format)).
-- [sdf/text.py](https://github.com/fogleman/sdf/blob/main/sdf/text.py): Generate 2D SDFs for text (which can then be extruded)
-- [sdf/util.py](https://github.com/fogleman/sdf/blob/main/sdf/util.py): Utility constants and functions.
+- [sdf/d2.py](sdf/d2.py): 2D signed distance functions
+- [sdf/d3.py](sdf/d3.py): 3D signed distance functions
+- [sdf/dn.py](sdf/dn.py): Dimension-agnostic signed distance functions
+- [sdf/ease.py](sdf/ease.py): [Easing functions](https://easings.net/) that operate on numpy arrays. Some SDFs take an easing function as a parameter.
+- [sdf/mesh.py](sdf/mesh.py): The core mesh-generation engine. Also includes code for estimating the bounding box of an SDF and for plotting a 2D slice of an SDF with matplotlib.
+- [sdf/progress.py](sdf/progress.py): A console progress bar.
+- [sdf/stl.py](sdf/stl.py): Code for writing a binary [STL file](https://en.wikipedia.org/wiki/STL_(file_format)).
+- [sdf/text.py](sdf/text.py): Generate 2D SDFs for text (which can then be extruded)
+- [sdf/util.py](sdf/util.py): Utility constants and functions.
 
 ## SDF Implementation
 
