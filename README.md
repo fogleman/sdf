@@ -1059,8 +1059,8 @@ This function will change
 When matching three curves, concave-convex-concave or convex-concave-convex, this function
 will move the points along the outer curves in order to match the center curve exactly.
 
-`round_polygon_smooth_ends(points_with_curve, radius)`
-`round_polygon_smooth_ends(points_with_curve, [radius...], [index_of_vertex...])`
+`round_polygon_corners(points_with_curve, radius)`
+`round_polygon_corners(points_with_curve, [radii...], [index_of_vertex...])`
 
 ```python
 pts1 = [[10,0,0],[1,1,-20],[3,10,0]]
@@ -1107,7 +1107,7 @@ f |= rounded_polygon(rpts).shell(0.1).extrude(0.1)
 
 ```python
 
-f = curved_polygon([
+f = rounded_polygon([
    [-4,-1,0],[-6,-1,-1],[-6,1,-1],  [-4,1,-1], [-1,1,0],  # Left
    [-1,4,0], [-1,6,-1], [1,6,-1],   [1,4,-1],  [1,1,0],   # Top
    [4,1,0],  [6,1,-1],  [6,-1,-1],  [4,-1,-1], [1,-1,0],  # Right

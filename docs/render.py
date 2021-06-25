@@ -231,13 +231,13 @@ f = polygon([[3,0],[4,.5],[4,1],[3,1.5]]).helix_revolve(pitch=2, rotations=4.3)
 generate(f, 'helix_revolve')
 
 # 2d rectangle
-#f = rectangle([1,2]).extrude(0.1)
-f = rectangle(a=[2,1],b=[-1,-2]).extrude(0.1)
+f = rectangle([2,1]).extrude(0.1)
+#f = rectangle(a=[-2,-1],b=[2,1]).extrude(0.1)
 generate(f, '2d_rectangle')
 
 # 2d rounded_rectangle
-#f = rounded_rectangle([1,2],0.2).extrude(0.1)
-f = rounded_rectangle(a=[2,1],b=[-1,-2],radius=0.2).extrude(0.1)
+f = rounded_rectangle([2,1],0.2).extrude(0.1)
+#f = rounded_rectangle(a=[-2,-1],b=[2,1],radius=0.2).extrude(0.1)
 generate(f, '2d_rounded_rectangle')
 
 # 2d equilateral_triangle
@@ -317,6 +317,14 @@ f = rounded_polygon(pts).translate((0,3)).shell(0.1).extrude(0.1)
 f |= rounded_polygon(rpts).shell(0.1).extrude(0.1)
 generate(f, '2d_round_polygon_smooth_ends')
 
+# edge
+f = rounded_polygon([
+   [-4,-1,0],[-6,-1,-1],[-6,1,-1],  [-4,1,-1], [-1,1,0],  # Left
+   [-1,4,0], [-1,6,-1], [1,6,-1],   [1,4,-1],  [1,1,0],   # Top
+   [4,1,0],  [6,1,-1],  [6,-1,-1],  [4,-1,-1], [1,-1,0],  # Right
+   [1,-8,0], [1,-10,-1],[-1,-10,-1],[-1,-8,-1],[-1,-1,0]  # Bottom
+   ]).edge(0.1).extrude(0.1)
+generate(f, '2d_edge')
 
 # slice(other)
 f = example.translate((0, 0, 0.55)).slice().extrude(0.1)
