@@ -2,6 +2,7 @@ package main
 
 import (
 	"fmt"
+	go_image "image"
 	"log"
 	"os"
 	"path"
@@ -10,6 +11,7 @@ import (
 
 	. "github.com/fogleman/fauxgl"
 	"github.com/nfnt/resize"
+	"github.com/oliamb/cutter"
 )
 
 const (
@@ -139,5 +141,46 @@ func main() {
 	// save image
 	image := context.Image()
 	image = resize.Resize(width, height, image, resize.Bilinear)
+
+	// crop off 2d images
+	if strings.HasPrefix(path.Base(os.Args[1]), "2d_") {
+		bounds := image.Bounds()
+		minY := bounds.Min.Y
+		maxY := bounds.Max.Y
+		minX := bounds.Min.X
+		maxX := bounds.Max.X
+		for has_image := false; minY < maxY && !has_image; minY++ {
+			for i := minX; i < maxX; i++ {
+				_, _, _, A := image.At(i, minY).RGBA()
+				has_image = has_image || (A != 0)
+			}
+		}
+		for has_image := false; minY < maxY && !has_image; maxY-- {
+			for i := maxX - 1; i >= minX; i-- {
+				_, _, _, A := image.At(i, maxY).RGBA()
+				has_image = has_image || (A != 0)
+			}
+		}
+		for has_image := false; minX < maxX && !has_image; minX++ {
+			for i := minY; i < maxY; i++ {
+				_, _, _, A := image.At(minX, i).RGBA()
+				has_image = has_image || (A != 0)
+			}
+		}
+		for has_image := false; minX < maxX && !has_image; maxX-- {
+			for i := maxY - 1; i >= minY; i-- {
+				_, _, _, A := image.At(maxX, i).RGBA()
+				has_image = has_image || (A != 0)
+			}
+		}
+		//fmt.Println("minX", minX, "minY", minY, "maxX", maxX, "maxY", maxY)
+
+		image, _ = cutter.Crop(image, cutter.Config{
+			Width:  maxX - minX,
+			Height: maxY - minY,
+			Anchor: go_image.Point{minX, minY},
+			Mode:   cutter.TopLeft, // optional, default value
+		})
+	}
 	SavePNG(os.Args[2], image)
 }

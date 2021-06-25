@@ -70,10 +70,20 @@ def _dot(a, b, axis=1):
     return np.sum(a * b, axis=axis)
 
 def _unit(a, axis=1):
-    return a / _dot(a, a, axis=axis) ** 0.5
+    return a / _length(a, axis=axis)
 
-def _T(a):
-    return np.transpose(a)
+def _project(a,b,axis=1):
+    #print(a,b)
+    #print(a*b, a*a, b*b)
+    #print(np.sum(a * b, axis=axis),np.sum(b * b, axis=axis),b)
+    return _dot(a,b,axis=axis)/_dot(b,b,axis=axis)*b
+
+def _is_rh(a,b):
+    r = _unit(a,axis=0)
+    return (r[1]*b[0]-r[0]*b[1]) > 0
+
+#def _T(a):
+#    return np.transpose(a)
 
 def _vec(*arrs):
     return np.stack(arrs, axis=-1)
@@ -289,7 +299,7 @@ def polygon(points):
     return f
 
 @sdf2
-def curved_polygon(points):
+def rounded_polygon(points):
     points = [np.array(pt) for pt in points]
     #print("size p:{}".format(p.shape))
     n = len(points)
@@ -307,7 +317,7 @@ def curved_polygon(points):
 
             seg_len = np.sum(e*e)**0.5/2
             if abs(curve) < seg_len:
-                raise Exception("radius too small on segment {} - {}".format(vi, vj))
+                raise Exception("radius too small on segment {} - {} => {}".format(vi, vj, seg_len))
 
             # find the center point, radius vector, and if in circle
             t = np.sign(curve) * _vec(-e[1],e[0])  # perpendicular to linesegment pointing away from center
@@ -337,14 +347,18 @@ def curved_polygon(points):
                 s = np.where(np.all(c, axis=1) | np.all(~c, axis=1), -s, s)
             else:
                 center = centers[i,:]
-                cl = curve_left[i]
+                CL = curve_left[i]
                 pc = p - center
+
                 # build use rotation tensors to find point location with respect to arc
                 ri = (vi - center)
-                Tiy = ri[1]*pc[:,0]-ri[0]*pc[:,1]
+                #Tiy = ri[1]*pc[:,0]-ri[0]*pc[:,1]
+                c_iy = ri[1]*pc[:,0] > ri[0]*pc[:,1]
                 rj = (vj - center)
-                Tjy = rj[1]*pc[:,0]-rj[0]*pc[:,1]
-                in_arc = np.logical_and(np.logical_xor(curve < 0, Tiy > 0), np.logical_xor(curve < 0, Tjy < 0))
+                #Tjy = rj[1]*pc[:,0]-rj[0]*pc[:,1]
+                c_jy = rj[1]*pc[:,0] < rj[0]*pc[:,1]
+                in_arc = np.logical_and(np.logical_xor(curve < 0, c_iy), np.logical_xor(curve < 0, c_jy))
+
                 # determine distance for in arc points
                 r = _length(pc[in_arc],axis=1)
                 d[in_arc] = _min((abs(curve)-r)**2,d[in_arc])
@@ -354,7 +368,12 @@ def curved_polygon(points):
                 #vj_d = _length2(p[~in_arc] - vj)
 
                 # minimum distance to anchor
+                #d = _min(_length2(p - vi), d)
                 d[~in_arc] = _min(vi_d, d[~in_arc])
+
+                # check if point is in the arc circle
+                in_circle = np.zeros(len(p), dtype=bool)
+                in_circle[in_arc] = r <= abs(curve)
 
                 # check if x axis crossing exists and right handed if on the positive x axis
                 c1 = p[:,1] >= vi[1]
@@ -362,22 +381,369 @@ def curved_polygon(points):
                 # check if line segment crosses the positive side of the x axis
                 c3 = e[0] * w[:,1] > e[1] * w[:,0]
 
-                # check if point is in the arc circle
-                in_circle = np.zeros(len(p), dtype=bool)
-                in_circle[in_arc] = r < abs(curve)
-
                 c = _vec(c1, c2, c3)
-                sliver = _vec(p[:,1] < vj[1], p[:,1] < vi[1])
+                below = (p[:,1] < vj[1]) & (p[:,1] < vi[1]) & (p[:,1] < center[1])
+                above = (p[:,1] > vj[1]) & (p[:,1] > vi[1]) & (p[:,1] > center[1])
+                #horizon = _vec(p[:,1] < vj[1], p[:,1] < vi[1], p[:,1] < center[1])
 
                 s = np.where(
-                    (~cl & in_circle) |
-                    (np.all( c, axis=1) & ~in_circle) | # right handed axis cross and not in circle
-                    (np.all(~c, axis=1) & ~in_circle) | # left handed axis cross and not in circle
-                    ((np.all(sliver, axis=1) | np.all(~sliver, axis=1)) & in_circle ) # in arc below or above
+                    (~CL & in_circle & ((c1 & c2) | (~c1 & ~c2)))
+                    | (np.all( c, axis=1) & ~in_circle) # right handed axis cross and not in circle
+                    | (np.all(~c, axis=1) & ~in_circle) # left handed axis cross and not in circle
+                    | ((above | below) & in_circle)     # in arc below or above
+                    #| ((np.all(horizon) | np.all(~horizon)) & in_circle)    # in arc below or above
                    , -s, s)
         return s * np.sqrt(d)
     return f
 
+# Rounding
+
+def round_polygon_smooth_ends(points, sides=None):
+    # This moves the points on either end of the segment to smooth out edges
+    points = [np.array(pt) for pt in points]
+    out = []
+    if not sides or not isinstance(sides, list):
+        raise Exception("Sides must be a list of sides to round, [0,...N]")
+
+    #print("size p:{}".format(p.shape))
+    n = len(points)
+    for i in range(n):
+        j = (i + n - 1) % n
+        k = (i + 1) % n
+        l = (i + 2) % n
+
+        if j in sides:
+            # we shouldn't do this twice in a row
+            continue
+
+        if not i in sides:
+            # go to next side if it isn't specified
+            out.append(points[i])
+            continue
+
+        vj = points[j][0:2]
+        vi = points[i][0:2]
+        vk = points[k][0:2]
+        vl = points[l][0:2]
+
+        va = vi - vj
+        vb = vk - vi
+        vc = vl - vk
+
+        if (points[i][2] > 0) & (points[k][2] < 0) & (points[l][2] > 0):
+            va_p = _vec(-va[1],va[0])  # perpendicular to linesegment pointing to center
+            middle_a = (vi + vj)/2
+            center_a = middle_a + ((points[i][2]**2 - (_length(va,axis=0)/2)**2) ** 0.5) * _unit(va_p,axis=0)
+            #print("center_a",center_a)
+
+            vc_p = _vec(-vc[1],vc[0])  # perpendicular to linesegment pointing away from center
+            middle_c = (vk + vl)/2
+            center_c = middle_c + ((points[l][2]**2 - (_length(vc,axis=0)/2)**2) ** 0.5) * _unit(vc_p,axis=0)
+            #print("center_c",center_c)
+
+            center_ac = center_c-center_a
+
+            a = abs(points[i][2]) + abs(points[k][2])
+            b = abs(points[k][2]) + abs(points[l][2])
+            d2 = _length2(center_c-center_a,axis=0)
+
+            x = (d2 + a**2 - b**2) / (2 * (d2**0.5))
+            h = (a**2 - x**2) ** 0.5
+            #print("a=",a,"b=",b,"d2=",d2,"x=",x,"h=",h, )
+            c2 = center_a + x*_unit(center_ac,axis=0) + h*_unit(_vec(center_ac[1],-center_ac[0]),axis=0)
+            #print("c2=",c2)
+            p0=c2+_unit(center_a-c2,axis=0)*abs(points[k][2])
+            p1=c2+_unit(center_c-c2,axis=0)*abs(points[k][2])
+            out.append(np.array([p0[0],p0[1],points[i][2]]))
+            out.append(np.array([p1[0],p1[1],points[k][2]]))
+
+
+        elif (points[i][2] < 0) & (points[k][2] > 0) & (points[l][2] < 0):
+            va_p = -_vec(-va[1],va[0])  # perpendicular to linesegment pointing to center
+            middle_a = (vi + vj)/2
+            center_a = middle_a + ((points[i][2]**2 - (_length(va,axis=0)/2)**2) ** 0.5) * _unit(va_p,axis=0)
+            #print("center_a",center_a)
+
+            vc_p = -_vec(-vc[1],vc[0])  # perpendicular to linesegment pointing away from center
+            middle_c = (vk + vl)/2
+            center_c = middle_c + ((points[l][2]**2 - (_length(vc,axis=0)/2)**2) ** 0.5) * _unit(vc_p,axis=0)
+            #print("center_c",center_c)
+
+            center_ac = center_c-center_a
+
+            a = abs(points[i][2]) + abs(points[k][2])
+            b = abs(points[k][2]) + abs(points[l][2])
+            d2 = _length2(center_c-center_a,axis=0)
+
+            x = (d2 + a**2 - b**2) / (2 * (d2**0.5))
+            h = (a**2 - x**2) ** 0.5
+            #print("a=",a,"b=",b,"d2=",d2,"x=",x,"h=",h, )
+            c2 = center_a + x*_unit(center_ac,axis=0) - h*_unit(_vec(center_ac[1],-center_ac[0]),axis=0)
+            #print("c2=",c2)
+            p0=c2+_unit(center_a-c2,axis=0)*abs(points[k][2])
+            p1=c2+_unit(center_c-c2,axis=0)*abs(points[k][2])
+            out.append(np.array([p0[0],p0[1],points[i][2]]))
+            out.append(np.array([p1[0],p1[1],points[k][2]]))
+        else:
+            raise Exception("Cannot smooth ends when not alternating concave and convex at {} {} {}",
+               points[i][2],points[k][2],points[l][2])
+
+        #if points[i][2] < 0) & points[k][2] < 0
+    return np.vstack(out).tolist()
+
+
+def round_polygon_corners(points, radii, corners=None):
+    points = [np.array(pt) for pt in points]
+    out = []
+    #print("size p:{}".format(p.shape))
+    n = len(points)
+    for i in range(n):
+        j = (i + n - 1) % n
+        k = (i + 1) % n
+
+        if corners:
+            if not isinstance(corners, list):
+                raise Exception("Corners must be a list of corners to round, [0,...N]")
+
+            if not i in corners:
+                # go to next vertex if it isn't specified
+                out.append(points[i])
+                continue
+
+            if isinstance(radii, list):
+                radius = radii[corners.index(i)]
+            #print("radius=",radius, " index=", corners.index(i))
+        else:
+            radius = radii
+
+        #print(i,j,k)
+        vj = points[j][0:2]
+        vi = points[i][0:2]
+        vk = points[k][0:2]
+
+        va = vj - vi
+        vb = vk - vi
+
+        if (va[0]*vb[1] == va[1]*vb[0]) | (va[0]*vb[1] == -va[1]*vb[0]):
+            # points are along a line, do nothing!
+            out.append(points[i])
+            continue
+
+        rh = 1
+        if _is_rh(va, vb):
+            rh = -1
+        #    rh_radius = -radius
+        #else:
+        #    rh_radius = radius
+        #print("rh=",rh)
+
+        reverse = False
+        #print("rounding corner {}".format(points[i]))
+        # line-line
+        #print("test", points[i][2] == 0 , points[k][2] == 0)
+        if (points[i][2] == 0) & (points[k][2] == 0):
+            #print("found line-line")
+            #print("vi  ", vj-vi, vk-vi)
+            bisector = _unit(va,axis=0) + _unit(vb,axis=0)
+            va_p = -_unit(np.array((va[1],-va[0])),axis=0)*rh*radius # perpendicular to linesegment
+            #print("va_p=",va_p)
+            #print("pvk=",pvk, "bisector=", bisector)
+            rk = _unit(_project(va_p,bisector,axis=0),axis=0)
+            #print("rk=",rk)
+            #print("dot", _dot(bisector,va_p,axis=0))
+            center = bisector / _dot(bisector,va_p,axis=0)
+            #center = _project(rk,bisector,axis=0)
+            #print("center=",center)
+            p0 = vi + _project(center,va,axis=0)
+            p1 = vi + _project(center,vb,axis=0)
+            out.append(np.array([p0[0],p0[1],0]))
+            out.append(np.array([p1[0],p1[1],-rh*radius]))
+            continue
+
+        elif (points[i][2] == 0) & (rh*points[k][2] > 0):
+            #print("found line-convex")
+            vb_p = _vec(-vb[1],vb[0])*rh  # perpendicular to linesegment pointing away from center
+            middle_b = (vi + vk)/2
+            center_b = middle_b + ((points[k][2]**2 - (_length(vb,axis=0)/2)**2) ** 0.5) * _unit(vb_p,axis=0)
+            #print("center_b=",center_b)
+            va_p = -rh*_unit(np.array((va[1],-va[0])),axis=0)*radius # perpendicular to linesegment
+            #print("va_p=",va_p)
+            h2 = _length2(_project(center_b-vi-va_p,va_p,axis=0),axis=0)
+            #print("h2=",h2)
+            vi_d = ((abs(radius) + rh*points[k][2])**2 - h2) ** 0.5
+            #print("vi_d=",vi_d,"first",(_dot(center_b-vi,_unit(va,axis=0),axis=0)))
+            p0 = vi + _unit(va,axis=0) * (_dot(center_b-vi,_unit(va,axis=0),axis=0) + vi_d)
+            #print("p0=",p0,"vi=",vi)
+            c2 = p0 + va_p
+            #print("c2=",c2)
+            p1 = c2 + radius * _unit(center_b-c2,axis=0)
+            out.append(np.array([p0[0],p0[1],0]))
+            out.append(np.array([p1[0],p1[1],-rh*radius]))
+            continue
+
+        elif (points[i][2] == 0) & (rh*points[k][2] < 0):
+            #print("found line-concave")
+            vb_p = -_vec(-vb[1],vb[0])*rh  # perpendicular to linesegment pointing to center
+            middle_b = (vi + vk)/2
+            center_b = middle_b + ((points[k][2]**2 - (_length(vb,axis=0)/2)**2) ** 0.5) * _unit(vb_p,axis=0)
+            #print("center_b=",center_b)
+            va_p = -rh*_unit(np.array((va[1],-va[0])),axis=0)*radius # perpendicular to linesegment
+            #print("va_p=",va_p)
+            h2 = _length2(_project(center_b-vi-va_p,va_p,axis=0),axis=0)
+            #print("h2=",h2)
+            vi_d = ((abs(radius) + rh*points[k][2])**2 - h2) ** 0.5
+            #print("vi_d=",vi_d,"first",(_dot(center_b-vi,_unit(va,axis=0),axis=0)))
+            p0 = vi + _unit(va,axis=0) * (_dot(center_b-vi,_unit(va,axis=0),axis=0) - vi_d)
+            #print("p0=",p0,"vi=",vi)
+            c2 = p0 + va_p
+            #print("c2=",c2)
+            p1 = c2 - radius * _unit(center_b-c2,axis=0)
+            out.append(np.array([p0[0],p0[1],0]))
+            out.append(np.array([p1[0],p1[1],-rh*radius]))
+            continue
+
+        elif (rh*points[i][2] > 0) & (rh*points[k][2] > 0):
+            #print("found convex-convex")
+            vb_p = rh*_vec(-vb[1],vb[0])  # perpendicular to linesegment pointing to center
+            middle_b = (vi + vk)/2
+            #print("middle_b", middle_b, "vec", ((points[k][2]**2 - (_length(vb,axis=0)/2)**2) ** 0.5) * _unit(vb_p,axis=0))
+            center_b = middle_b + ((points[k][2]**2 - (_length(vb,axis=0)/2)**2) ** 0.5) * _unit(vb_p,axis=0)
+            #print("center_b=",center_b)
+            va_p = rh*_vec(-va[1],va[0])  # perpendicular to linesegment pointing to center
+            middle_a = (vi + vj)/2
+            #print("middle_a", middle_a, "vec", ((points[i][2]**2 - (_length(va,axis=0)/2)**2) ** 0.5) * _unit(va_p,axis=0))
+            center_a = middle_a - ((points[i][2]**2 - (_length(va,axis=0)/2)**2) ** 0.5) * _unit(va_p,axis=0)
+            #print("center_a=",center_a)
+            center_ab = center_b-center_a
+            #print("center_ab=",center_ab, _unit(center_ab,axis=0))
+            d2 = _length2(center_ab,axis=0)
+            if d2 < 1e-10:
+                out.append(points[i])
+                continue
+            a2 = (abs(points[i][2]) + radius) **2
+            b2 = (abs(points[k][2]) + radius) **2
+            x = (d2 + a2 - b2) / (2 * (d2**0.5))
+            h = (a2 - x**2) ** 0.5
+            #print("a2=",a2,"b2=",b2,"d2=",d2,"x=",x,"h=",h, )
+            c2 = center_a + x*_unit(center_ab,axis=0) + rh*h*_unit(_vec(center_ab[1],-center_ab[0]),axis=0)
+            #print("first",x*_unit(center_ab,axis=0),"second",h*_unit(_vec(center_ab[1],-center_ab[0]),axis=0))
+            #print("c2=",c2)
+            p0 = radius*_unit(center_a-c2,axis=0)+c2
+            #print("p0=",p0)
+            p1 = radius*_unit(center_b-c2,axis=0)+c2
+            #print("p1=",p1)
+            out.append(np.array([p0[0],p0[1],points[i][2]]))
+            out.append(np.array([p1[0],p1[1],-rh*radius]))
+        elif (rh*points[i][2] < 0) & (rh*points[k][2] < 0):
+            #print("found concave-concave", vi)
+            vb_p = rh*_vec(-vb[1],vb[0])  # perpendicular to linesegment pointing to center
+            middle_b = (vi + vk)/2
+            #print("middle_b", middle_b, "vec", ((points[k][2]**2 - (_length(vb,axis=0)/2)**2) ** 0.5) * _unit(vb_p,axis=0))
+            center_b = middle_b - ((points[k][2]**2 - (_length(vb,axis=0)/2)**2) ** 0.5) * _unit(vb_p,axis=0)
+            #print("center_b=",center_b)
+            va_p = rh*_vec(-va[1],va[0])  # perpendicular to linesegment pointing to center
+            middle_a = (vi + vj)/2
+            #print("middle_a", middle_a, "vec", ((points[i][2]**2 - (_length(va,axis=0)/2)**2) ** 0.5) * _unit(va_p,axis=0))
+            center_a = middle_a + ((points[i][2]**2 - (_length(va,axis=0)/2)**2) ** 0.5) * _unit(va_p,axis=0)
+            #print("center_a=",center_a)
+            center_ab = center_b-center_a
+            #print("center_ab=",center_ab, _unit(center_ab,axis=0))
+            d2 = _length2(center_ab,axis=0)
+            if d2 < 1e-10:
+                out.append(points[i])
+                continue
+            a2 = (abs(points[i][2]) - radius) **2
+            b2 = (abs(points[k][2]) - radius) **2
+            x = (d2 + a2 - b2) / (2 * (d2**0.5))
+            h = (a2 - x**2) ** 0.5
+            #print("a2=",a2,"b2=",b2,"d2=",d2,"x=",x,"h=",h, )
+            c2 = center_a + x*_unit(center_ab,axis=0) + rh*h*_unit(_vec(center_ab[1],-center_ab[0]),axis=0)
+            #print("first",x*_unit(center_ab,axis=0),"second",h*_unit(_vec(center_ab[1],-center_ab[0]),axis=0))
+            #print("c2=",c2)
+            p0 = -radius*_unit(center_a-c2,axis=0)+c2
+            #print("p0=",p0)
+            p1 = -radius*_unit(center_b-c2,axis=0)+c2
+            #print("p1=",p1)
+            out.append(np.array([p0[0],p0[1],points[i][2]]))
+            out.append(np.array([p1[0],p1[1],-rh*radius]))
+        elif (rh*points[i][2] < 0) & (rh*points[k][2] > 0):
+            #print("found concave-convex", vi)
+            vb_p = rh*_vec(-vb[1],vb[0])  # perpendicular to linesegment pointing to center
+            middle_b = (vi + vk)/2
+            #print("middle_b", middle_b, "vec", ((points[k][2]**2 - (_length(vb,axis=0)/2)**2) ** 0.5) * _unit(vb_p,axis=0))
+            center_b = middle_b + ((points[k][2]**2 - (_length(vb,axis=0)/2)**2) ** 0.5) * _unit(vb_p,axis=0)
+            #print("center_b=",center_b)
+            va_p = rh*_vec(-va[1],va[0])  # perpendicular to linesegment pointing to center
+            middle_a = (vi + vj)/2
+            #print("middle_a", middle_a, "vec", ((points[i][2]**2 - (_length(va,axis=0)/2)**2) ** 0.5) * _unit(va_p,axis=0))
+            center_a = middle_a + ((points[i][2]**2 - (_length(va,axis=0)/2)**2) ** 0.5) * _unit(va_p,axis=0)
+            #print("center_a=",center_a)
+            center_ab = center_b-center_a
+            #print("center_ab=",center_ab, _unit(center_ab,axis=0))
+            d2 = _length2(center_ab,axis=0)
+            if d2 < 1e-10:
+                out.append(points[i])
+                continue
+            a2 = (abs(points[i][2]) - radius) **2
+            b2 = (abs(points[k][2]) + radius) **2
+            x = (d2 + a2 - b2) / (2 * (d2**0.5))
+            h = (a2 - x**2) ** 0.5
+            #print("a2=",a2,"b2=",b2,"d2=",d2,"x=",x,"h=",h, )
+            c2 = center_a + x*_unit(center_ab,axis=0) - rh*h*_unit(_vec(center_ab[1],-center_ab[0]),axis=0)
+            #print("first",x*_unit(center_ab,axis=0),"second",h*_unit(_vec(center_ab[1],-center_ab[0]),axis=0))
+            #print("c2=",c2)
+            #p0 = c2
+            p0 = -radius*_unit(center_a-c2,axis=0)+c2
+            #print("p0=",p0)
+            p1 = radius*_unit(center_b-c2,axis=0)+c2
+            #print("p1=",p1)
+            out.append(np.array([p0[0],p0[1],points[i][2]]))
+            out.append(np.array([p1[0],p1[1],-rh*radius]))
+        elif (points[k][2] == 0) | ((rh*points[i][2] > 0) & (rh*points[k][2] < 0)):
+            #print([
+            #    [vk[0],vk[1],0],
+            #    [vi[0],vi[1],0],
+            #    [vj[0],vj[1],-points[i][2]]
+            #  ], [radius], [1])
+            p = round_polygon_corners([
+                [vk[0],vk[1],0],
+                [vi[0],vi[1],-points[k][2]],
+                [vj[0],vj[1],-points[i][2]]
+              ], [radius], [1])
+            #print("p",p)
+            out.append(np.array([p[2][0],p[2][1],points[i][2]]))
+            out.append(np.array([p[1][0],p[1][1],-rh*radius]))
+        else:
+            out.append(points[i])
+
+        #va_p = np.sign(points[i][2]) * _vec(-va[1],va[0])
+        #vb_p = np.sign(points[k][2]) * _vec(-vb[1],vb[0])
+
+        #va_middle = (vi + vj)/2
+        #vb_middle = (vi + vk)/2
+
+        #e = vj - vi
+        #va_center = va_middle - ((curve**2 - seg_len**2) ** 0.5) * t / (np.dot(t,t) ** 0.5)
+
+        #if points[j][2] != 0:
+        #    vap = _project(vb,[va[1],-va[0]])
+        #    vj_curve = 
+
+        #if reverse == False:
+        #    out.append(np.array([p0[0],p0[1],points[j][2]]))
+        #    out.append(np.array([p1[0],p1[1],rh_radius]))
+        #else:
+        #    out.append(np.array([p1[0],p1[1],points[j][2]]))
+        #    out.append(np.array([p0[0],p0[1],rh_radius]))
+    return np.vstack(out).tolist()
+
+def _pt_pt_side_side(a, b, l_a, l_b, rh=1):
+    ab = a-b
+    l2_a = a**2
+    l2_ab = _length2(ab,axis=0)
+    x = (l2_a-l_b**2+l2_ab) / (2 * l2_ab**0.5)
+    h = (l2_a - x**2) ** 0.5
+    return b+ab*x+rh*h*_unit(_vec(ab[1],-ab[0]),axis=0)
 
 # Positioning
 
@@ -448,19 +814,38 @@ def extrude(other, h):
 @op23
 def rounded_extrude(other,h,radius=1):
     def f(p):
-        d = other(p[:,[0,1]])
-        w = _vec(d.reshape(-1), np.abs(p[:,2]) - h / 2)
-        th = radius * (w[:,0] > -radius) * (w[:,1] > -radius)
-        return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w+np.stack((th,th),axis=1), 0)) - th
+        d = other(p[:,[0,1]]).reshape(-1)
+        w = np.abs(p[:,2]) - h/2
+        out = _max(w,d)
+        # head space
+        head = (w > -2*radius) & (w <= -radius) & (d >= -radius) & (d <= 0)
+        out[head] = _max(w[head] - radius - (radius**2 - (radius + d[head])**2)**0.5, d[head])
+        # crown space
+        crown = np.logical_and(w > -radius,d > -radius)
+        out[crown] = _length(_vec(_max(d[crown]+radius,0),_max(w[crown]+radius,0))) - radius
+        return out
+
+        #out[mid & core] = _min(w
+        #w = _vec(d.reshape(-1), np.abs(p[:,2] - h/2) - h / 2)
+        #th = radius * (w[:,0] > -radius) * (w[:,1] > -radius)
+        #return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w+np.stack((th,th),axis=1), 0)) - th
     return f
 
 @op23
-def taper_extrude(other, h, top=1, bottom=1, e=ease.linear):
+def taper_extrude(other, h, slope=0, e=ease.linear):
     def f(p):
-        q = e(np.clip(p[:,[2]]/h+1/2,0,1))
+        d = other(p[:,[0,1]]).reshape(-1) + e(np.clip(p[:,2]/h,0,1))*h*slope
+        w = _vec(d, np.abs(p[:,2] - h/2) - h / 2)
+        return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w, 0))
+    return f
+
+@op23
+def scale_extrude(other, h, top=1, bottom=1, e=ease.linear):
+    def f(p):
+        q = e(np.clip(p[:,[2]]/h,0,1))
         sc = ((1 - q)*top + q * bottom)
         d = other(p[:,[0,1]] * sc) / sc
-        w = _vec(d.reshape(-1), np.abs(p[:,2]) - h / 2)
+        w = _vec(d.reshape(-1), np.abs(p[:,2] - h/2) - h / 2)
         return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w, 0))
     return f
 
@@ -495,7 +880,6 @@ def helix_revolve(other, offset=0, pitch=1, rotations=1):
         [-s, c],
     ]).T
 
-    
     def f(p):
         a = -np.arctan2(p[:,1], -p[:,0]) / (sgn_pitch*2*np.pi) + 1/2
         z = p[:,2] - a*abs_pitch
@@ -539,3 +923,22 @@ dilate = op2(dn.dilate)
 erode = op2(dn.erode)
 shell = op2(dn.shell)
 repeat = op2(dn.repeat)
+
+def arc_sinD(slope):
+    return np.arcsin(slope)*(180.0/np.pi)
+def arc_cosD(slope):
+    return np.arccos(slope)*(180.0/np.pi)
+def arc_tanD(slope):
+    return np.arctan(slope)*(180.0/np.pi)
+def arc_tan2D(slope):
+    return np.arctan2(slope)*(180.0/np.pi)
+def sinD(ang):
+    return np.sin(ang*(np.pi/180.0))
+def cosD(ang):
+    return np.cos(ang*(np.pi/180.0))
+def tanD(ang):
+    return np.tan(ang*(np.pi/180.0))
+def arc_lenD(ang, radius):
+    return 2*radius*sinD(ang/2)
+def arc_depthD(ang, radius):
+    return radius*(1-cosD(ang/2))

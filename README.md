@@ -533,9 +533,9 @@ f = sphere() - cylinder(0.5)
 
 ## Text
 
-Yes, even text is supported!
+<img width=128 align="right" src="docs/images/2d_text.png">
 
-![Text](docs/images/text-large.png)
+Yes, even text is supported!
 
 `text(font_name, text, width=None, height=None, pixels=PIXELS, points=512)`
 
@@ -546,7 +546,7 @@ TEXT = 'Hello, world!'
 w, h = measure_text(FONT, TEXT)
 
 f = rounded_box((w + 1, h + 1, 0.2), 0.1)
-f -= text(FONT, TEXT).extrude(1)
+f -= text(FONT, TEXT).extrude(0.2).k(0.05)
 ```
 
 Note: [PIL.ImageFont](https://pillow.readthedocs.io/en/stable/reference/ImageFont.html),
@@ -896,12 +896,14 @@ f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)
 
 <img width=128 align="right" src="docs/images/taper_extrude.png">
 
-`taper_extrude(other, h, top=1, bottom=1, e=ease.linear)`
+`taper_extrude(other, height, slope=0, e=ease.linear)`
 
-In `taper_extrude`, the `top` and `bottom` are scaling factors applied to the 2D object.
+In `taper_extrude`, slope is the amount of contracting per unit Z over the
+height of the extrude.  A negative value will cause the image to expand and
+corners will become a larger rounded edge.
 
 ```python
-f = rectangle(10).taper_extrude(6, top=0.8)
+f = rectangle(10).taper_extrude(6, slope=0.1)
 ```
 
 
@@ -914,6 +916,10 @@ f = rectangle(10).taper_extrude(6, top=0.8)
 ```python
 f = hexagon(1).revolve(3)
 ```
+
+### cartesian_revolve
+
+This function will take an XYZ cartesian coordinate space and convert into polar coordinates where the X axis is mapped into the radial axis, Y axis into the angular, and Z is left alone.
 
 ### helix_revolve
 
@@ -1003,7 +1009,7 @@ f = hexagon(2).extrude(0.1)
 
 `equilateral_polygon` makes a shape with equal sides, for example `n=3` is a
 triangle, `n=4` is square, `n=5` is a pentagon, and so forth.  Note: The right edge
-will always be vertical.
+will always be vertical and the radius is the distance to the center of a flat face.
 
 ```python
 f = equilateral_polygon(5,10).extrude(0.1)
@@ -1029,19 +1035,69 @@ f = rounded_x(10,2).extrude(0.1)
 f = polygon([[-16,-16],[14,-8],[3,4],[0,12]]).extrude(0.1)
 ```
 
-### curved_polygon
+### rounded_polygon
 
-<img width=128 align="right" src="docs/images/2d_curved_polygon.png">
+<img width=128 align="right" src="docs/images/2d_rounded_polygon.png">
 
 The points provided to the curve polygon are in the form of [x,y,curve_radius] where a
 curve_radius value of negative will create an arc in the left hand rotation and
 positive in the right hand rotation.  A curve_radius of 0 implies a straight line.
 
-`curved_polygon(points_with_curve)`
+`rounded_polygon(points_with_curve)`
 
 ```python
-f = curved_polygon([[-2,0,0],[0,2,-2**0.5],[2,0,-2**0.5],[0,-2,0]]).extrude(0.1)
+f = rounded_polygon([[-2,0,0],[0,2,-2**0.5],[2,0,-2**0.5],[0,-2,0]]).extrude(0.1)
 ```
+
+## Rounded Polygon Operations
+
+### round_polygon_corners
+
+<img width=128 align="right" src="docs/images/2d_round_polygon_corners.png">
+
+This function will change 
+When matching three curves, concave-convex-concave or convex-concave-convex, this function
+will move the points along the outer curves in order to match the center curve exactly.
+
+`round_polygon_smooth_ends(points_with_curve, radius)`
+`round_polygon_smooth_ends(points_with_curve, [radius...], [index_of_vertex...])`
+
+```python
+pts1 = [[10,0,0],[1,1,-20],[3,10,0]]
+pts2 = [[-10,0,0],[-1,1,20],[-3,10,0]]
+pts3 = [[10,-10,0],[1,-9,-18],[3,0,20]]
+pts4 = [[-10,-10,0],[-1,-9,-18],[-3,0,20]]
+f = rounded_polygon(pts1).shell(0.1).extrude(0.1)
+f |= rounded_polygon(pts2).shell(0.1).extrude(0.1)
+f |= rounded_polygon(pts3).shell(0.1).extrude(0.1)
+f |= rounded_polygon(pts4).shell(0.1).extrude(0.1)
+rpts1 = round_polygon_corners(pts1,1)
+rpts2 = round_polygon_corners(pts2,1)
+rpts3 = round_polygon_corners(pts3,1)
+rpts4 = round_polygon_corners(pts4,1)
+f |= rounded_polygon(rpts1).extrude(0.1)
+f |= rounded_polygon(rpts2).extrude(0.1)
+f |= rounded_polygon(rpts3).extrude(0.1)
+f |= rounded_polygon(rpts4).extrude(0.1)
+```
+
+### round_polygon_smooth_ends
+
+<img width=128 align="right" src="docs/images/2d_round_polygon_smooth_ends.png">
+
+When matching three curves, concave-convex-concave or convex-concave-convex, this function
+will move the points along the outer curves in order to match the center curve exactly.
+
+`round_polygon_smooth_ends(index_of_side_to_modify)`
+
+```python
+pts = [[3,0,0],[2,0,-0.75],[1,0,2],[0,0,-0.75],[0,1,0],[3,1,0]]
+f = rounded_polygon(pts).translate((0,3)).shell(0.1).extrude(0.1)
+rpts = round_polygon_smooth_ends(pts,[1])
+f |= rounded_polygon(rpts).shell(0.1).extrude(0.1)
+```
+
+## 2D Operations
 
 ### edge
 
