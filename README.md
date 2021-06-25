@@ -533,7 +533,7 @@ f = sphere() - cylinder(0.5)
 
 ## Text
 
-<img width=128 align="right" src="docs/images/2d_text.png">
+![Hello World](docs/images/2d_text.png)
 
 Yes, even text is supported!
 
