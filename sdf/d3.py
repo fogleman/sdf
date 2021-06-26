@@ -382,6 +382,45 @@ def orient(other, axis):
     return rotate_to(other, UP, axis)
 
 @op3
+def mirror(other, axis=Z, center=ORIGIN):
+    print("mirror called")
+    a = _normalize(np.array(axis))
+    dot = np.dot(UP, a)
+    if (dot == 1) | (dot == -1):
+        def f(p):
+            return other(np.dot(p-center,[[1,0,0],[0,1,0],[0,0,-1]])+center)
+        return f
+    angle = np.arccos(dot)
+    x, y, z = _normalize(np.cross(UP, a))
+
+    # Rotate to the Z axis
+    s = np.sin(angle)
+    c = np.cos(angle)
+    m = 1 - c
+    matrix_a = np.array([
+        [m*x*x + c, m*x*y + z*s, m*z*x - y*s],
+        [m*x*y - z*s, m*y*y + c, m*y*z + x*s],
+        [m*z*x + y*s, m*y*z - x*s, m*z*z + c],
+    ]).T
+    # Do the flip
+    matrix_b = np.array([[1,0,0],[0,1,0],[0,0,-1]]).T
+    # Rotate back
+    s = np.sin(-angle)
+    c = np.cos(-angle)
+    m = 1 - c
+    matrix_c = np.array([
+        [m*x*x + c, m*x*y + z*s, m*z*x - y*s],
+        [m*x*y - z*s, m*y*y + c, m*y*z + x*s],
+        [m*z*x + y*s, m*y*z - x*s, m*z*z + c],
+    ]).T
+    # Create the overall transformation matrix
+    matrix = np.matmul(np.matmul(matrix_a,matrix_b),matrix_c)
+
+    def f(p):
+        return other(np.dot(p-center, matrix)+center)
+    return f
+
+@op3
 def circular_array(other, count, offset=0):
     other = other.translate(X * offset)
     da = 2 * np.pi / count
