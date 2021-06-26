@@ -332,6 +332,9 @@ f = circle(3).taper_extrude(3,1).translate((0,0,-3))
 f |= circle(3).taper_extrude(3,1).translate((0,0,-3)).mirror([0,0,1])
 generate(f, 'mirror')
 
+# mirror_copy
+f = circle(3).taper_extrude(3,1).translate((0,0,-3)).mirror_copy([0,0,1])
+generate(f, 'mirror_copy')
 
 # slice(other)
 f = example.translate((0, 0, 0.55)).slice().extrude(0.1)

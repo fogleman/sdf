@@ -587,6 +587,10 @@ f = sphere().translate((0, 0, 2))
 
 <img width=128 align="right" src="docs/images/scale.png">
 
+Scale and figure larger or smaller with `factor`.  Unity, 1.0, will leave the
+object the same and smaller numbers will shrink, such as 0.5 which scales to
+half the size, and 2.0 which scales to double the size.
+
 `scale(other, factor)`
 
 Note that non-uniform scaling is an inexact SDF.
@@ -596,19 +600,30 @@ f = sphere().scale(2)
 f = sphere().scale((1, 2, 3)) # non-uniform scaling
 ```
 
-### rotate
+### rotate and rotateD
 
 <img width=128 align="right" src="docs/images/rotate.png">
 
+Given an angle and rotation vector, rotate the figure by `angle` in radians
+(for rotate) or degrees (for rotateD), around the vector axis.  So a rotation
+around Z will translate points around the X-Y plane and leave the Z values the
+same.
+
 `rotate(other, angle, vector=Z)`
+`rotateD(other, angle_in_degrees, vector=Z)`
 
 ```python
 f = capped_cylinder(-Z, Z, 0.5).rotate(pi / 4, X)
+f = capped_cylinder(-Z, Z, 0.5).rotateD(45, X)
 ```
 
 ### mirror
 
 <img width=128 align="right" src="docs/images/mirror.png">
+
+This function reflects the 3d image over the plane specified by the vector.
+For example, using `Z` will reflect across the `Z` plane mapping every positive
+`Z` point to it's negative counterpart and vice versa.
 
 `mirror(other, vector, center=ORIGIN)`
 
@@ -616,6 +631,16 @@ f = capped_cylinder(-Z, Z, 0.5).rotate(pi / 4, X)
 f = circle(3).taper_extrude(3,1).translate((0,0,-3))
 # draw it again upside down
 f |= circle(3).taper_extrude(3,1).translate((0,0,-3)).mirror([0,0,1])
+```
+
+### mirror_copy
+
+<img width=128 align="right" src="docs/images/mirror_copy.png">
+
+`mirror_copy(other, vector, center=ORIGIN)`
+
+```python
+f = circle(3).taper_extrude(3,1).translate((0,0,-3)).mirror_copy([0,0,1])
 ```
 
 ### orient

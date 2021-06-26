@@ -365,6 +365,21 @@ def rotate(other, angle, vector=Z):
     return f
 
 @op3
+def rotateD(other, angle, vector=Z):
+    x, y, z = _normalize(vector)
+    s = np.sin(angle*(180/np.pi))
+    c = np.cos(angle*(180/np.pi))
+    m = 1 - c
+    matrix = np.array([
+        [m*x*x + c, m*x*y + z*s, m*z*x - y*s],
+        [m*x*y - z*s, m*y*y + c, m*y*z + x*s],
+        [m*z*x + y*s, m*y*z - x*s, m*z*z + c],
+    ]).T
+    def f(p):
+        return other(np.dot(p, matrix))
+    return f
+
+@op3
 def rotate_to(other, a, b):
     a = _normalize(np.array(a))
     b = _normalize(np.array(b))
@@ -383,7 +398,6 @@ def orient(other, axis):
 
 @op3
 def mirror(other, axis=Z, center=ORIGIN):
-    print("mirror called")
     a = _normalize(np.array(axis))
     dot = np.dot(UP, a)
     if (dot == 1) | (dot == -1):
@@ -419,6 +433,45 @@ def mirror(other, axis=Z, center=ORIGIN):
     def f(p):
         return other(np.dot(p-center, matrix)+center)
     return f
+
+@op3
+def mirror_copy(other, axis=Z, center=ORIGIN):
+    a = _normalize(np.array(axis))
+    dot = np.dot(UP, a)
+    if (dot == 1) | (dot == -1):
+        def f(p):
+            return _min(other(np.dot(p-center,[[1,0,0],[0,1,0],[0,0,-1]])+center),other(p))
+        return f
+    angle = np.arccos(dot)
+    x, y, z = _normalize(np.cross(UP, a))
+
+    # Rotate to the Z axis
+    s = np.sin(angle)
+    c = np.cos(angle)
+    m = 1 - c
+    matrix_a = np.array([
+        [m*x*x + c, m*x*y + z*s, m*z*x - y*s],
+        [m*x*y - z*s, m*y*y + c, m*y*z + x*s],
+        [m*z*x + y*s, m*y*z - x*s, m*z*z + c],
+    ]).T
+    # Do the flip
+    matrix_b = np.array([[1,0,0],[0,1,0],[0,0,-1]]).T
+    # Rotate back
+    s = np.sin(-angle)
+    c = np.cos(-angle)
+    m = 1 - c
+    matrix_c = np.array([
+        [m*x*x + c, m*x*y + z*s, m*z*x - y*s],
+        [m*x*y - z*s, m*y*y + c, m*y*z + x*s],
+        [m*z*x + y*s, m*y*z - x*s, m*z*z + c],
+    ]).T
+    # Create the overall transformation matrix
+    matrix = np.matmul(np.matmul(matrix_a,matrix_b),matrix_c)
+
+    def f(p):
+        return _min(other(np.dot(p-center, matrix)+center),other(p))
+    return f
+
 
 @op3
 def circular_array(other, count, offset=0):
