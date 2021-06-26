@@ -51,8 +51,8 @@ generate(f, 'capsule')
 f = capped_cylinder(-Z, Z, 0.5)
 generate(f, 'capped_cylinder')
 
-# rounded_cylinder(ra, rb, h)
-f = rounded_cylinder(0.5, 0.1, 2)
+# rounded_cylinder
+f = rounded_cylinder(0, 2, 0.5, 0.1)
 generate(f, 'rounded_cylinder')
 
 # capped_cone(a, b, ra, rb)

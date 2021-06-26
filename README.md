@@ -301,6 +301,8 @@ See the [customizable box example](examples/customizable_box.py) for some starti
 
 ### sphere
 
+Draw a sphere with the radius centered around `center`, by default this is the origin (0,0,0).
+
 <img width=128 align="right" src="docs/images/sphere.png">
 
 `sphere(radius=1, center=ORIGIN)`
@@ -312,6 +314,8 @@ f = sphere(1, (1, 2, 3)) # translated sphere
 ```
 
 ### box
+
+Draw a 3D box with sides specified centered around `center`, by default this is the origin (0,0,0).
 
 <img width=128 align="right" src="docs/images/box2.png">
 
@@ -325,15 +329,20 @@ f = box(a=(-1, -1, -1), b=(3, 4, 5)) # specified by bounds
 
 ### rounded_box
 
+Draw a 3D rounded box with sides specified centered around `center`, by default this is the origin (0,0,0).  The radius of curvature is specified by `radius`.
+
 <img width=128 align="right" src="docs/images/rounded_box.png">
 
-`rounded_box(size, radius)`
+`rounded_box(size, radius, center=ORIGIN)`
 
 ```python
 f = rounded_box((1, 2, 3), 0.25)
 ```
 
 ### wireframe_box
+
+Draw a 3D box with round wires (diameter is specified by thickness) and centered around `center`, by default this is the origin (0,0,0).  The radius of curvature is specified by `radius`.
+
 <img width=128 align="right" src="docs/images/wireframe_box.png">
 
 `wireframe_box(size, thickness)`
@@ -343,6 +352,9 @@ f = wireframe_box((1, 2, 3), 0.05)
 ```
 
 ### torus
+
+torus is like a doughnut shape, like a circle with radius, `r2`, rotated around the `Z` axis at a radius, `r1`, from the center.
+
 <img width=128 align="right" src="docs/images/torus.png">
 
 `torus(r1, r2)`
@@ -352,6 +364,9 @@ f = torus(1, 0.25)
 ```
 
 ### capsule
+
+capsule is a cylinder with rounded ends extending from `-Z` to `Z` and having the radius, `radius`.
+
 <img width=128 align="right" src="docs/images/capsule.png">
 
 `capsule(a, b, radius)`
@@ -361,6 +376,9 @@ f = capsule(-Z, Z, 0.5)
 ```
 
 ### capped_cylinder
+
+capped_cylinder is a flat ended cylinder extending from `-Z` to `Z` and having the radius, `radius`.
+
 <img width=128 align="right" src="docs/images/capped_cylinder.png">
 
 `capped_cylinder(a, b, radius)`
@@ -370,12 +388,15 @@ f = capped_cylinder(-Z, Z, 0.5)
 ```
 
 ### rounded_cylinder
+
+rounded_cylinder is a flat ended cylinder with curved edges extending from `-Z` to `Z` and having the radius, `ra`, and the edges having a radius of `rb`.
+
 <img width=128 align="right" src="docs/images/rounded_cylinder.png">
 
-`rounded_cylinder(ra, rb, h)`
+`rounded_cylinder(-Z, Z, ra, rb)`
 
 ```python
-f = rounded_cylinder(0.5, 0.1, 2)
+f = rounded_cylinder(0, 2, 0.5, 0.1)
 ```
 
 ### capped_cone

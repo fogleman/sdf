@@ -133,19 +133,20 @@ def box(size=1, center=ORIGIN, a=None, b=None):
     return f
 
 @sdf3
-def rounded_box(size, radius):
+def rounded_box(size, radius, center=ORIGIN):
     size = np.array(size)
     def f(p):
-        q = np.abs(p) - size / 2 + radius
+        q = np.abs(p-center) - size / 2 + radius
         return _length(_max(q, 0)) + _min(np.amax(q, axis=1), 0) - radius
     return f
 
 @sdf3
-def wireframe_box(size, thickness):
+def wireframe_box(size, thickness, center=ORIGIN):
     size = np.array(size)
     def g(a, b, c):
         return _length(_max(_vec(a, b, c), 0)) + _min(_max(a, _max(b, c)), 0)
     def f(p):
+        p = p - center
         p = np.abs(p) - size / 2 - thickness / 2
         q = np.abs(p + thickness / 2) - thickness / 2
         px, py, pz = p[:,0], p[:,1], p[:,2]
@@ -203,11 +204,13 @@ def capped_cylinder(a, b, radius):
     return f
 
 @sdf3
-def rounded_cylinder(ra, rb, h):
+def rounded_cylinder(a, b, ra, rb):
+    h = abs(a - b)
+    z = (a + b) / 2
     def f(p):
         d = _vec(
             _length(p[:,[0,1]]) - ra + rb,
-            np.abs(p[:,2]) - h / 2 + rb)
+            np.abs(p[:,2] - z) - h / 2 + rb)
         return (
             _min(_max(d[:,0], d[:,1]), 0) +
             _length(_max(d, 0)) - rb)
