@@ -613,9 +613,9 @@ f = capped_cylinder(-Z, Z, 0.5).rotate(pi / 4, X)
 `mirror(other, vector, center=ORIGIN)`
 
 ```python
-f = circle(3).taper_extrude(3,1)
+f = circle(3).taper_extrude(3,1).translate((0,0,-3))
 # draw an upside down one below the axis
-f |= circle(3).taper_extrude(3,1).mirror([0,0,1])
+f |= circle(3).taper_extrude(3,1).translate((0,0,-3)).mirror([0,0,1])
 ```
 
 ### orient

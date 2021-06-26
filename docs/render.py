@@ -327,9 +327,9 @@ f = rounded_polygon([
 generate(f, '2d_edge')
 
 # mirror
-f = circle(3).taper_extrude(3,1)
+f = circle(3).taper_extrude(3,1).translate((0,0,-3))
 # draw an upside down one below the axis
-f |= circle(3).taper_extrude(3,1).mirror([0,0,1])
+f |= circle(3).taper_extrude(3,1).translate((0,0,-3)).mirror([0,0,1])
 generate(f, 'mirror')
 
 
