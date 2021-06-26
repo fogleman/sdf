@@ -41,7 +41,7 @@ Have a cool example? Submit a PR!
 
 More examples!
 | [pawn.py](examples/pawn.py) | [steering_wheel.py](examples/steering_wheel.py) | [spinning_top.py](examples/spinning_top.py) |
-| --- | --- |
+| --- | --- | --- |
 | ![pawn](docs/images/pawn.png) | ![steering wheel](docs/images/steering_wheel.png) | ![spinning_top](docs/images/spinning_top.png) |
 
 ## Requirements
