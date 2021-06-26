@@ -326,6 +326,13 @@ f = rounded_polygon([
    ]).edge(0.1).extrude(0.1)
 generate(f, '2d_edge')
 
+# mirror
+f = circle(3).taper_extrude(3,1)
+# draw an upside down one below the axis
+f |= circle(3).taper_extrude(3,1).mirror([0,0,1])
+generate(f, 'mirror')
+
+
 # slice(other)
 f = example.translate((0, 0, 0.55)).slice().extrude(0.1)
 generate(f, 'slice')

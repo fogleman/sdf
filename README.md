@@ -606,6 +606,18 @@ f = sphere().scale((1, 2, 3)) # non-uniform scaling
 f = capped_cylinder(-Z, Z, 0.5).rotate(pi / 4, X)
 ```
 
+### mirror
+
+<img width=128 align="right" src="docs/images/mirror.png">
+
+`mirror(other, vector, center=ORIGIN)`
+
+```python
+f = circle(3).taper_extrude(3,1)
+# draw an upside down one below the axis
+f |= circle(3).taper_extrude(3,1).mirror([0,0,1])
+```
+
 ### orient
 
 <img width=128 align="right" src="docs/images/orient.png">
