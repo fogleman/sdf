@@ -554,7 +554,7 @@ f = sphere() - cylinder(0.5)
 
 ## Text
 
-<div style="text-align:center"><img src="docs/images/2d_text.png"></div>
+<p align="center"><img src="docs/images/2d_text.png"></p>
 
 Yes, even text is supported!
 
