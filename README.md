@@ -795,6 +795,17 @@ f = capped_cylinder(-Z, Z, 0.5).circular_array(8, 4)
 
 ## Miscellaneous
 
+<img width=128 align="right" src="docs/images/example.png">
+
+Some of the functions demonstrated below use an example as a starting point:
+
+```python
+f = sphere(1) & box(1.5)
+c = cylinder(0.5)
+f -= c.orient(X) | c.orient(Y) | c.orient(Z)
+example = f
+```
+
 ### blend
 
 <img width=128 align="right" src="docs/images/blend.png">
@@ -807,6 +818,8 @@ f = sphere().blend(box())
 
 ### dilate
 
+Decrease the scalar distance value by radius, `r`, making the object edges dilate, or appear to inflate.
+
 <img width=128 align="right" src="docs/images/dilate.png">
 
 `dilate(other, r)`
@@ -816,6 +829,8 @@ f = example.dilate(0.1)
 ```
 
 ### erode
+
+Increase the scalar distance value by radius, `r`, making the object edges erode, or appear to deflate.
 
 <img width=128 align="right" src="docs/images/erode.png">
 
@@ -828,6 +843,8 @@ f = example.erode(0.1)
 ### shell
 
 <img width=128 align="right" src="docs/images/shell.png">
+
+Create a shell at every boundary, where the scalar distance value crosses positive and negative values.  The thickness of the shell created on the edge is defined by `thickness`.
 
 `shell(other, thickness)`
 
