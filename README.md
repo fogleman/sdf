@@ -329,9 +329,9 @@ f = box(a=(-1, -1, -1), b=(3, 4, 5)) # specified by bounds
 
 ### rounded_box
 
-Draw a 3D rounded box with sides specified centered around `center`, by default this is the origin (0,0,0).  The radius of curvature is specified by `radius`.
-
 <img width=128 align="right" src="docs/images/rounded_box.png">
+
+Draw a 3D rounded box with sides specified centered around `center`, by default this is the origin (0,0,0).  The radius of curvature is specified by `radius`.
 
 `rounded_box(size, radius, center=ORIGIN)`
 
@@ -341,9 +341,9 @@ f = rounded_box((1, 2, 3), 0.25)
 
 ### wireframe_box
 
-Draw a 3D box with round wires (diameter is specified by thickness) and centered around `center`, by default this is the origin (0,0,0).  The radius of curvature is specified by `radius`.
-
 <img width=128 align="right" src="docs/images/wireframe_box.png">
+
+Draw a 3D box with round wires (diameter is specified by thickness) and centered around `center`, by default this is the origin (0,0,0).  The radius of curvature is specified by `radius`.
 
 `wireframe_box(size, thickness)`
 
@@ -353,9 +353,9 @@ f = wireframe_box((1, 2, 3), 0.05)
 
 ### torus
 
-torus is like a doughnut shape, like a circle with radius, `r2`, rotated around the `Z` axis at a radius, `r1`, from the center.
-
 <img width=128 align="right" src="docs/images/torus.png">
+
+torus is like a doughnut shape, like a circle with radius, `r2`, rotated around the `Z` axis at a radius, `r1`, from the center.
 
 `torus(r1, r2)`
 
@@ -365,9 +365,9 @@ f = torus(1, 0.25)
 
 ### capsule
 
-capsule is a cylinder with rounded ends extending from `-Z` to `Z` and having the radius, `radius`.
-
 <img width=128 align="right" src="docs/images/capsule.png">
+
+capsule is a cylinder with rounded ends extending from `-Z` to `Z` and having the radius, `radius`.
 
 `capsule(a, b, radius)`
 
@@ -377,9 +377,9 @@ f = capsule(-Z, Z, 0.5)
 
 ### capped_cylinder
 
-capped_cylinder is a flat ended cylinder extending from `-Z` to `Z` and having the radius, `radius`.
-
 <img width=128 align="right" src="docs/images/capped_cylinder.png">
+
+capped_cylinder is a flat ended cylinder extending from `-Z` to `Z` and having the radius, `radius`.
 
 `capped_cylinder(a, b, radius)`
 
@@ -389,9 +389,9 @@ f = capped_cylinder(-Z, Z, 0.5)
 
 ### rounded_cylinder
 
-rounded_cylinder is a flat ended cylinder with curved edges extending from `-Z` to `Z` and having the radius, `ra`, and the edges having a radius of `rb`.
-
 <img width=128 align="right" src="docs/images/rounded_cylinder.png">
+
+rounded_cylinder is a flat ended cylinder with curved edges extending from `-Z` to `Z` and having the radius, `ra`, and the edges having a radius of `rb`.
 
 `rounded_cylinder(-Z, Z, ra, rb)`
 
@@ -554,7 +554,7 @@ f = sphere() - cylinder(0.5)
 
 ## Text
 
-![Hello World](docs/images/2d_text.png)
+<img align="center" src="docs/images/2d_text.png">
 
 Yes, even text is supported!
 
@@ -810,6 +810,8 @@ example = f
 
 <img width=128 align="right" src="docs/images/blend.png">
 
+Blending of two objects using the scalar distance function between values of two objects with scalar k.
+
 `blend(a, *bs, k=0.5)`
 
 ```python
@@ -818,9 +820,9 @@ f = sphere().blend(box())
 
 ### dilate
 
-Decrease the scalar distance value by radius, `r`, making the object edges dilate, or appear to inflate.
-
 <img width=128 align="right" src="docs/images/dilate.png">
+
+Decrease the scalar distance value by radius, `r`, making the object edges dilate, or appear to inflate.
 
 `dilate(other, r)`
 
@@ -830,9 +832,9 @@ f = example.dilate(0.1)
 
 ### erode
 
-Increase the scalar distance value by radius, `r`, making the object edges erode, or appear to deflate.
-
 <img width=128 align="right" src="docs/images/erode.png">
+
+Increase the scalar distance value by radius, `r`, making the object edges erode, or appear to deflate.
 
 `erode(other, r)`
 
@@ -926,6 +928,10 @@ f = box().transition_radial(sphere(), e=ease.in_out_quad)
 
 <img width=128 align="right" src="docs/images/wrap_around.png">
 
+This function will take an XYZ cartesian coordinate space and convert into
+polar coordinates where the X axis is mapped into the radial axis, Y axis into
+the angular, and Z is left alone.
+
 `wrap_around(other, x0, x1, r=None, e=ease.linear)`
 
 ```python
@@ -991,10 +997,6 @@ f = rectangle(10).taper_extrude(6, slope=0.1)
 ```python
 f = hexagon(1).revolve(3)
 ```
-
-### cartesian_revolve
-
-This function will take an XYZ cartesian coordinate space and convert into polar coordinates where the X axis is mapped into the radial axis, Y axis into the angular, and Z is left alone.
 
 ### helix_revolve
 
