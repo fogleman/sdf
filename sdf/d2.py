@@ -136,8 +136,8 @@ def _wn(pnts, poly):
     #return out_
 
 def _mindist(a, b):
-    inside = (a < 0 and b < 0)
-    r = np.where(inside, _max(a,b), _min(a,b))
+    outside = (a > 0) & (b > 0)
+    r = np.where(outside, _min(a,b), _max(a,b))
 
 # Primitives
 
@@ -785,6 +785,58 @@ def rotate(other, angle):
     return f
 
 @op2
+def rotateD(other, angle):
+    s = np.sin(angle*(180/np.pi))
+    c = np.cos(angle*(180/np.pi))
+    #m = 1 - c
+    matrix = np.array([
+        [c, -s],
+        [s, c],
+    ]).T
+    def f(p):
+        return other(np.dot(p, matrix))
+    return f
+
+@op2
+def mirror(other, axis=Y, center=ORIGIN):
+    u = _normalize(np.array(axis))
+    #m = 1 - c
+    matrix_a = np.array([
+        [u[0], u[1]],
+        [-u[1], u[0]],
+    ]).T
+    matrix_b = [[-1,0],[0,1]]
+    matrix_c = np.array([
+        [u[0], -u[1]],
+        [u[1], u[0]],
+    ]).T
+    # Create the overall transformation matrix
+    matrix = np.matmul(np.matmul(matrix_a,matrix_b),matrix_c)
+    def f(p):
+        return other(np.dot(p-center, matrix)+center)
+    return f
+
+@op2
+def mirror_copy(other, axis=Y, center=ORIGIN):
+    u = _normalize(np.array(axis))
+    #m = 1 - c
+    matrix_a = np.array([
+        [u[0], u[1]],
+        [-u[1], u[0]],
+    ]).T
+    matrix_b = [[-1,0],[0,1]]
+    matrix_c = np.array([
+        [u[0], -u[1]],
+        [u[1], u[0]],
+    ]).T
+    # Create the overall transformation matrix
+    matrix = np.matmul(np.matmul(matrix_a,matrix_b),matrix_c)
+    def f(p):
+        return _min(other(np.dot(p-center, matrix)+center),other(p))
+    return f
+
+
+@op2
 def circular_array(other, count):
     angles = [i / count * 2 * np.pi for i in range(count)]
     return union(*[other.rotate(a) for a in angles])
@@ -813,23 +865,38 @@ def extrude(other, h):
 
 @op23
 def rounded_extrude(other,h,radius=1):
-    def f(p):
-        d = other(p[:,[0,1]]).reshape(-1)
-        w = np.abs(p[:,2]) - h/2
-        out = _max(w,d)
-        # head space
-        head = (w > -2*radius) & (w <= -radius) & (d >= -radius) & (d <= 0)
-        out[head] = _max(w[head] - radius - (radius**2 - (radius + d[head])**2)**0.5, d[head])
-        # crown space
-        crown = np.logical_and(w > -radius,d > -radius)
-        out[crown] = _length(_vec(_max(d[crown]+radius,0),_max(w[crown]+radius,0))) - radius
-        return out
+    if radius == 0:
+        return extrude(other,h)
+    elif radius > 0:
+        def f(p):
+            d = other(p[:,[0,1]]).reshape(-1)
+            w = np.abs(p[:,2]) - h/2
+            out = _max(w,d)
+            # head space
+            head = (w > -2*radius) & (w <= -radius) & (d >= -radius) & (d <= 0)
+            out[head] = _max(w[head] + (radius - (radius**2 - (radius + d[head])**2)**0.5), d[head])
+            # crown space
+            crown = np.logical_and(w > -radius,d > -radius)
+            out[crown] = _length(_vec(_max(d[crown]+radius,0),_max(w[crown]+radius,0))) - radius
+            return out
+        return f
+    elif radius < 0:
+        radius = -radius
+        def f(p):
+            d = other(p[:,[0,1]]).reshape(-1)
+            w = np.abs(p[:,2]) - h/2
+            out = _max(w,d)
+            # inside space
+            inside = (w <= 0) & (d <= 0)
+            out[inside] = _max(radius - _length(_vec(d[inside], w[inside])), out[inside])
+            # crown space
+            crown = (w+radius > 0) & (d >= 0) & (w <= d)
+            out[crown] = _length(_vec(d[crown], w[crown]+radius))
+            crown = (w >= 0) & (d+radius > 0) & (d <= w)
+            out[crown] = _length(_vec(d[crown]+radius, w[crown]))
+            return out
+        return f
 
-        #out[mid & core] = _min(w
-        #w = _vec(d.reshape(-1), np.abs(p[:,2] - h/2) - h / 2)
-        #th = radius * (w[:,0] > -radius) * (w[:,1] > -radius)
-        #return _min(_max(w[:,0], w[:,1]), 0) + _length(_max(w+np.stack((th,th),axis=1), 0)) - th
-    return f
 
 @op23
 def taper_extrude(other, h, slope=0, e=ease.linear):

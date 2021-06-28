@@ -206,6 +206,10 @@ generate(f, 'extrude')
 f = hexagon(10).rounded_extrude(5, radius=2)
 generate(f, 'rounded_extrude')
 
+# rounded_extrude(other, h, radius=-0):
+f = hexagon(10).rounded_extrude(5, radius=-2)
+generate(f, 'rounded_extrude_neg')
+
 # extrude_to(a, b, h, e=ease.linear)
 f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)
 generate(f, 'extrude_to')
@@ -332,9 +336,19 @@ f = circle(3).taper_extrude(3,1).translate((0,0,-3))
 f |= circle(3).taper_extrude(3,1).translate((0,0,-3)).mirror([0,0,1])
 generate(f, 'mirror')
 
+s = circle(2).translate((3,3))
+# draw another on the side, mirrored over the negative X
+s |= circle(2).translate((3,3)).mirror([1,0])
+f = s.extrude(0.1)
+generate(f, '2d_mirror')
+
 # mirror_copy
 f = circle(3).taper_extrude(3,1).translate((0,0,-3)).mirror_copy([0,0,1])
 generate(f, 'mirror_copy')
+
+s = circle(2).translate((3,3)).mirror_copy([1,0.1])
+f = s.extrude(0.1)
+generate(f, '2d_mirror_copy')
 
 # slice(other)
 f = example.translate((0, 0, 0.55)).slice().extrude(0.1)

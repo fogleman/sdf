@@ -432,7 +432,6 @@ def mirror(other, axis=Z, center=ORIGIN):
     ]).T
     # Create the overall transformation matrix
     matrix = np.matmul(np.matmul(matrix_a,matrix_b),matrix_c)
-
     def f(p):
         return other(np.dot(p-center, matrix)+center)
     return f
@@ -470,7 +469,6 @@ def mirror_copy(other, axis=Z, center=ORIGIN):
     ]).T
     # Create the overall transformation matrix
     matrix = np.matmul(np.matmul(matrix_a,matrix_b),matrix_c)
-
     def f(p):
         return _min(other(np.dot(p-center, matrix)+center),other(p))
     return f

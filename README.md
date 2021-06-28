@@ -957,10 +957,20 @@ f = hexagon(1).extrude(1)
 
 <img width=128 align="right" src="docs/images/rounded_extrude.png">
 
+Extrude a 2D and add round edges on border.
+
 `rounded_extrude(other, h, radius=0)`
 
 ```python
 f = hexagon(10).rounded_extrude(5, radius=2)
+```
+
+<img width=128 align="right" src="docs/images/rounded_extrude_neg.png">
+
+Note: when using a negative value, the rounding will go in the opposite direction.
+
+```python
+f = hexagon(10).rounded_extrude(5, radius=-2)
 ```
 
 ### extrude_to
@@ -1192,3 +1202,26 @@ f = rounded_polygon([
    ]).edge(0.1).extrude(0.1)
 ```
 
+### mirror
+
+<img width=128 align="right" src="docs/images/2d_mirror.png">
+
+`mirror(other, axis=Y, center=ORIGIN)`
+
+```
+s = circle(2).translate((3,3))
+# draw another on the side, mirrored over the negative X
+s |= circle(2).translate((3,3)).mirror([1,0])
+f = s.extrude(0.1)
+```
+
+### mirror_copy
+
+<img width=128 align="right" src="docs/images/2d_mirror_copy.png">
+
+`mirror_copy(other, axis=Y, center=ORIGIN)`
+
+```python
+s = circle(2).translate((3,3)).mirror_copy([1, 0.1])
+f = s.extrude(0.1)
+```
