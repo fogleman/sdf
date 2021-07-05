@@ -1,11 +1,11 @@
 from sdf import *
 import os
 
-def generate(f, name, samples=2**26, **kwargs):
+def generate(f, name, samples=2**27, **kwargs):
     os.makedirs('models', exist_ok=True)
     os.makedirs('images', exist_ok=True)
     #stl_path = 'models/%s.stl' % name
-    stl_path = '/dev/shm/%s.stl' % name
+    stl_path = 'models/%s.stl' % name
     png_path = 'images/%s.png' % name
     if os.path.exists(png_path):
         return
@@ -209,6 +209,10 @@ generate(f, 'rounded_extrude')
 # rounded_extrude(other, h, radius=-0):
 f = hexagon(10).rounded_extrude(5, radius=-2)
 generate(f, 'rounded_extrude_neg')
+
+# rounded_extrude_stack(other_bottom, other_top, height_bottom, height_top, radius=-0):
+f = rounded_extrude_stack(rectangle([16,6]),rectangle([6,16]), 5, 7, radius=1)
+generate(f, 'rounded_extrude_stack')
 
 # extrude_to(a, b, h, e=ease.linear)
 f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)

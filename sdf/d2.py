@@ -137,7 +137,7 @@ def _wn(pnts, poly):
 
 def _mindist(a, b):
     outside = (a > 0) & (b > 0)
-    r = np.where(outside, _min(a,b), _max(a,b))
+    return np.where(outside, _min(a,b), _max(a,b))
 
 # Primitives
 
@@ -864,6 +864,57 @@ def extrude(other, h):
     return f
 
 @op23
+def rounded_extrude_stack(obj1,obj2,h1,h2,radius=1):
+    h_mid = (h1+h2)/2
+    def f(p):
+        d1 = obj1(p[:,[0,1]]).reshape(-1)
+        d2 = obj2(p[:,[0,1]]).reshape(-1)
+        mid_d = (d2-d1)/2
+
+        w = (p[:,2]) - h1
+        out = np.abs(p[:,2] - h_mid) - h_mid
+
+        # top of bottom
+        xyplane = (d2 < 0) & (d1 > 0)
+        out[xyplane] = np.abs(w[xyplane]-h2/2) - h2/2
+        xyplane = (d2 > 0) & (d1 < 0)
+        out[xyplane] = np.abs(w[xyplane]+h1/2) - h1/2
+
+        # sides of bottom
+        side = (w < 0) & (w > -h1)
+        out[side] = _mindist(d1[side],out[side])
+        # sides of top
+        side = (w > 0) & (w < h2)
+        out[side] = _mindist(d2[side],out[side])
+
+        # top crown space
+        crown = (w > h2-radius) & (d2 > -radius)
+        out[crown] = _length(_vec(_max(d2[crown]+radius,0),_max(w[crown]-h2+radius,0))) - radius
+        # top bottom-crown space
+        crown = (w <= radius) & (w >= 0) & (d2 > -radius) & (mid_d < 0) & (d1 > 0)
+        crown_radius = _min(-mid_d[crown],radius)
+        out[crown] = _length(_vec(_max(d2[crown]+crown_radius,0),_max(-w[crown]+crown_radius,0))) - crown_radius
+        # bottom top-crown space
+        crown = (w >= -radius) & (w <= 0) & (d1 > -radius) & (mid_d > 0) & (d2 > 0)
+        crown_radius = _min(mid_d[crown],radius)
+        out[crown] = _length(_vec(_max(d1[crown]+crown_radius,0),_max(w[crown]+crown_radius,0))) - crown_radius
+        # bottom bottom-crown space
+        crown = (-w > h1-radius) & (d1 > -radius)
+        out[crown] = _length(_vec(_max(d1[crown]+radius,0),_max(-w[crown]-h1+radius,0))) - radius
+
+        # weld top joint
+        g = _max(radius**2 - _max(radius - np.abs(mid_d),0)**2,0)**0.5
+        mid = (mid_d > 0) & (d2 < radius) & (abs(w) < g) & ((d2 < mid_d + w * (radius-mid_d)/_max(g,1e-20)))
+        out[mid] = _min(radius - ((g[mid] - w[mid])**2+(radius-d2[mid])**2)**0.5, out[mid])
+
+        # weld bottom joint
+        mid = (mid_d < 0) & (d1 < radius) & (abs(w) < g) & ((d1 < -mid_d - w * (radius+mid_d)/_max(g,1e-20)))
+        out[mid] = _min(radius - ((g[mid] + w[mid])**2+(radius-d1[mid])**2)**0.5, out[mid])
+
+        return out
+    return f
+
+@op23
 def rounded_extrude(other,h,radius=1):
     if radius == 0:
         return extrude(other,h)
@@ -871,10 +922,10 @@ def rounded_extrude(other,h,radius=1):
         def f(p):
             d = other(p[:,[0,1]]).reshape(-1)
             w = np.abs(p[:,2]) - h/2
-            out = _max(w,d)
+            out = _mindist(w,d)
             # head space
-            head = (w > -2*radius) & (w <= -radius) & (d >= -radius) & (d <= 0)
-            out[head] = _max(w[head] + (radius - (radius**2 - (radius + d[head])**2)**0.5), d[head])
+            #head = (w > -2*radius) & (w <= -radius) & (d >= -radius) & (d <= 0)
+            #out[head] = _max(w[head] + (radius - (radius**2 - (radius + d[head])**2)**0.5), d[head])
             # crown space
             crown = np.logical_and(w > -radius,d > -radius)
             out[crown] = _length(_vec(_max(d[crown]+radius,0),_max(w[crown]+radius,0))) - radius
@@ -885,7 +936,7 @@ def rounded_extrude(other,h,radius=1):
         def f(p):
             d = other(p[:,[0,1]]).reshape(-1)
             w = np.abs(p[:,2]) - h/2
-            out = _max(w,d)
+            out = _mindist(w,d)
             # inside space
             inside = (w <= 0) & (d <= 0)
             out[inside] = _max(radius - _length(_vec(d[inside], w[inside])), out[inside])
@@ -1000,11 +1051,11 @@ def arc_tanD(slope):
 def arc_tan2D(slope):
     return np.arctan2(slope)*(180.0/np.pi)
 def sinD(ang):
-    return np.sin(ang*(np.pi/180.0))
+    return np.sin(ang*(np.pi/180))
 def cosD(ang):
-    return np.cos(ang*(np.pi/180.0))
+    return np.cos(ang*(np.pi/180))
 def tanD(ang):
-    return np.tan(ang*(np.pi/180.0))
+    return np.tan(ang*(np.pi/180))
 def arc_lenD(ang, radius):
     return 2*radius*sinD(ang/2)
 def arc_depthD(ang, radius):

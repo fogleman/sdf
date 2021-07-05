@@ -1,4 +1,5 @@
-all: req go doc examples
+all: req go doc 
+#examples
 req:
 	python3 -m pip -q install scikit-image numpy meshio
 	which cabextract || sudo yum install -q -y curl cabextract xorg-x11-font-utils fontconfig

@@ -973,6 +973,19 @@ Note: when using a negative value, the rounding will go in the opposite directio
 f = hexagon(10).rounded_extrude(5, radius=-2)
 ```
 
+### rounded_extrude
+
+<img width=128 align="right" src="docs/images/rounded_extrude_stack.png">
+
+Extrude two 2D images and add round edges on border and at the intersection weld the joints.
+
+`rounded_extrude_stack(other_bottom, other_top, height_bottom, height_top, radius)`
+
+```python
+f = rounded_extrude_stack(rectangle([16,6]),rectangle([6,16]), 5, 7, radius=1)
+generate(f, 'rounded_extrude_stack')
+```
+
 ### extrude_to
 
 <img width=128 align="right" src="docs/images/extrude_to.png">
