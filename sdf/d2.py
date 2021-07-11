@@ -744,7 +744,7 @@ def round_polygon_corners(points, radii, corners=None):
         #    out.append(np.array([p0[0],p0[1],rh_radius]))
     return np.vstack(out).tolist()
 
-def rounded_cog(outer_r, cog_r, num):
+def rounded_cog(outer_r, cog_r, num, center=ORIGIN):
     half_ang = 360/num/4
     b = outer_r - cog_r
     f = sinD(half_ang)*b
@@ -753,18 +753,27 @@ def rounded_cog(outer_r, cog_r, num):
     if cog_r <= f:
         raise Exception("rounded_cog: cog radius too small")
     outer_center = (b**2-f**2)**0.5+(cog_r**2-f**2)**0.5
+    #def fun(p):
+    #    p_ang = np.arctan2(p[:,1]-center[1],p[:,0]-center[0])
+    #    p_ang = half_ang - np.abs(np.mod(p_ang,2*half_ang) - half_ang)
+    #    p_len = _length(p - center)
+    #    px = np.sin(p_ang)*p_len
+    #    py = np.cos(p_ang)*p_len
+    #    return _length(p - center) - radius
+    #return fun
     #pts = [[outer_center, 0, cog_r]]
     pts = [[outer_r, 0, cog_r]]
+    #pts = [[outer_r, 0, cog_r]]
     s = 1
-    for i in range(0,2*num):
+    for i in range(2*num):
+        if (i % 2 == 0) & (i > 0):
+            pts = np.vstack((pts,[
+                outer_r*cosD((i*2)*half_ang),
+                outer_r*sinD((i*2)*half_ang),
+                s*cog_r]))
         pts = np.vstack((pts,[
                 outer_center*cosD((i*2+1)*half_ang),
                 outer_center*sinD((i*2+1)*half_ang),
-                s*cog_r]))
-        if i % 2 == 0:
-            pts = np.vstack((pts,[
-                outer_r*cosD((i*2+2)*half_ang),
-                outer_r*sinD((i*2+2)*half_ang),
                 s*cog_r]))
         s = -s
     print(pts)
