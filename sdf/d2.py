@@ -777,7 +777,7 @@ def rounded_cog(outer_r, cog_r, num, center=ORIGIN):
                 s*cog_r]))
         s = -s
     print(pts)
-    pts = round_polygon_smooth_ends(pts, list(range(2,3*num,3)))
+    pts = round_polygon_smooth_ends(pts, list(range(1,3*num,3)))
     return rounded_polygon(pts)
 
 
