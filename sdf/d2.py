@@ -748,16 +748,27 @@ def rounded_cog(outer_r, cog_r, num):
     half_ang = 360/num/4
     b = outer_r - cog_r
     f = sinD(half_ang)*b
+    if (cog_r <= 0) | (outer_r <= 0):
+        raise Exception("rounded_cog: radii must be positive")
+    if cog_r <= f:
+        raise Exception("rounded_cog: cog radius too small")
     outer_center = (b**2-f**2)**0.5+(cog_r**2-f**2)**0.5
-    pts = [[outer_center, 0, cog_r]]
-    s = -1
-    for i in range(1,2*num):
+    #pts = [[outer_center, 0, cog_r]]
+    pts = [[outer_r, 0, cog_r]]
+    s = 1
+    for i in range(0,2*num):
         pts = np.vstack((pts,[
-                outer_center*cosD(i*half_ang*2),
-                outer_center*sinD(i*half_ang*2),
+                outer_center*cosD((i*2+1)*half_ang),
+                outer_center*sinD((i*2+1)*half_ang),
+                s*cog_r]))
+        if i % 2 == 0:
+            pts = np.vstack((pts,[
+                outer_r*cosD((i*2+2)*half_ang),
+                outer_r*sinD((i*2+2)*half_ang),
                 s*cog_r]))
         s = -s
-    pts = round_polygon_smooth_ends(pts, list(range(1,2*num,2)))
+    print(pts)
+    #pts = round_polygon_smooth_ends(pts, list(range(1,3*num,3)))
     return rounded_polygon(pts)
 
 
