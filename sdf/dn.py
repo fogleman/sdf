@@ -112,3 +112,32 @@ def repeat(other, spacing, count=None, padding=0):
             a = _min(a, b)
         return a
     return f
+
+#def _project(a,b,axis=1):
+#    return b*_dot(a,b,axis=axis)/_dot(b,b,axis=axis)
+#
+#def round_polygon_vertex(points, corners, radii):
+#    points = [np.array(pt) for pt in points]
+#    out = []
+#    #print("size p:{}".format(p.shape))
+#    n = len(points)
+#    for i in range(n):
+#        j = (i + n - 1) % n
+#        k = (i + 1) % n
+#        if not i in corners:
+#            out.append(points[i])
+#        else:
+#            radius = radii[corners.index(i)]
+#            vj = points[j][0:2]
+#            vi = points[i][0:2]
+#            vk = points[k][0:2]
+#            print("rounding corner {}".format(points[i]))
+#            # line-line
+#            if points[i][2] == 0 & points[k][2] == 0:
+#                print("found line-line")
+#                bisector = _unit(vj - vi,axis=0) + _unit(vk - vi,axis=0)
+#                pvk = [vk[1],-vk[0]]
+#                rk = _unit(_project(bisector,pvk,axis=0),axis=0) * radius
+#                center = _project(rk,bisector)
+#                out.append(vi + _project(center,vj))
+#                out.append(vi + _project(center,vk))

@@ -981,8 +981,15 @@ Extrude two 2D images and add round edges on border and at the intersection weld
 
 `rounded_extrude_stack(other_bottom, other_top, height_bottom, height_top, radius)`
 
+To increase tensile strength, sometimes it is useful to add more material at
+joints, so increasing the weld_radius will add more fill.
+
+`rounded_extrude_stack(other_bottom, other_top, height_bottom, height_top, radius, weld_radius)`
+
 ```python
 f = rounded_extrude_stack(rectangle([16,6]),rectangle([6,16]), 5, 7, radius=1)
+# to alter the weld radius between the two objects:
+f = rounded_extrude_stack(rectangle([16,6]),rectangle([6,16]), 5, 7, radius=1, weld_radius=2):
 ```
 
 ### extrude_to
@@ -1122,6 +1129,16 @@ f = equilateral_polygon(5,10).extrude(0.1)
 
 ```python
 f = rounded_x(10,2).extrude(0.1)
+```
+
+### rounded_cog
+
+<img width=128 align="right" src="docs/images/2d_rounded_cog.png">
+
+`rounded_cog(outer_r, cog_r, num)`
+
+```python
+f = rounded_cog(38, 6, 14).extrude(0.1)
 ```
 
 ### polygon

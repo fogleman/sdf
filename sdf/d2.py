@@ -139,6 +139,13 @@ def _mindist(a, b):
     outside = (a > 0) & (b > 0)
     return np.where(outside, _min(a,b), _max(a,b))
 
+def _additive(a, b):
+    outside = (a > 0) & (b > 0)
+    return np.where(outside, _min(a,b), _max(a,b))
+def _subtractive(a, b):
+    inside = (a < 0) & (b < 0)
+    return np.where(inside, _max(a,b), _min(a,b))
+
 # Primitives
 
 @sdf2
@@ -737,6 +744,23 @@ def round_polygon_corners(points, radii, corners=None):
         #    out.append(np.array([p0[0],p0[1],rh_radius]))
     return np.vstack(out).tolist()
 
+def rounded_cog(outer_r, cog_r, num):
+    half_ang = 360/num/4
+    b = outer_r - cog_r
+    f = sinD(half_ang)*b
+    outer_center = (b**2-f**2)**0.5+(cog_r**2-f**2)**0.5
+    pts = [[outer_center, 0, cog_r]]
+    s = -1
+    for i in range(1,2*num):
+        pts = np.vstack((pts,[
+                outer_center*cosD(i*half_ang*2),
+                outer_center*sinD(i*half_ang*2),
+                s*cog_r]))
+        s = -s
+    pts = round_polygon_smooth_ends(pts, list(range(1,2*num,2)))
+    return rounded_polygon(pts)
+
+
 def _pt_pt_side_side(a, b, l_a, l_b, rh=1):
     ab = a-b
     l2_a = a**2
@@ -864,8 +888,11 @@ def extrude(other, h):
     return f
 
 @op23
-def rounded_extrude_stack(obj1,obj2,h1,h2,radius=1):
+def rounded_extrude_stack(obj1,obj2,h1,h2,radius=1,weld_radius=None):
     h_mid = (h1+h2)/2
+    if weld_radius is None:
+      weld_radius = radius
+
     def f(p):
         d1 = obj1(p[:,[0,1]]).reshape(-1)
         d2 = obj2(p[:,[0,1]]).reshape(-1)
@@ -875,9 +902,9 @@ def rounded_extrude_stack(obj1,obj2,h1,h2,radius=1):
         out = np.abs(p[:,2] - h_mid) - h_mid
 
         # top of bottom
-        xyplane = (d2 < 0) & (d1 > 0)
+        xyplane = (d2 <= 0) & (d1 > 0)
         out[xyplane] = np.abs(w[xyplane]-h2/2) - h2/2
-        xyplane = (d2 > 0) & (d1 < 0)
+        xyplane = (d2 > 0) & (d1 <= 0)
         out[xyplane] = np.abs(w[xyplane]+h1/2) - h1/2
 
         # sides of bottom
@@ -891,25 +918,27 @@ def rounded_extrude_stack(obj1,obj2,h1,h2,radius=1):
         crown = (w > h2-radius) & (d2 > -radius)
         out[crown] = _length(_vec(_max(d2[crown]+radius,0),_max(w[crown]-h2+radius,0))) - radius
         # top bottom-crown space
-        crown = (w <= radius) & (w >= 0) & (d2 > -radius) & (mid_d < 0) & (d1 > 0)
+        #crown = (w < radius) & (w > 0) & (d2 > -radius) & (mid_d < 0) & (d1 > 0)
+        crown = (w <= radius) & (d2 > -radius) & (mid_d < 0) & (d1 > 0)
         crown_radius = _min(-mid_d[crown],radius)
-        out[crown] = _length(_vec(_max(d2[crown]+crown_radius,0),_max(-w[crown]+crown_radius,0))) - crown_radius
+        out[crown] = _mindist(_length(_vec(_max(d2[crown]+crown_radius,0),_max(-w[crown]+crown_radius,0))) - crown_radius, out[crown])
         # bottom top-crown space
-        crown = (w >= -radius) & (w <= 0) & (d1 > -radius) & (mid_d > 0) & (d2 > 0)
+        #crown = (w > -radius) & (w <= 0) & (d1 >= -radius) & (mid_d > 0) & (d2 > 0)
+        crown = (w >= -radius) & (d1 >= -radius) & (mid_d >= 0) & (d2 > 0)
         crown_radius = _min(mid_d[crown],radius)
-        out[crown] = _length(_vec(_max(d1[crown]+crown_radius,0),_max(w[crown]+crown_radius,0))) - crown_radius
+        out[crown] = _mindist(_length(_vec(_max(d1[crown]+crown_radius,0),_max(w[crown]+crown_radius,0))) - crown_radius, out[crown])
         # bottom bottom-crown space
         crown = (-w > h1-radius) & (d1 > -radius)
         out[crown] = _length(_vec(_max(d1[crown]+radius,0),_max(-w[crown]-h1+radius,0))) - radius
 
         # weld top joint
-        g = _max(radius**2 - _max(radius - np.abs(mid_d),0)**2,0)**0.5
-        mid = (mid_d > 0) & (d2 < radius) & (abs(w) < g) & ((d2 < mid_d + w * (radius-mid_d)/_max(g,1e-20)))
-        out[mid] = _min(radius - ((g[mid] - w[mid])**2+(radius-d2[mid])**2)**0.5, out[mid])
+        g = _max(weld_radius**2 - _max(weld_radius - np.abs(mid_d),0)**2,0)**0.5
+        mid = (mid_d > 0) & (d2 < weld_radius) & (abs(w) < g) & ((d2 < mid_d + w * (weld_radius-mid_d)/_max(g,1e-20)))
+        out[mid] = _min(weld_radius - ((g[mid] - w[mid])**2+(weld_radius-d2[mid])**2)**0.5, out[mid])
 
         # weld bottom joint
-        mid = (mid_d < 0) & (d1 < radius) & (abs(w) < g) & ((d1 < -mid_d - w * (radius+mid_d)/_max(g,1e-20)))
-        out[mid] = _min(radius - ((g[mid] + w[mid])**2+(radius-d1[mid])**2)**0.5, out[mid])
+        mid = (mid_d < 0) & (d1 < weld_radius) & (abs(w) < g) & ((d1 < -mid_d - w * (weld_radius+mid_d)/_max(g,1e-20)))
+        out[mid] = _min(weld_radius - ((g[mid] + w[mid])**2+(weld_radius-d1[mid])**2)**0.5, out[mid])
 
         return out
     return f

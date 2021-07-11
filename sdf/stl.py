@@ -1,5 +1,6 @@
 import numpy as np
 import struct
+import subprocess
 
 def write_binary_stl(path, points):
     n = len(points) // 3
@@ -22,3 +23,13 @@ def write_binary_stl(path, points):
         fp.write(b'\x00' * 80)
         fp.write(struct.pack('<I', n))
         fp.write(a.tobytes())
+
+def read_binary_stl(path):
+    with open(path, 'rb') as fp:
+        fp.seek(80)
+        n = struct.unpack("<I",fp.read(4))
+        points = np.zeros((n[0],9))
+        for i in range(n[0]):
+            points[i,:] = struct.unpack_from('<12xfffffffffxx', fp.read(50))
+        return points.reshape((-1,3))
+

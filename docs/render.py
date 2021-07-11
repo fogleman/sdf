@@ -1,16 +1,18 @@
 from sdf import *
 import os
 
-def generate(f, name, samples=2**27, **kwargs):
+def generate(f, name, samples=2**26, **kwargs):
     os.makedirs('models', exist_ok=True)
     os.makedirs('images', exist_ok=True)
     #stl_path = 'models/%s.stl' % name
-    stl_path = 'models/%s.stl' % name
+    stl_path = '/dev/shm/%s.stl' % name
+    #step_path = '/dev/shm/%s.step' % name
     png_path = 'images/%s.png' % name
     if os.path.exists(png_path):
         return
     render_cmd = './render %s %s' % (stl_path, png_path)
     f.save(stl_path, samples=samples, **kwargs)
+    #f.save(step_path, samples=2**20, **kwargs)
     os.system(render_cmd)
 
 # example
@@ -324,6 +326,10 @@ rpts = round_polygon_smooth_ends(pts,[1])
 f = rounded_polygon(pts).translate((0,3)).shell(0.1).extrude(0.1)
 f |= rounded_polygon(rpts).shell(0.1).extrude(0.1)
 generate(f, '2d_round_polygon_smooth_ends')
+
+# rounded_cog(outer_r, cog_r, num):
+f = rounded_cog(38, 6, 14).extrude(0.1)
+generate(f, '2d_rounded_cog')
 
 # edge
 f = rounded_polygon([

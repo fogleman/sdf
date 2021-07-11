@@ -16,10 +16,19 @@ from .text import (
 from .mesh import (
     generate,
     save,
+    save_mesh,
+    read_mesh,
     sample_slice,
     show_slice,
 )
 
 from .stl import (
     write_binary_stl,
+)
+
+from .step import (
+    write_step,
+)
+from .simplify import (
+    simplify,
 )
