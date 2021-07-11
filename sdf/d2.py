@@ -753,17 +753,7 @@ def rounded_cog(outer_r, cog_r, num, center=ORIGIN):
     if cog_r <= f:
         raise Exception("rounded_cog: cog radius too small")
     outer_center = (b**2-f**2)**0.5+(cog_r**2-f**2)**0.5
-    #def fun(p):
-    #    p_ang = np.arctan2(p[:,1]-center[1],p[:,0]-center[0])
-    #    p_ang = half_ang - np.abs(np.mod(p_ang,2*half_ang) - half_ang)
-    #    p_len = _length(p - center)
-    #    px = np.sin(p_ang)*p_len
-    #    py = np.cos(p_ang)*p_len
-    #    return _length(p - center) - radius
-    #return fun
-    #pts = [[outer_center, 0, cog_r]]
     pts = [[outer_r, 0, cog_r]]
-    #pts = [[outer_r, 0, cog_r]]
     s = 1
     for i in range(2*num):
         if (i % 2 == 0) & (i > 0):
@@ -776,18 +766,18 @@ def rounded_cog(outer_r, cog_r, num, center=ORIGIN):
                 outer_center*sinD((i*2+1)*half_ang),
                 s*cog_r]))
         s = -s
-    print(pts)
     pts = round_polygon_smooth_ends(pts, list(range(1,3*num,3)))
     return rounded_polygon(pts)
+    # TODO: simplify this function into angle driven
+    #def fun(p):
+    #    p_ang = np.arctan2(p[:,1]-center[1],p[:,0]-center[0])
+    #    p_ang = half_ang - np.abs(np.mod(p_ang,2*half_ang) - half_ang)
+    #    p_len = _length(p - center)
+    #    px = np.sin(p_ang)*p_len
+    #    py = np.cos(p_ang)*p_len
+    #    return _length(p - center) - radius
+    #return fun
 
-
-def _pt_pt_side_side(a, b, l_a, l_b, rh=1):
-    ab = a-b
-    l2_a = a**2
-    l2_ab = _length2(ab,axis=0)
-    x = (l2_a-l_b**2+l2_ab) / (2 * l2_ab**0.5)
-    h = (l2_a - x**2) ** 0.5
-    return b+ab*x+rh*h*_unit(_vec(ab[1],-ab[0]),axis=0)
 
 # Positioning
 
@@ -1097,8 +1087,8 @@ def arc_cosD(slope):
     return np.arccos(slope)*(180.0/np.pi)
 def arc_tanD(slope):
     return np.arctan(slope)*(180.0/np.pi)
-def arc_tan2D(slope):
-    return np.arctan2(slope)*(180.0/np.pi)
+def arc_tan2D(y,x):
+    return np.arctan2(y,x)*(180.0/np.pi)
 def sinD(ang):
     return np.sin(ang*(np.pi/180))
 def cosD(ang):

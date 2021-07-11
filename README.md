@@ -148,6 +148,32 @@ By default, `samples=2**22` is used.
 *Tip*: Use the default resolution while developing your SDF. Then when you're done,
 crank up the resolution for your final output.
 
+## Fast Quadric Mesh Simplification
+
+Simplification of the mesh can be accomplished at the same time by using:
+
+```python
+f.save('out.stl', samples=2**24, simplify=True)
+# to simplify (remove 80%) of the mesh after rendering, use:
+f.save('out.stl', samples=2**24, simplify=True, simp_ratio=0.2)
+# to change the simplification agressive value use
+f.save('out.stl', samples=2**24, simplify=True, simp_agressive=5)
+```
+
+or generate once and then simplify afterwards:
+
+```python
+points = f.generate()
+points = simplify(points)
+save_mesh("test_output.stl",points)  # save as STL file
+#save_mesh("test_output.stp",points)  # save as STEP file
+```
+
+By default, `simp_ratio=0.5, simp_agressive=7` is used.
+
+For more information see https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification
+
+
 ## Batches
 
 The SDF is sampled in batches. By default the batches have `32**3 = 32768`
@@ -189,6 +215,20 @@ If you want to save an STL after `generate`, just use:
 
 ```python
 write_binary_stl(path, points)
+```
+
+## Reading and Saving Mesh Files
+
+To read the points from a mesh file use `read_mesh(file)` and to save use `save_mesh(file, points)`.
+The format of the file is determined by the suffix.  For a full list of supported formats, refer to
+meshio.  The additonal STEP file format is only available for saving.
+
+An example of reading a STL file, simplifying it, and then writing it out as a STEP file:
+
+```python
+points = read_mesh("my_mesh.stl")  # This reads a STL file
+points = simplify(points)          # Reduce the mesh to about half
+save_mesh("my_mesh.stp",points)    # Write the mesh out to a STEP file
 ```
 
 ## Visualizing the SDF
@@ -1254,3 +1294,21 @@ f = s.extrude(0.1)
 s = circle(2).translate((3,3)).mirror_copy([1, 0.1])
 f = s.extrude(0.1)
 ```
+
+## Math Functions
+
+Standard math routines provided by Python are available, and additional functions available are:
+
+### Trigonometric
+`arc_sinD(slope)`
+`arc_cosD(slope)`
+`arc_tanD(slope)`
+`arc_tan2D(y,x)`
+
+Returns an angle in degrees.
+
+`sinD(ang)`
+`cosD(ang)`
+`tanD(ang)`
+
+Takes degrees and returns the trigonometric value.
