@@ -32,3 +32,6 @@ from .step import (
 from .simplify import (
     simplify,
 )
+from .slic3r import (
+    slic3r,
+)

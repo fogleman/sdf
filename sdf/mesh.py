@@ -86,7 +86,8 @@ def generate(
         step=None, bounds=None, samples=SAMPLES,
         workers=WORKERS, batch_size=BATCH_SIZE,
         verbose=True, sparse=True,
-        simplify=False, simp_ratio=0.5, simp_agressive=7):
+        simplify=False, simp_ratio=0.5, simp_agressive=7,
+        simp_add_random=None, simp_smooth=False, simp_cut=False):
 
     start = time.time()
 
@@ -149,7 +150,8 @@ def generate(
         print('%d triangles in %g seconds' % (triangles, seconds))
 
     if simplify:
-        points = simp.simplify(points,ratio=simp_ratio, agressive=simp_agressive)
+        points = simp.simplify(sdf,points,simp_ratio=simp_ratio, simp_agressive=simp_agressive,
+                      simp_add_random=simp_add_random, simp_smooth=simp_smooth, simp_cut=simp_cut)
 
     return points
 

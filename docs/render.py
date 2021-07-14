@@ -4,15 +4,12 @@ import os
 def generate(f, name, samples=2**26, **kwargs):
     os.makedirs('models', exist_ok=True)
     os.makedirs('images', exist_ok=True)
-    #stl_path = 'models/%s.stl' % name
-    stl_path = '/dev/shm/%s.stl' % name
-    #step_path = '/dev/shm/%s.step' % name
+    stl_path = 'models/%s.stl' % name
     png_path = 'images/%s.png' % name
     if os.path.exists(png_path):
         return
     render_cmd = './render %s %s' % (stl_path, png_path)
     f.save(stl_path, samples=samples, **kwargs)
-    #f.save(step_path, samples=2**20, **kwargs)
     os.system(render_cmd)
 
 # example

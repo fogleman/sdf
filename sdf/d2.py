@@ -931,12 +931,14 @@ def rounded_extrude_stack(obj1,obj2,h1,h2,radius=1,weld_radius=None):
         #crown = (w < radius) & (w > 0) & (d2 > -radius) & (mid_d < 0) & (d1 > 0)
         crown = (w <= radius) & (d2 > -radius) & (mid_d < 0) & (d1 > 0)
         crown_radius = _min(-mid_d[crown],radius)
-        out[crown] = _mindist(_length(_vec(_max(d2[crown]+crown_radius,0),_max(-w[crown]+crown_radius,0))) - crown_radius, out[crown])
+        out[crown & (d2 <= 0) & (w >= 0)] = 2*radius
+        out[crown] = _min(_length(_vec(_max(d2[crown]+crown_radius,0),_max(-w[crown]+crown_radius,0))) - crown_radius, out[crown])
         # bottom top-crown space
         #crown = (w > -radius) & (w <= 0) & (d1 >= -radius) & (mid_d > 0) & (d2 > 0)
         crown = (w >= -radius) & (d1 >= -radius) & (mid_d >= 0) & (d2 > 0)
         crown_radius = _min(mid_d[crown],radius)
-        out[crown] = _mindist(_length(_vec(_max(d1[crown]+crown_radius,0),_max(w[crown]+crown_radius,0))) - crown_radius, out[crown])
+        out[crown & (d1 <= 0) & (w <= 0)] = 2*radius
+        out[crown] = _min(_length(_vec(_max(d1[crown]+crown_radius,0),_max(w[crown]+crown_radius,0))) - crown_radius, out[crown])
         # bottom bottom-crown space
         crown = (-w > h1-radius) & (d1 > -radius)
         out[crown] = _length(_vec(_max(d1[crown]+radius,0),_max(-w[crown]-h1+radius,0))) - radius
