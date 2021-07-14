@@ -36,13 +36,13 @@ Have a cool example? Submit a PR!
 
 | [gearlike.py](examples/gearlike.py) | [knurling.py](examples/knurling.py) | [blobby.py](examples/blobby.py) | [weave.py](examples/weave.py) |
 | --- | --- | --- | --- |
-| ![gearlike](docs/images/gearlike.png =150x150)| ![knurling](docs/images/knurling.png =150x150)| ![blobby](docs/images/blobby.png =150x150)| ![weave](docs/images/weave.png =150x150)|
-| ![gearlike](docs/images/gearlike.jpg =150x150)| ![knurling](docs/images/knurling.jpg =150x150)| ![blobby](docs/images/blobby.jpg =150x150)| ![weave](docs/images/weave.jpg =150x150)|
+| ![gearlike](docs/images/gearlike.png)| ![knurling](docs/images/knurling.png)| ![blobby](docs/images/blobby.png)| ![weave](docs/images/weave.png)|
+| ![gearlike](docs/images/gearlike.jpg)| ![knurling](docs/images/knurling.jpg)| ![blobby](docs/images/blobby.jpg)| ![weave](docs/images/weave.jpg)|
 
 More examples!
 | [pawn.py](examples/pawn.py) | [steering_wheel.py](examples/steering_wheel.py) | [spinning_top.py](examples/spinning_top.py) |
 | --- | --- | --- |
-| ![pawn](docs/images/pawn.png =150x150)| ![steering wheel](docs/images/steering_wheel.png =150x150)| ![spinning_top](docs/images/spinning_top.png =150x150)|
+| ![pawn](docs/images/pawn.png)| ![steering wheel](docs/images/steering_wheel.png)| ![spinning_top](docs/images/spinning_top.png)|
 
 ## Requirements
 
