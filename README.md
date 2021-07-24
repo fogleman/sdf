@@ -1058,6 +1058,10 @@ f = rounded_extrude_stack(rectangle([16,6]),rectangle([6,16]), 5, 7, radius=1, w
 
 <img width=128 align="right" src="docs/images/extrude_to.png">
 
+`extrude_to` takes two different 2D objects and blends them together by an ease
+operator, by default it is linear, so as to make a smooth transition between
+the two objects.
+
 `extrude_to(a, b, h, e=ease.linear)`
 
 ```python
@@ -1068,11 +1072,11 @@ f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)
 
 <img width=128 align="right" src="docs/images/taper_extrude.png">
 
-`taper_extrude(other, height, slope=0, e=ease.linear)`
-
 In `taper_extrude`, slope is the amount of contracting per unit Z over the
 height of the extrude.  A negative value will cause the image to expand and
 corners will become a larger rounded edge.
+
+`taper_extrude(other, height, slope=0, e=ease.linear)`
 
 ```python
 f = rectangle(10).taper_extrude(6, slope=0.1)
@@ -1083,6 +1087,9 @@ f = rectangle(10).taper_extrude(6, slope=0.1)
 
 <img width=128 align="right" src="docs/images/revolve.png">
 
+`revolve` takes a 2D object and rotates it around the `Z` axis.  Offset is how
+far the center point is moved away from the origin on the `XY` plane.
+
 `revolve(other, offset=0)`
 
 ```python
@@ -1092,6 +1099,10 @@ f = hexagon(1).revolve(3)
 ### helix_revolve
 
 <img width=128 align="right" src="docs/images/helix_revolve.png">
+
+`helix_revolve` will take a 2D object and rotate it around the `Z` axis while
+linearly moving in a helix toward positive `Z`.  A practical use for this is to
+create threads.
 
 `helix_revolve(other, offset=0, pitch=1, rotations=1)`
 
@@ -1113,7 +1124,8 @@ f = example.translate((0, 0, 0.55)).slice().extrude(0.1)
 
 ## 2D Primitives
 
-Note: The examples 2D functions below are called and then extruded to show how to convert a 2D to a 3D.
+Note: The examples 2D functions below are called and then extruded to show how
+to convert a 2D to a 3D.
 
 ### circle
 
