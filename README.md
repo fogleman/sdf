@@ -419,11 +419,12 @@ f = capsule(-Z, Z, 0.5)
 
 <img width=128 align="right" src="docs/images/capped_cylinder.png">
 
-capped_cylinder is a flat ended cylinder extending from `-Z` to `Z` and having the radius, `radius`.
+capped_cylinder is a flat ended cylinder extending from `a` to `b`, both 3D vectors, and having the radius, `radius`.
 
 `capped_cylinder(a, b, radius)`
 
 ```python
+# note: Z = np.array((0, 0, 1))
 f = capped_cylinder(-Z, Z, 0.5)
 ```
 
@@ -431,27 +432,32 @@ f = capped_cylinder(-Z, Z, 0.5)
 
 <img width=128 align="right" src="docs/images/rounded_cylinder.png">
 
-rounded_cylinder is a flat ended cylinder with curved edges extending from `-Z` to `Z` and having the radius, `ra`, and the edges having a radius of `rb`.
+rounded_cylinder is a flat ended cylinder with curved edges extending from `a` to `b`, scalers along the Z axis, and having the radius, `ra`, and the edges having a radius of `rb`.
 
-`rounded_cylinder(-Z, Z, ra, rb)`
+`rounded_cylinder(ra, rb, h)`
 
 ```python
-f = rounded_cylinder(0, 2, 0.5, 0.1)
+f = rounded_cylinder(0.5, 0.1, 2)
 ```
 
 ### capped_cone
 
 <img width=128 align="right" src="docs/images/capped_cone.png">
 
+capped_cone is a flat ended cone extending from `a` to `b`, both 3D vectors, and having the radii, `ra` and `rb`.
+
 `capped_cone(a, b, ra, rb)`
 
 ```python
+# note: Z = np.array((0, 0, 1))
 f = capped_cone(-Z, Z, 1, 0.5)
 ```
 
 ### rounded_cone
 
 <img width=128 align="right" src="docs/images/rounded_cone.png">
+
+rounded_cone is a hemisphere ended cone extending along the Z axis from 0 to `h`, and having the radii, `r1` and `r2`.
 
 `rounded_cone(r1, r2, h)`
 
@@ -463,6 +469,8 @@ f = rounded_cone(0.75, 0.25, 2)
 
 <img width=128 align="right" src="docs/images/ellipsoid.png">
 
+ellipsoid is like a distored sphere centered at the origin, size is specified by a 3D array of scalars.
+
 `ellipsoid(size)`
 
 ```python
@@ -472,6 +480,10 @@ f = ellipsoid((1, 2, 3))
 ### pyramid
 
 <img width=128 align="right" src="docs/images/pyramid.png">
+
+pyramid is the simplest 3D flat sided object, consisting of one side being a
+triangle at the base and 3 more equal sized triangles matching those edges and
+meeting at the point `h` along the `Z` axis.
 
 `pyramid(h)`
 
@@ -523,8 +535,9 @@ f = icosahedron(1)
 
 ## Infinite 2D Primitives
 
-The following SDFs extend to infinity in some or all axes.
-They can only effectively be used in combination with other shapes, as shown in the examples below.
+The following SDFs extend to infinity in some or all axes.  They can only
+effectively be used in combination with other shapes, as shown in the examples
+below.
 
 ### line
 
@@ -532,7 +545,8 @@ They can only effectively be used in combination with other shapes, as shown in 
 
 `line(normal=UP, point=ORIGIN)`
 
-`line` is an infinite cut line, with one side being positive (outside) and one side being negative (inside).
+`line` is an infinite cut line, with the positive side being inside and the
+negative side being outside.
 
 ```python
 f = (circle() & line()).extrude(0.1)
@@ -544,7 +558,9 @@ f = (circle() & line()).extrude(0.1)
 
 `crop(x0=None, y0=None, x1=None, y1=None, k=None)`
 
-`crop` is useful for cutting a shape on one or more axis-aligned planes.
+`crop` is useful for cutting a shape on one or more axis-aligned planes.  Note
+that one can accomplish the same affect by four line cuts with axis normals and
+points defined on the edges.
 
 ```python
 f = (circle() & crop(y0=-0.5, y1=0.5, x0=0)).extrude(0.1)
@@ -553,8 +569,9 @@ f = (circle() & crop(y0=-0.5, y1=0.5, x0=0)).extrude(0.1)
 
 ## Infinite 3D Primitives
 
-The following SDFs extend to infinity in some or all axes.
-They can only effectively be used in combination with other shapes, as shown in the examples below.
+The following SDFs extend to infinity in some or all axes.  They can only
+effectively be used in combination with other shapes, as shown in the examples
+below.
 
 ### plane
 
@@ -562,7 +579,8 @@ They can only effectively be used in combination with other shapes, as shown in 
 
 `plane(normal=UP, point=ORIGIN)`
 
-`plane` is an infinite plane, with one side being positive (outside) and one side being negative (inside).
+`plane` is an infinite plane, with the positive side being inside and the
+negative side being outside.
 
 ```python
 f = sphere() & plane()
@@ -574,7 +592,9 @@ f = sphere() & plane()
 
 `slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None, k=None)`
 
-`slab` is useful for cutting a shape on one or more axis-aligned planes.
+`slab` is useful for cutting a shape on one or more axis-aligned planes.  Note
+that the same effect can be accomplished by using multiple planes cutting with
+a normal starting at points on the cut plane.
 
 ```python
 f = sphere() & slab(z0=-0.5, z1=0.5, x0=0)
@@ -586,7 +606,9 @@ f = sphere() & slab(z0=-0.5, z1=0.5, x0=0)
 
 `cylinder(radius)`
 
-`cylinder` is an infinite cylinder along the Z axis.
+`cylinder` is an infinite cylinder along the Z axis.  This is useful for
+cutting a hole in an object (- operation) or widdling down an object
+so it fits within a cylinder (& operation).
 
 ```python
 f = sphere() - cylinder(0.5)

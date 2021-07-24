@@ -745,6 +745,7 @@ def round_polygon_corners(points, radii, corners=None):
     return np.vstack(out).tolist()
 
 def rounded_cog(outer_r, cog_r, num, center=ORIGIN):
+    num = int(num)
     half_ang = 360/num/4
     b = outer_r - cog_r
     f = sinD(half_ang)*b
