@@ -1347,3 +1347,42 @@ Returns an angle in degrees.
 `tanD(ang)`
 
 Takes degrees and returns the trigonometric value.
+
+## Building GCODE output
+
+To make GCODE files, one needs to choose between which method to print, either additive method (such as plastic printing) or subtractive (such as CNC milling).  These two interfaces rely on external packages, in particular slic3r and pycam.  To call them, use the following functions:
+
+```python
+f = sphere(1)
+points = f.generate(samples=None,step=resolution,batch_size=48, simplify=True, simp_agressive=7,simp_ratio=0.1)
+```
+
+The two methods below use the existing python code for generating a figure.
+
+### Slic3r
+
+```python
+# Write out gcode for this object for additive manufacturing
+# Usage and details can be found https://manual.slic3r.org/
+slic3r("steeringwheel.gcode",points,options={'layer-height': 0.2})
+
+#slic3r("steeringwheel.gcode",points,options={
+#  'layer-height': 0.2,
+#  'nozzle-diameter': 0.35,
+#  'filament-diameter': 2.85,
+#  'temperature': 185,
+#  'first-layer-temperature': 195,
+#  'layer-height': 0.2,
+#  })
+```
+
+### PyCAM
+
+```python
+# Write out gcode for this object for cnc manufacturing
+pycam("pycnc_steeringwheel_rough.yaml",points)
+```
+
+an example yaml file is provided in the pycam project here:
+
+https://raw.githubusercontent.com/eddeliu/pycam-1/master/yaml_flow_example.yml
