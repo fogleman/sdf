@@ -1,0 +1,108 @@
+{
+   "abstract" : "Minimalist Object Orientation (with Moose compatibility)",
+   "author" : [
+      "mst - Matt S. Trout (cpan:MSTROUT) <mst@shadowcat.co.uk>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.24, CPAN::Meta::Converter version 2.150005, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Moo",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "xt"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {}
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Class::Tiny" : "1.001",
+            "Moose" : "0",
+            "MooseX::Types::Common::Numeric" : "0",
+            "Mouse" : "0",
+            "Type::Tiny" : "0",
+            "bareword::filehandles" : "0",
+            "indirect" : "0",
+            "multidimensional" : "0",
+            "namespace::autoclean" : "0",
+            "namespace::clean" : "0",
+            "strictures" : "2"
+         }
+      },
+      "runtime" : {
+         "recommends" : {
+            "Class::XSAccessor" : "1.18",
+            "Sub::Name" : "0.08",
+            "strictures" : "2"
+         },
+         "requires" : {
+            "Class::Method::Modifiers" : "1.1",
+            "Devel::GlobalDestruction" : "0.11",
+            "Exporter" : "5.57",
+            "Module::Runtime" : "0.014",
+            "Role::Tiny" : "2.000004",
+            "Scalar::Util" : "0",
+            "Sub::Defer" : "2.003001",
+            "Sub::Quote" : "2.003001",
+            "perl" : "5.006"
+         }
+      },
+      "test" : {
+         "recommends" : {
+            "CPAN::Meta" : "0",
+            "CPAN::Meta::Requirements" : "0"
+         },
+         "requires" : {
+            "Test::Fatal" : "0.003",
+            "Test::More" : "0.94"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "mailto" : "bug-Moo@rt.cpan.org",
+         "web" : "https://rt.cpan.org/Public/Dist/Display.html?Name=Moo"
+      },
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ],
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/moose/Moo.git",
+         "web" : "https://github.com/moose/Moo"
+      },
+      "x_IRC" : "irc://irc.perl.org/#moose"
+   },
+   "version" : "2.003002",
+   "x_authority" : "cpan:MSTROUT",
+   "x_breaks" : {
+      "App::Commando" : "<= 0.012",
+      "File::DataClass" : "<= 0.54.1",
+      "HTML::Restrict" : "== 2.1.5",
+      "MooX::Emulate::Class::Accessor::Fast" : "<= 0.02",
+      "MySQL::Workbench::Parser" : "<= 0.05",
+      "WebService::Shutterstock" : "<= 0.006"
+   },
+   "x_cpants" : {
+      "ignore" : {
+         "use_strict" : "internal module used to apply strict",
+         "use_warnings" : "internal module used to apply warnings"
+      }
+   },
+   "x_serialization_backend" : "JSON::PP version 2.27400"
+}

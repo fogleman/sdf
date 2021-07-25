@@ -1,0 +1,90 @@
+{
+   "abstract" : "Uniform Resource Identifiers (absolute and relative)",
+   "author" : [
+      "Gisle Aas <gisle@activestate.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.1103, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "URI",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {}
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Exporter" : "5.57",
+            "MIME::Base64" : "2",
+            "Scalar::Util" : "0",
+            "parent" : "0",
+            "perl" : "5.008001",
+            "utf8" : "0"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "File::Temp" : "0",
+            "Test::More" : "0.96"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "mailto" : "bug-URI@rt.cpan.org",
+         "web" : "https://rt.cpan.org/Public/Dist/Display.html?Name=URI"
+      },
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/libwww-perl/uri.git",
+         "web" : "https://github.com/libwww-perl/uri"
+      },
+      "x_IRC" : "irc://irc.perl.org/#lwp",
+      "x_MailingList" : "mailto:libwww@perl.org"
+   },
+   "version" : "1.71",
+   "x_authority" : "cpan:GAAS",
+   "x_contributors" : [
+      "Gisle Aas <gisle@aas.no>",
+      "Karen Etheridge <ether@cpan.org>",
+      "Ville Skyttä <ville.skytta@iki.fi>",
+      "Mark Stosberg <mark@stosberg.com>",
+      "Michael G. Schwern <schwern@pobox.com>",
+      "Olaf Alders <olaf@wundersolutions.com>",
+      "Slaven Rezic <slaven@rezic.de>",
+      "Matt Lawrence <matthewlawrence@venda.com>",
+      "Peter Rabbitson <ribasushi@cpan.org>",
+      "Piotr Roszatycki <piotr.roszatycki@gmail.com>",
+      "Salvatore Bonaccorso <carnil@launchpad.net>",
+      "Tatsuhiko Miyagawa <miyagawa@bulknews.net>",
+      "Torsten Förtsch <torsten.foertsch@gmx.net>",
+      "Adam Herzog <adam@adamherzog.com>",
+      "gerard <gerard@tty.nl>",
+      "Alex Kapranoff <kapranoff@gmail.com>",
+      "Brendan Byrd <Perl@ResonatorSoft.org>",
+      "David Schmidt <davewood@gmx.at>",
+      "Jan Dubois <jand@activestate.com>",
+      "John Miller <john@rimmkaufman.com>",
+      "Kenichi Ishigaki <ishigaki@cpan.org>",
+      "Kent Fredric <kentfredric@gmail.com>",
+      "Masahiro Honma <hiratara@cpan.org>"
+   ],
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

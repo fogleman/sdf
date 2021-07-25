@@ -1,0 +1,80 @@
+{
+   "abstract" : "Basic utilities for writing tests.",
+   "author" : [
+      "Chad Granum <exodist@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 6.010, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Test-Simple",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "IPC::Open3" : "0",
+            "Test::Pod" : "1.41",
+            "Test::Spelling" : "0.12"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "File::Spec" : "0",
+            "File::Temp" : "0",
+            "Scalar::Util" : "1.13",
+            "Storable" : "0",
+            "perl" : "5.006002",
+            "utf8" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "http://github.com/Test-More/test-more/issues"
+      },
+      "repository" : {
+         "type" : "git",
+         "url" : "http://github.com/Test-More/test-more/"
+      }
+   },
+   "version" : "1.302136",
+   "x_breaks" : {
+      "Log::Dispatch::Config::TestLog" : "<= 0.02",
+      "Net::BitTorrent" : "<= 0.052",
+      "Test2::Harness" : "<= 0.000013",
+      "Test2::Tools::EventDumper" : "<= 0.000007",
+      "Test::Able" : "<= 0.11",
+      "Test::Aggregate" : "<= 0.373",
+      "Test::Alien" : "<= 0.04",
+      "Test::Builder::Clutch" : "<= 0.07",
+      "Test::Clustericious::Cluster" : "<= 0.30",
+      "Test::Dist::VersionSync" : "<= v1.1.4",
+      "Test::Exception" : "<= 0.42",
+      "Test::Flatten" : "<= 0.11",
+      "Test::Group" : "<= 0.20",
+      "Test::Modern" : "<= 0.012",
+      "Test::Moose" : "<= 2.1209",
+      "Test::More::Prefix" : "<= 0.005",
+      "Test::ParallelSubtest" : "<= 0.05",
+      "Test::Pretty" : "<= 0.32",
+      "Test::SharedFork" : "<= 0.34",
+      "Test::UseAllModules" : ">= 0.12, <= 0.14",
+      "Test::Wrapper" : "<= v0.3.0"
+   },
+   "x_serialization_backend" : "JSON::PP version 2.27400"
+}

@@ -1,0 +1,189 @@
+---
+# currently implemented features
+# see "yaml_flow_example.yml" for a full format description (not fully implemented)
+
+models:
+        model1:
+                source:
+                        type: file
+                        location: samples/Box0.stl
+                transformations:
+                        - action: scale
+                          scale_target: factor
+                          axes:
+                                  x: 1.25
+                        - action: scale
+                          scale_target: factor
+                          axes: 0.7
+                        - action: scale
+                          scale_target: size
+                          axes:
+                                  x: 10
+                        - action: shift
+                          shift_target: distance
+                          axes:
+                                  x: -20
+                        - action: shift
+                          shift_target: align_max
+                          axes:
+                                  z: 0
+                        - action: shift
+                          shift_target: align_min
+                          axes: [10, 20, 0]
+                        - action: shift
+                          shift_target: center
+                          axes:
+                                  x: 50
+                        - action: rotate
+                          center: [10, 10, 0]
+                          vector: [0, 0, 1]
+                          angle: 90
+                        - action: multiply_matrix
+                          matrix:
+                                  - [1, 0, 0]
+                                  - [0, 1, 0]
+                                  - [0, 0, -1]
+        model1_support:
+                source:
+                        type: support_bridges
+                        models:
+                                -  model1
+                        layout: grid
+                        grid:
+                                distances: {x: 5, y: 7}
+                                offsets:
+                                        x: [1, 2, 0]
+                                        y: [-3]
+                        shape:
+                                height: 2
+                                width: 0.5
+                                length: 4
+        model2:
+                source:
+                        type: copy
+                        original: model1
+                transformations:
+                        - action: projection
+                          center: [0, 0, 2]
+                          vector:
+                                  x: 0
+                                  y: 0
+                                  z: 1
+                        - action: toggle_polygon_directions
+                        - action: revise_polygon_directions
+
+tools:
+        tool1:
+                shape: flat_bottom
+                diameter: 3
+                feed: 300
+                spindle:
+                        spin_up_enabled: true
+                        spin_up_delay: 3
+                        speed: 1200
+
+processes:
+        process_slicing:
+                strategy: slice
+                path_pattern: grid
+                overlap: 0.10
+                step_down: 1.0
+                grid_direction: x
+                milling_style: ignore
+        process_engrave:
+                strategy: engrave
+                step_down: 1.0
+                trace_models:
+                        - model2
+
+bounds:
+        bounds1:
+                specification: absolute
+                lower:
+                        x: -5
+                        y: -5
+                        z: 0
+                upper:
+                        x: 5
+                        y: 5
+                        z: 1
+                reference_models:
+                        - model1
+        bounds2:
+                specification: margins
+                lower: [2, 2, 2]
+                upper: [2, 2, 2]
+                reference_models:
+                        - model1
+
+tasks:
+        task1:
+                type: milling
+                tool: tool1
+                process: process_slicing
+                bounds: bounds1
+                collision_models:
+                        - model1
+                        - model1_support
+        task2:
+                type: milling
+                tool: tool1
+                process: process_engrave
+                bounds: bounds2
+
+
+toolpaths:
+        toolpath1:
+                source:
+                        type: task
+                        item: task1
+                transformations:
+                        - action: clone
+                          offset: [20, 0, 0]
+                          clone_count: 1
+                        - action: shift
+                          shift_target: align_min
+                          axes: [0, 0, null]
+                        - action: shift
+                          shift_target: align_max
+                          axes: [null, null, 0]
+
+export_settings:
+        tp_settings1:
+                gcode:
+                        safety_height: 25
+                        plunge_feedrate: 50
+                        step_width:
+                                x: 0.1
+                                y: 0.1
+                                z: 0.1
+                        corner_style:
+                                mode: optimize_tolerance
+                                naive_tolerance: 0.1
+                                motion_tolerance: 0.05
+
+exports:
+        export1:
+                format:
+                        type: gcode
+                        dialect: linuxcnc
+                        comment: Some GCode export
+                        export_settings: tp_settings1
+                source:
+                        type: toolpath
+                        items:
+                                - toolpath1
+                target:
+                        type: file
+                        location: test.ngc
+        export_support_model:
+                source:
+                        type: model
+                        items:
+                                - model1_support
+                format:
+                        type: model
+                        filetype: stl
+                target:
+                        type: file
+                        location: model1_support.stl

@@ -1,0 +1,37 @@
+{
+   "abstract" : "Module for DNS service discovery (Apple's Bonjour)",
+   "author" : [
+      "George Chlipala <george@walnutcs.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 6.32, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Net-Bonjour",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Net::DNS" : "0.5",
+            "Socket" : "1.75"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "version" : "0.96",
+   "x_serialization_backend" : "JSON::PP version 2.27400"
+}

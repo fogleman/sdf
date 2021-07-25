@@ -1,0 +1,80 @@
+{
+   "abstract" : "PAR Packager",
+   "author" : [
+      "Audrey Tang <cpan@audreyt.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.24, CPAN::Meta::Converter version 2.150010, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "PAR-Packer",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc",
+         "contrib"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "DynaLoader" : "0",
+            "ExtUtils::CBuilder" : "0",
+            "ExtUtils::Embed" : "0",
+            "File::Basename" : "0",
+            "File::Glob" : "0",
+            "File::Spec::Functions" : "0"
+         }
+      },
+      "runtime" : {
+         "recommends" : {
+            "Digest" : "0",
+            "Digest::SHA" : "0",
+            "Module::Signature" : "0",
+            "Tk" : "0",
+            "Tk::ColoredButton" : "0",
+            "Tk::EntryCheck" : "0",
+            "Tk::Getopt" : "0"
+         },
+         "requires" : {
+            "Archive::Zip" : "1.02",
+            "Compress::Zlib" : "1.30",
+            "File::Temp" : "0.05",
+            "Getopt::ArgvFile" : "1.07",
+            "IO::Compress::Gzip" : "0",
+            "Module::ScanDeps" : "1.21",
+            "PAR" : "1.014",
+            "PAR::Dist" : "0.22",
+            "Text::ParseWords" : "0",
+            "perl" : "5.008009"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "IPC::Run3" : "0.048",
+            "Test::More" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/rschupp/PAR-Packer.git",
+         "web" : "https://github.com/rschupp/PAR-Packer"
+      },
+      "x_MailingList" : "par@perl.org"
+   },
+   "version" : "1.043",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

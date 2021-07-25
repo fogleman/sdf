@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <object class="GtkAction" id="CopyModelToClipboard">
+    <property name="label">_Copy</property>
+    <property name="short_label">_Copy</property>
+    <property name="tooltip">Copy model to clipboard</property>
+    <property name="stock_id">gtk-copy</property>
+  </object>
+  <object class="GtkAction" id="PasteModelFromClipboard">
+    <property name="label">_Paste</property>
+    <property name="short_label">_Paste</property>
+    <property name="tooltip">Paste a model from clipboard</property>
+    <property name="stock_id">gtk-paste</property>
+  </object>
+</interface>

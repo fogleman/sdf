@@ -1,0 +1,5 @@
+/home/travis/build/slic3r/Slic3r/local-lib/bin/scandeps.pl
+/home/travis/build/slic3r/Slic3r/local-lib/lib/perl5/Module/ScanDeps.pm
+/home/travis/build/slic3r/Slic3r/local-lib/lib/perl5/Module/ScanDeps/Cache.pm
+/home/travis/build/slic3r/Slic3r/local-lib/man/man1/scandeps.pl.1
+/home/travis/build/slic3r/Slic3r/local-lib/man/man3/Module::ScanDeps.3

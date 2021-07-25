@@ -1,0 +1,19 @@
+Windows
+
+One needs to download and install python 3 and then do a pip install of the
+packages.  From the command line:
+
+> python -m pip -q install scikit-image numpy meshio pyyaml
+
+
+
+Linux
+
+First install python3 and then, install the python packages:
+
+$ python3 -m pip -q install scikit-image numpy meshio pyyaml
+
+To setup the MicroSoft Fonts:
+
+$ which cabextract || sudo yum install -q -y curl cabextract xorg-x11-font-utils fontconfig
+$ [ -e /usr/share/fonts/msttcore/ ] || sudo yum install -q -y https://downloads.sourceforge.net/project/mscorefonts2/rpms/msttcore-fonts-installer-2.6-1.noarch.rpm

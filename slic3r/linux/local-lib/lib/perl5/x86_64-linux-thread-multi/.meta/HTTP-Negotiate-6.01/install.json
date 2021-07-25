@@ -1,0 +1,1 @@
+{"version":"6.01","target":"HTTP::Negotiate","provides":{"HTTP::Negotiate":{"version":"6.01","file":"lib/HTTP/Negotiate.pm"}},"dist":"HTTP-Negotiate-6.01","pathname":"G/GA/GAAS/HTTP-Negotiate-6.01.tar.gz","name":"HTTP::Negotiate"}

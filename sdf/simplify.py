@@ -84,6 +84,8 @@ def _mesh(points):
 def simplify(sdf, points, simp_agressive=7, simp_ratio=0.5, simp_add_random=None, simp_smooth=False, simp_cut=False):
     prefile = tempfile.NamedTemporaryFile(suffix=".obj")
     postfile = tempfile.NamedTemporaryFile(suffix=".obj")
+    prefile.close()
+    postfile.close()
     _mesh(points).write(prefile.name)
     exe_path = os.path.dirname(os.path.realpath(__file__))
     print("Simplifying...")
@@ -195,8 +197,6 @@ def simplify(sdf, points, simp_agressive=7, simp_ratio=0.5, simp_add_random=None
 #            points = sol.x.reshape(-1,3)
 
         points = points[cells.reshape(-1,1),:].reshape(-1,3)
-    prefile.close()
-    postfile.close()
     return points
 
 def _normalize(a):

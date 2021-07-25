@@ -1,0 +1,119 @@
+{
+   "abstract" : "A tiny replacement for Module::Build",
+   "author" : [
+      "Leon Timmermans <leont@cpan.org>",
+      "David Golden <dagolden@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 5.020, CPAN::Meta::Converter version 2.142060, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Module-Build-Tiny",
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "CPAN::Meta" : "0",
+            "DynaLoader" : "0",
+            "Exporter" : "5.57",
+            "ExtUtils::CBuilder" : "0",
+            "ExtUtils::Config" : "0.003",
+            "ExtUtils::Helpers" : "0.020",
+            "ExtUtils::Install" : "0",
+            "ExtUtils::InstallPaths" : "0.002",
+            "ExtUtils::ParseXS" : "0",
+            "File::Basename" : "0",
+            "File::Find" : "0",
+            "File::Path" : "0",
+            "File::Spec::Functions" : "0",
+            "Getopt::Long" : "2.36",
+            "JSON::PP" : "2",
+            "Pod::Man" : "0",
+            "TAP::Harness::Env" : "0",
+            "perl" : "5.006",
+            "strict" : "0",
+            "warnings" : "0"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Test::Pod" : "1.41"
+         }
+      },
+      "runtime" : {
+         "conflicts" : {
+            "local::lib" : "< 1.006008"
+         },
+         "requires" : {
+            "CPAN::Meta" : "0",
+            "DynaLoader" : "0",
+            "Exporter" : "5.57",
+            "ExtUtils::CBuilder" : "0",
+            "ExtUtils::Config" : "0.003",
+            "ExtUtils::Helpers" : "0.020",
+            "ExtUtils::Install" : "0",
+            "ExtUtils::InstallPaths" : "0.002",
+            "ExtUtils::ParseXS" : "0",
+            "File::Basename" : "0",
+            "File::Find" : "0",
+            "File::Path" : "0",
+            "File::Spec::Functions" : "0",
+            "Getopt::Long" : "2.36",
+            "JSON::PP" : "2",
+            "Pod::Man" : "0",
+            "TAP::Harness::Env" : "0",
+            "perl" : "5.006",
+            "strict" : "0",
+            "warnings" : "0"
+         },
+         "suggests" : {
+            "constant" : "1.27"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Carp" : "0",
+            "Cwd" : "0",
+            "Data::Dumper" : "0",
+            "File::Spec" : "0",
+            "File::Temp" : "0",
+            "IO::File" : "0",
+            "IO::Handle" : "0",
+            "IPC::Open2" : "0",
+            "IPC::Open3" : "0",
+            "Test::More" : "0.88",
+            "XSLoader" : "0",
+            "blib" : "0",
+            "lib" : "0",
+            "perl" : "5.006"
+         },
+         "suggests" : {
+            "File::ShareDir" : "1.000"
+         }
+      }
+   },
+   "provides" : {
+      "Module::Build::Tiny" : {
+         "file" : "lib/Module/Build/Tiny.pm",
+         "version" : "0.039"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "mailto" : "bug-module-build-tiny at rt.cpan.org",
+         "web" : "http://rt.cpan.org/Public/Dist/Display.html?Name=Module-Build-Tiny"
+      },
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/Leont/module-build-tiny.git",
+         "web" : "https://github.com/Leont/module-build-tiny"
+      }
+   },
+   "version" : "0.039",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

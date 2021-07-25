@@ -1,0 +1,83 @@
+{
+   "abstract" : "Perl implementation of GNTP Protocol (Client Part)",
+   "author" : [
+      "Yasuhiro Matsumoto <mattn.jp@gmail.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Minilla/v3.0.1, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Growl-GNTP",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "xt",
+         "inc",
+         "share",
+         "eg",
+         "examples",
+         "author",
+         "builder"
+      ]
+   },
+   "prereqs" : {
+      "configure" : {
+         "requires" : {
+            "Module::Build::Tiny" : "0.035"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Test::CPAN::Meta" : "0",
+            "Test::MinimumVersion::Fast" : "0.04",
+            "Test::PAUSE::Permissions" : "0.04",
+            "Test::Pod" : "1.41",
+            "Test::Spellunker" : "v0.2.7"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Crypt::CBC" : "2.29",
+            "Data::UUID" : "0.149",
+            "Digest::MD5" : "2.36",
+            "Digest::SHA" : "5.45",
+            "Filter::Util::Call" : "0"
+         }
+      }
+   },
+   "provides" : {
+      "Growl::GNTP" : {
+         "file" : "lib/Growl/GNTP.pm",
+         "version" : "0.21"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/mattn/p5-Growl-GNTP/issues"
+      },
+      "homepage" : "https://github.com/mattn/p5-Growl-GNTP",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/mattn/p5-Growl-GNTP.git",
+         "web" : "https://github.com/mattn/p5-Growl-GNTP"
+      }
+   },
+   "version" : "0.21",
+   "x_contributors" : [
+      "unknown <Administrator@.(none)>",
+      "Yuki Ibe <yibe@yibe.org>",
+      "mattn <mattn@poo.(none)>",
+      "Marc Thielemann <marc.thielemann@biama.de>",
+      "sugyan <sugi1982@gmail.com>",
+      "Henrik Brix Andersen <henrik@brixandersen.dk>",
+      "John Morrissey <jwm@horde.net>",
+      "Kent Fredric <kentfredric@gmail.com>"
+   ],
+   "x_serialization_backend" : "JSON::PP version 2.27400"
+}

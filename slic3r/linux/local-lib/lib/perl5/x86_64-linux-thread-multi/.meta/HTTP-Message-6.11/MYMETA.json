@@ -1,0 +1,77 @@
+{
+   "abstract" : "HTTP style messages",
+   "author" : [
+      "Gisle Aas <gisle@activestate.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.08, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "HTTP-Message",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Compress::Raw::Zlib" : "0",
+            "Encode" : "2.21",
+            "Encode::Locale" : "1",
+            "Exporter" : "5.57",
+            "HTTP::Date" : "6",
+            "IO::Compress::Bzip2" : "2.021",
+            "IO::Compress::Deflate" : "0",
+            "IO::Compress::Gzip" : "0",
+            "IO::HTML" : "0",
+            "IO::Uncompress::Bunzip2" : "2.021",
+            "IO::Uncompress::Gunzip" : "0",
+            "IO::Uncompress::Inflate" : "0",
+            "IO::Uncompress::RawInflate" : "0",
+            "LWP::MediaTypes" : "6",
+            "MIME::Base64" : "2.1",
+            "MIME::QuotedPrint" : "0",
+            "URI" : "1.10",
+            "perl" : "5.008001"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "mailto" : "bug-HTTP-Message@rt.cpan.org",
+         "web" : "https://rt.cpan.org/Public/Dist/Display.html?Name=HTTP-Message"
+      },
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/libwww-perl/HTTP-Message.git",
+         "web" : "https://github.com/libwww-perl/HTTP-Message"
+      },
+      "x_IRC" : "irc://irc.perl.org/#lwp",
+      "x_MailingList" : "mailto:libwww@perl.org"
+   },
+   "version" : "6.11",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

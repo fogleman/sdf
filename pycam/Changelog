@@ -1,0 +1,284 @@
+Version 0.7.0 - 2017-12-??
+ * switch to Python3 (removing support for Python2)
+ * switch to GTK3 (from GTK2)
+ * switch OpenGL widget from GtkGLext to GLArea (part of GKT3)
+ * switch to new internal data handling
+ * enable loading and saving the workspace state (was disabled during v0.6.x)
+ * non-interactive batch processing allows scripted toolpath operations
+
+Version 0.6.3 - ???
+ * Fix import of DXF files with full-circle holes (github #112).
+ * Fix import of DXF files with bezier curves (github #116).
+ * Fix import of DXF with closed LWPOLYLINE.
+ * Fix line number reporting in CXFImporter.
+ * Fix python2/3 compatibility in CXFImporter.
+ * Better tests.
+
+Version 0.6.2 - 2017-10-27
+ * Bounds: disable percent-based controls for zero-dimensions
+ * fix toolpath grid operation (issue #45)
+ * prevent negative bounding box dimensions
+ * additional dependency 'enum34' (only relevant for Python2)
+
+Version 0.6.1 - 2017-03-11
+ * GCode: limit vertical feedrate (maximum speed of plunge move)
+ * removed experimental support for ODE
+  * the ODE library seems to be not actively developed anymore
+ * removed obsolete support for psyco
+ * prepared code for Python3
+  * Python2-only dependencies are still required
+ * updated help locations (from the old wiki to the new documentation website)
+
+Version 0.6.0 - 2017-02-18
+ * greatly improved OpenGL visualization (contributed by Mattes)
+ * DXF importer:
+  * added bezier support for POLYLINE and LWPOLYLINE
+ * modularization of most features
+ * many more new features
+
+Version 0.5.1 - 2011-06-13
+ * added extrusion for 2D models
+ * 2D projection of multi-layered 2D models
+ * significantly improved performance of 3D visualization
+ * fixed "help" links for Windows users
+ * added GTK theme with a native look&feel for Windows
+ * improved detection of library locations for Windows package
+ * added file type associations (mime) to the debian package
+ * minor bugs fixed
+
+Version 0.5 - 2011-03-28
+ * Toolpaths:
+  * added adaptive positioning for DropCutter strategy (improves precision)
+  * allow conventional/climb milling style for ContourFollow and Engrave strategies
+  * added a very simple "pocketing" mode for 2D models
+  * added toolpath cropping 
+  * added toolpath grid pattern: clone a single toolpath in rows and columns
+  * unify DropCutter behaviour for models that are higher than the defined bounding box
+  * more efficient tool moves for Engraving
+ * Model handling:
+  * added support for simple multi-layered 2D models
+  * added 2D projection of 3D models
+  * added automatic repair of inconsistent polygon winding (inside/outside detection)
+  * automatically distributed support bridges can now be placed at corners or edges
+ * GCode:
+  * added basic support for "touch off" and length compensated tool change
+  * GCode positioning precision (number of digits) is configurable
+  * the default filename extension for exported GCode files is now configurable
+ * Visualization:
+  * changed "simulation mode" for visualizing the machine moves (before: material removal)
+  * visualize toolpath moves up to safety height properly
+  * the scroll wheel now behaves similarly to Inkscape's interface (pan and zoom)
+  * optional visualization of toolpath direction
+  * visualize "inside" polygons (holes) via partial transparency
+ * Usability:
+  * added a configuration setting for automatically loading a custom task settings file on startup
+  * added a simple "undo" feature for reversing model manipulations
+  * enabled drag'n'drop for loading models
+  * visibility of 3D view items is now configurable in the 3D window
+   * via a button and via the context menu
+  * added copy/paste of model to and from the clipboard
+ * Distributed processing:
+  * parallel and distributed processing is configurable in a dialog
+  * improved stability of remote processing: disconnected nodes should not cause problems anymore
+ * Miscellaneous:
+  * added support for single-line fonts text (based on fonts from QCAD)
+  * support non-local file handling (e.g. http, ...)
+  * added support for more DXF features:
+   * 2D: LWPOLYLINE, POLYLINE, CIRCLE, ARC, TEXT, MTEXT
+   * 3D: 3DFACE
+  * added support for EPS/PS contour files
+  * fixed offset of SVG export
+ * noteworthy changes:
+  * bounding box for 2D models must be _above_ the model (before: below or above)
+  * simulation mode: the stock material removal simulation was removed
+
+Version 0.4.0.1 - 2010-10-24
+ * disabled parallel processing for Windows standalone executable
+   (a real fix will follow later)
+
+Version 0.4 - 2010-10-19
+ * use all available CPU cores for parallel processing
+  * this requires at least Python 2.6 or the "python-multiprocessing" package
+ * a standalone windows executable is available (experimental)
+ * added an improved contour toolpath strategy (ContourFollow)
+  * see http://fab.senselab.org/node/43
+ * added options for conventional/climb milling
+ * added automatic support grid distribution for contour models
+ * allow to reverse the direction of a 2D contour model
+ * beautification of the process name (via python-setproctitle)
+ * added experimental cluster processing (server mode)
+ * added G61/64 GCode settings for path precision
+ * Usability:
+  * added optional "orthogonal" view (instead of perspective)
+  * added a "recent files" item to the file menu
+  * added the transparency (alpha) component to all configurable colors
+  * added "remaining time" estimation for all operations
+  * pre-select output filenames of "Save as" dialogs based on the name of the model file
+ * Bugs fixed:
+  * SVG import: work around a bug in pstoedit (shipped with Ubuntu Lucid)
+  * fixed various problems with the support grid
+
+Version 0.3 - 2010-08-16
+ * added support for importing contour paths from SVG files (requires Inkscape and pstoedit)
+ * added basic support for importing simple DXF contour files
+ * added support for engravings (along the lines of a contour model)
+ * added a feature-complete commandline interface
+ * integrated "help" links pointing to the wiki
+ * improved OpenGL lighting (contributed by imyrek)
+ * improved flexibility of the support grid layout:
+  * allow non-square profiles for the support grid
+  * added ability to create support grids with different x/y grid distance
+  * added x/y offsets to support grid options
+ * added 3D view movement and rotation with a keyboard in addition to the mouse
+ * added optional support for the Psyco just-in-time compiler
+ * information about the toolpath settings are stored as comments in GCode files
+ * added a log window
+ * switched default tool size from radius to diameter
+ * improved progress bar responsiveness
+ * fixed first movement in GCode: go up to safety height before moving to the side
+ * fixed model orientation of STL files created by Art of Illusion
+ * fixed performance issue when using a support grid
+ * fixed empty toolpath after transforming the model
+ * fixed various minor bugs of the toolpath generator
+ * fixed rounded corners (see GCode G61)
+
+Version 0.2.5 - 2010-06-10
+ * added support bridges for holding the object during cutting
+ * calculate the estimated machine time for each toolpath
+ * changing the unit (mm/inch) now opens a dialog for scaling the model,
+   processing dimensions or tool dimensions accordingly
+ * remove unnecessary moves to safety height
+ * changed name of configuration setting "overlap" to "overlap_percent"
+   (you may need to change this name in your custom config files)
+
+Version 0.2.4 - 2010-04-12
+ * added a simple simulation mode for visualizing the material penetration of a toolpath
+ * join tangential moves (removes the inner points in a colinear set of adjacent path points)
+ * fixed careless import of Tkinter
+ * added missing INSTALL.TXT to source package
+ * fixed typo that breaks PyCAM for Python 2.6
+
+Version 0.2.3 - 2010-04-05
+ * GUI change: tool and process settings can be combined into tasks
+ * store configured settings to a file in the user's home directory
+ * added "material allowance" support for non-ODE calculations
+ * added export of LinuxCNC tool definitions
+ * added a warning dialog (GUI) for missing dependencies during startup (especially useful for Windows)
+ * improved GUI for model scaling
+ * allow to configure if the tool should move inside/along/around the boundary limits
+ * fixed "overlap" calculation
+ * prevent invalid input values (zero tool radius, ...)
+ * fixed a bug that could rarely cause eternal loops of the PushCutter
+ * reduced memory consumption of toolpaths for python 2.6 or above
+ * disabled ODE as the default computation backend (due to this bug:
+   http://sourceforge.net/tracker/?func=detail&aid=2973876&group_id=24884&atid=382799)
+
+Version 0.2.2 - 2010-03-17
+ * added a graphical installer for Windows (via distutils)
+ * fixed broken commandline parameter "--template"
+ * added workaround for ODE collision detection, that is broken under specific circumstances
+ * fixed hang with PushCutter and ODE on Windows
+ * fixed "division by zero" error in non-ODE mode
+ * allow to disable ODE via commandline option
+ * bugs fixed in cylindrical and toroidal cutter when using dropcutter on horizontal triangles
+ * fixed "setup.py" for distutils packaging (contributed by Arthur Magill)
+
+Version 0.2.1 - 2010-03-09
+ * fixed code that depended on GTK 2.16 (instead of 2.12)
+ * view settings "light", "shadow" and "polygon fill" are now configurable
+ * documented version problems with Debian "Lenny" and Ubuntu (before "Karmic")
+
+Version 0.2 - 2010-03-04
+ * added an alternative GTK interface with additional features:
+  * configurable 3D view settings: model / toolpath / axis / drill progress / frame rate / colors
+  * manipulation of the model: rotation, flip, swap, scale, move
+  * saving the model to an ascii STL file
+  * load/save processing settings from/to a file
+  * handling of multiple processing templates (e.g. "Rough", "Semi-finish" and "Finish")
+  * configure "material allowance" for a minimum distance between drill and model
+  * configure the "safety height" for the machine
+  * allow to manage and export (gcode) multiple toolpaths at once
+  * based on GtkGlExt (for OpenGL)
+  * visualize invalid processing setting combinations
+  * configure "overlap" instead of "lines" and "samples"
+  * configure "maximum step down" instead of "layers"
+  * show a progress bar during calculations
+  * basic lighting for the OpenGL view
+ * improved performance by (optionally) using the "Open Dynamics Engine" (ODE) for
+   collision detection
+
+Version 0.1.11b - 2010-02-25
+ * fix minor release mistake (missing "STLExporter")
+
+Version 0.1.11 - 2010-02-19
+ * fix detection of binary STL
+ * added Simulation mode
+ * ignore invalid triangles (caused by high-resolotion models)
+ * automatic boundary fits to the model
+ * add ubuntu specific note
+ * code cleanups
+
+Version 0.1.10 - 2009-07-13
+ * support binary STL
+ * close contours
+
+Version 0.1.9 - 2009-06-18
+ * linux compatibility
+ * integrated kdtree
+ * fix speedup shortcuts
+
+Version 0.1.8 - 2009-04-14
+ * some feature requests
+ * fixes by Dan Falck
+ * fix bug in torus-point intersection
+ * specify model in cfg
+ * fixed opengl representation
+ * update tests
+
+Version 0.1.7b - 2009-02-10
+ * fix glutInit bug
+
+Version 0.1.7 - 2009-01-27
+ * another try at fixing PushCutter
+ * remove MGED exporter
+
+Version 0.1.6b - 2009-01-15
+ * fix save
+ * follow api updates
+ * fix gcode parameter strings
+
+Version 0.1.6 - 2009-01-14
+ * fix verticals intersection
+ * add ContourCutter
+ * guard against float division
+ * add x/y direction
+ * add ContourCutter
+ * minor layout improvements
+ * make speed configurable
+ * enable command line driven operation
+ * debug output
+ * SVG output
+
+Version 0.1.5 - 2008-11-26
+ * add direction switch
+ * add reading pre-model default values from config file
+ * fix verticals in DropCutter
+
+Version 0.1.4 - 2008-11-16
+ * make tool come outside the stock while cutting
+ * make safety height higher than stock
+
+Version 0.1.3 - 2008-09-17
+ * fix redraw
+
+Version 0.1.2 - 2008-09-11
+ * added unit option mm/in
+ * fix coordinate system for Art of Illusion exported STL files
+ * added view control buttons
+ * added bounding box calculation
+
+Version 0.1.1 - 2008-09-01
+ * second release
+
+Version 0.1 - 2008-08-29
+ * initial release

@@ -1,0 +1,431 @@
+=head1 NAME
+
+ExtUtils::XSpp - XS for C++
+
+=head1 SYNOPSIS
+
+  xspp [--typemap=typemap.xsp [--typemap=typemap2.xsp]]
+       [--xsubpp[=/path/to/xsubpp] [--xsubpp-args="xsubpp args"]
+       Foo.xsp
+
+or
+
+  perl -MExtUtils::XSpp::Cmd -e xspp -- <xspp options and arguments>
+
+In Foo.xs
+
+  INCLUDE_COMMAND: $^X -MExtUtils::XSpp::Cmd -e xspp -- <xspp options/arguments>
+
+Using C<ExtUtils::XSpp::Cmd> is equivalent to using the C<xspp>
+command line script, except that there is no guarantee for C<xspp> to
+be installed in the system PATH.
+
+=head1 OVERVIEW
+
+XS++ is just a thin layer over plain XS, hence to use it you
+are supposed to know, at the very least, C++ and XS.
+
+This means that you may need typemaps for B<both> the normal XS
+pre-processor I<xsubpp> and the XS++ pre-processor I<xspp>. More on
+that in the I<TYPEMAPS> section below.
+
+=head1 COMMAND LINE
+
+=head2 C<--typemap=/path/to/typemap.xsp>
+
+Can be specified multiple times to process additional typemap files
+before the main XS++ input files.  Typemap files are processed the
+same way as regular XS++ files, except that output code is discarded.
+
+=head2 C<--xsubpp[=/path/to/xsubpp]>
+
+If specified, XS++ will run F<xsubpp> after processing the XS++ input
+file.  If the path to F<xsubpp> is not specified, F<xspp> expects to
+find it in the system PATH.
+
+=head2 C<--xsubpp-args="extra xsubpp args">
+
+Can be used to pass additional command line arguments to F<xsubpp>.
+
+=head1 TYPEMAPS
+
+=head2 Ordinary XS typemaps
+
+To recap, I<ordinary> XS typemaps do the following three things:
+
+=over 2
+
+=item *
+
+Associate a C type with an identifier such as T_FOO or O_FOO
+(which we'll call I<XS type> here).
+
+=item *
+
+Define an INPUT mapping for converting a Perl data structure to the
+aforementioned C type.
+
+=item *
+
+Define an OUTPUT mapping for converting the C data structure back
+into a Perl data structure.
+
+=back
+
+These are still required in the context of XS++. There are some helpers
+to take away the tedium, but I'll get to that later. For XS++, there's
+another layer of typemaps. The following section will discuss those.
+
+=head2 XS++ typemaps
+
+There is nothing special about XS++ typemap files (i.e. you can put typemaps
+directly in your F<.xsp> file), but it is handy to have common typemaps in a
+separate file, typically called F<typemap.xsp> to avoid duplication.
+
+  %typemap{<C++ type>}{simple};
+
+Just let XS++ know that this is a valid type, the type will be passed
+unchanged to XS code B<except> that any C<const> qualifiers will be
+stripped.
+
+  %typemap{<C++ reference type>}{reference};
+
+Handle C++ references: the XS variable will be declared as a pointer,
+and it will be explicitly dereferenced in the function call. If it is
+used in the return value, the function will create B<copy> of the
+returned value using a copy constructor.
+
+As a shortcut for the common case of declaring both of the above
+for a given type, you may use
+
+  %typemap{<C++ type>};
+
+Which has the same effect as:
+
+  %typemap{<C++ type>}{simple};
+  %typemap{<C++ type>&}{reference};
+
+For more control over the type mapping, you can use the C<parsed>
+variant as follows.
+
+  %typemap{<C++ type 1>}{parsed}{%<C++ type 2>%};
+
+When C<C++ type 1> is used, replace it with C<C++ type 2> in the
+generated XS code.
+
+  %typemap{<C++ type>}{parsed}{
+      %cpp_type{%<C++ type 2>%};
+      %call_function_code{% $CVar = new Foo( $Call ) %};
+      %cleanup_code{% ... %};
+      %precall_code{% ... %};
+
+      # use only one of the following
+      %output_code{% $PerlVar = newSViv( $CVar ) %};
+      %output_list{% PUTBACK; XPUSHi( $CVar ); SPAGAIN %};
+  };
+
+Is a more flexible form for the C<parsed> typemap.  All the parameters
+are optional.
+
+=over 4
+
+=item cpp_type
+
+Specifies the C++ type used for the variable declaration in the
+generated XS code.
+
+If not specified defaults to the type specified in the typemap.
+
+=item call_function_code
+
+Used when the typemap applies to the return value of the function.
+
+Specifies the code to use in the function call.  The special variables
+C<$Call> and C<$CVar> are replaced with the actual call code and the name of
+the C++ return variable.
+
+=item output_code
+
+Used when the typemap applies to the return value of the function.
+See also C<%output_list>.
+
+Specifies the code emitted right after the function call to convert
+the C++ return value into a Perl return value.  The special variable
+C<$CVar> is replaced with the C++ return variable name.
+
+=item cleanup_code
+
+Used when the typemap applies to the return value of the function.
+
+Specifies some code emitted after output value processing.  The
+special variables C<$PerlVar> and C<$CVar> are replaced with the names of the
+C++ variables containing the Perl scalar and the corresponding C++
+value.
+
+=item precall_code
+
+Used when the typemap applies to a parameter.
+
+Specifies some code emitted after argument processing and before
+calling the C++ method.  The special variables C<$PerlVar> and C<$CVar> are
+replaced with the names of the C++ variables containing the Perl
+scalar and the corresponding C++ value.
+
+=item output_list
+
+Used when the typemap applies to the return value of the function, as
+an alternative to C<%output_code>.
+
+Specifies some code that manipulates the Perl stack directly in order
+to return a list.  The special variable C<$CVar> is replaced with the C++
+name of the output variable.
+
+The code must use PUTBACK/SPAGAIN if appropriate.
+
+=back
+
+=head2 Putting all the typemaps together
+
+In summary, the XS++ typemaps (optionally) give you much more control
+over the type conversion code that's generated for your XSUBs. But
+you still need to let the XS compiler know how to map the C types
+to Perl and back using the XS typemaps.
+
+Most of the time, you just need to convert basic C(++) types or the types
+that you define with your C++ classes. For the former, XS++ comes with
+a few default mappings for booleans, integers, floating point numbers,
+and strings.
+For classes, XS++ can automatically create a mapping of type C<O_OBJECT>
+which uses the de-facto standard way of storing a pointer to the C(++)
+object in the IV slot of a referenced/blessed scalar. Due to backwards
+compatibility, this must be explicitly enabled by adding
+
+    %loadplugin{feature::default_xs_typemap};
+
+in F<typemap.xsp> (or near the top of every F<.xsp> file).
+
+If you deal with any
+other types as arguments or return types, you still need to write both
+XS and XS++ typemaps for these so that the systems know how to deal with them.
+
+See either L</Custom XS typemaps> below for a way to specify XS typemaps from
+XS++ or L<perlxs> for a discussion of inline XS typemaps that don't require
+the traditional XS F<typemap> file.
+
+=head2 Custom XS typemaps
+
+XS++ provides a default mapping for object types to an C<O_OBJECT> typemap
+with standard input and output glue code, which should be adequate for most
+uses.
+
+There are multiple ways to override this default when needed.
+
+    %typemap{Foo *}{simple}{
+        %xs_type{O_MYMAP};
+        %xs_input_code{% ... %}; // optional
+        %xs_output_code{% ... %}; // optional
+    };
+
+can be used to define a new type -> XS typemap mapping, with optinal
+input/output code.  Since XS typemap definitions are global, XS
+input/output code applies to all types with the same %xs_type, hence
+there is no need to repeat it.
+
+    %typemap{_}{simple}{
+        %name{object};
+        %xs_type{O_MYMAP};
+        %xs_input_code{% ... %}; // optional
+        %xs_output_code{% ... %}; // optional
+    };
+
+can be used to change the default typemap used for all classes.
+
+=head1 DESCRIPTION
+
+Anything that does not look like a XS++ directive or a class
+declaration is passed verbatim to XS. If you want XS++ to ignore code
+that looks like a XS++ directive or class declaration, simply surround it with
+a raw block delimiter like this:
+
+  %{
+  XS++ won't interpret this
+  %}
+
+=head2 %code
+
+See under B<Classes>. Note that custom C<%code> blocks are the only
+exception to the exception handling. By specifying a custom C<%code>
+block, you forgo the automatic exception handlers.
+
+=head2 %file
+
+  %file{file/path.h};
+  ...
+  %file{file/path2};
+  ...
+  %file{-}
+
+By default XS++ output goes to standard output; to change this, use the
+C<%file> directive; use C<-> for standard output.
+
+=head2 %module
+
+  %module{Module::Name};
+
+Will be used to generate the C<MODULE=Module::Name> XS directives.
+It indirectly sets the name of the shared library that is generated
+as well as the name of the module via which L<XSLoader> will be
+able to find/load it.
+
+=head2 %name
+
+  %name{Perl::Class} class MyClass { ... };
+  %name{Perl::Func} int foo();
+
+Specifies the Perl name under which the C++ class/function will be
+accessible. By default, constructor names are mapped to C<new> in Perl.
+
+=head2 %typemap
+
+See L</TYPEMAPS> above.
+
+=head2 %length
+
+When you need to pass a string from Perl to an XSUB that
+takes the C string and its length as arguments,
+you may have XS++ pass the length of the string automatically.
+For example, if you declare a method as follows,
+
+  void PrintLine( char* line, unsigned int %length{line} );
+
+you can call the method from Perl like this:
+
+  $object->PrintLine( $string );
+
+This feature is also present in plain XS. See also: L<perlxs>.
+
+If you use C<%length(line)> in conjunction with any kind of
+special code block such as C<%code>, C<%postcall>, etc.,
+then you can refer to the length of the string
+(here: C<line>) I<efficiently> as C<length(line)> in the code.
+
+=head2 %alias
+
+Decorator for function/method declarations such as
+
+  double add(double a, double b)
+    %alias{subtract = 1} %alias{multiply = 2};
+
+Which will cause the generation of just a single XSUB using the
+XS "ALIAS" feature (see L<perlxs>). It will be installed as all of
+C<add>, C<subtract>, and C<multiply> on the Perl side and call either
+the C++ C<add>, C<subtract>, or C<multiply> functions depending on
+which way it was called.
+
+Notes: If used in conjunction with C<%name{foo}> to rename the function,
+then the C<%name> will only affect the main function name
+(in the above example, C<add> but not C<subtract> or C<multiply>).
+When used with the C<%code> feature, the custom code will have to
+use the C<ix> integer variable to decide which function to call.
+C<ix> is set to 0 for the main function. Make sure to read up
+on the ALIAS feature of plain XS. Aliasing is not supported for
+constructors and destructors.
+
+=head2 Classes
+
+  %name{My::Class} class MyClass : public %name{My::Base} MyBase
+  {
+      // can be called in Perl as My::Class->new( ... );
+      MyClass( int arg );
+      // My::Class->newMyClass( ... );
+      %name{newMyClass} MyClass( const char* str, int arg );
+  
+      // standard DESTROY method
+      ~MyClass();
+  
+      int GetInt();
+      void SetValue( int arg = -1 );
+  
+      %name{SetString} void SetValue( const char* string = NULL );
+  
+      // Supply a C<CODE:> or C<CLEANUP:> block for the XS
+      int MyMethod( int a, int b )
+          %code{% RETVAL = a + b; %}
+          %cleanup{% /* do something */ %};
+  
+      // Expose class method as My::ClassMethod::ClassMethod($foo)
+      static void ClassMethod( double foo );
+
+      // Expose member variable as a pair of set_boolean/get_boolean accessors
+      bool boolean %get %set;
+  };
+
+=head2 Comments
+
+XS++ recognizes both C-style comments C</* ... */> and C++-style
+comments C<// ...>.  Comments are removed from the XS output.
+
+=head2 Exceptions
+
+C++ Exceptions are always caught and transformed to Perl C<croak()>
+calls. If the exception that was caught inherited from C<std::exception>,
+then the C<what()> message is included in the Perl-level error message.
+All other exceptions will result in the C<croak()> message
+C<"Caught unhandled C++ exception of unknown type">.
+
+Note that if you supply a custom C<%code> block for a function or method,
+the automatic exception handling is turned off.
+
+=head2 Member variables
+
+By default, member variable declarations are ignored; the C<%get> and
+C<%set> decorators syntehsize a getter/setter named after the member
+variable (can be renamed using C<%name>).
+
+XS++ defaults to get_/set_ prefix for getters/setters.  This can be
+overridden on an individual basis by using e.g.
+
+    int foo %get{readFoo} %set{writeFoo};
+
+As an alternative, the class-level C<%accessors> decorator sets the the
+accessor style for the whole class:
+
+    %accessors{
+        %get_style{no_prefix};
+        %set_style{camelcase};
+    };
+
+Available styles are
+
+=over 4
+
+=item no_prefix   => foo
+
+=item underscore  => get_foo, set_foo
+
+=item camelcase   => getFoo, setFoo
+
+=item uppercase   => GetFoo, SetFoo
+
+=back
+
+=head1 EXAMPLES
+
+The distribution contains an F<examples> directory. The
+F<examples/XSpp-Example> directory therein demonstrates
+a particularly simple way of getting started with XS++.
+
+=head1 AUTHOR
+
+Mattia Barbon <mbarbon@cpan.org>
+
+=head1 LICENSE
+
+This program is free software; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
+=cut
+
+# local variables:
+# mode: cperl
+# end:

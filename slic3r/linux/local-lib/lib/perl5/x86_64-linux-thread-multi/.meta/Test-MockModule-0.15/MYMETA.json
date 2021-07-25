@@ -1,0 +1,60 @@
+{
+   "abstract" : "Override subroutines in a module for unit testing",
+   "author" : [
+      "Current Maintainer: Geoff Franks <gfranks@cpan.org>",
+      "Original Author: Simon Flack <simonflk _AT_ cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Build version 0.4222",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Test-MockModule",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "Test::More" : 0.88,
+            "Test::Warnings" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.38"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Carp" : "0",
+            "SUPER" : "0",
+            "Scalar::Util" : "0",
+            "perl" : 5.006
+         }
+      }
+   },
+   "provides" : {
+      "Test::MockModule" : {
+         "file" : "lib/Test/MockModule.pm",
+         "version" : "0.15"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/geofffranks/test-mockmodule/issues"
+      },
+      "homepage" : "https://github.com/geofffranks/test-mockmodule",
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ],
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/geofffranks/test-mockmodule.git"
+      }
+   },
+   "version" : "0.15",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

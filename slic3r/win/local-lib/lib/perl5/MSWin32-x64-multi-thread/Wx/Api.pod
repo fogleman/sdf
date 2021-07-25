@@ -1,0 +1,162 @@
+=head1 NAME
+
+API - wxPerl extension API documentation
+
+=head1 DESCRIPTION
+
+=head2 WXPL_API_VERSION
+
+An integer value used to differentiate wxPerl versions, it is guaranteed to
+be non-decreasing. wxPerl 0.15 value is 0150; wxPerl 1.00 value will be
+1000, wxPerl 2.12 value will be 2120.
+
+I<Introduced in wxPerl 0.15>
+
+=head2 wxPli_create_evthandler
+
+  SV* wxPli_create_evthandler( pTHX_ wxEvtHandler* object,
+                               const char* classname );
+
+Creates a new hash reference, blessed into C<classname>,
+and bindsC<object> to it.
+
+I<Introduced in wxPerl 0.16>
+
+=head2 wxPli_evthandler_2_sv
+
+  SV* wxPli_evthandler_2_sv( pTHX_ SV* var, wxEvtHandler* evth );
+
+Same as L<wxPli_object_2_sv>, but works with C<wxEvtHandler>-derived
+classes, which includes all C<wxWindow>-derived classes.
+
+I<Introduced in wxPerl 0.16>
+
+=head2 wxPli_get_class
+
+  const char* wxPli_get_class( pTHX_ SV* ref );
+
+The C++ equivalent of C<$class = ref( $obj ) || $obj>; the pointer
+returned by the function is potentially temporary.
+
+=head2 wxPli_non_object_2_sv
+
+  SV* wxPli_non_object_2_sv( pTHX_ SV* var, void* data, const char* package );
+
+Binds a generic pointer to an C<SV*>, and returns it; the new binding
+is blessed into the given C<package>.
+
+I<Introduced before wxPerl 0.14>
+
+=head2 wxPli_object_2_sv
+
+  SV* wxPli_object_2_sv( pTHX_ SV* var, wxObject* object );
+
+Binds a C<wxObject*> pointer to an C<SV*>, and returns it.  If the
+object is already bound to an C<SV*>, returns a reference to the
+existing C<SV*>, otherwise, it creates a new binding; in the latter
+case, the new C<SV*> is blessed into a package obtained through the
+wxWidgets RTTI system.
+
+I<Introduced before wxPerl 0.14>
+
+=head2 wxPli_push_arguments
+
+  void wxPli_push_arguments( pTHX_ SV*** stack, const char* argtypes, ... );
+
+  // example
+  wxPli_push_arguments( aTHX_ SP, "iP", 12, "foo" );
+
+Pushes a variable number of arguments on the perl stack,
+it is useful for passing parameters to a Perl function. The
+C<argtypes> string describes the types of subsequent arguments, each
+character of the string specifying the type of a single
+argument. Possible values are:
+
+=over 4
+
+=item b
+
+a C<bool> value
+
+=item i
+
+an C<int> value
+
+=item l
+
+a C<long> value
+
+=item L
+
+an C<unsigned long> value
+
+=item d
+
+a C<double> value
+
+=item p
+
+a C<char*> value
+
+=item w
+
+a C<wxChar*> value
+
+=item P
+
+a C<wxString*> value
+
+=item S
+
+a C<SV*>, a B<copy> of the SV is pushed on the stack
+
+=item s
+
+a C<SV*>, the pointer itself is pushed on the stack
+
+=item O
+
+a C<wxObject*>, the function will internally call C<wxPli_object_2_sv>
+and push the result on the stack.
+
+=item o
+
+this is the only type that uses 2 parameters: the first is a C<void*>,
+the second a C<char*>; the function will internally call
+C<wxPli_non_object_2_sv> and push the result on the stack.
+
+=back
+
+I<Introduced before wxPerl 0.14>
+
+=head2 wxPli_sv_2_object
+
+  void* wxPli_sv_2_object( pTHX_ SV* scalar, const char* classname );
+
+Extracts a bound pointer from a perl reference, checking that
+the reference belongs to the correct class (die()s on failure),
+and returns it. If C<classname> is C<NULL>, the check is not done.
+
+I<Introduced before wxPerl 0.14>
+
+=head2 wxPli_wxChar_2_sv
+
+  SV* wxPli_wxChar_2_sv( pTHX_ const wxChar* str, SV* out );
+
+Stores a string into a C<SV*>, and returns the C<SV*>.
+
+I<Introduced before wxPerl 0.14>
+
+=head2 wxPli_wxString_2_sv
+
+  SV* wxPli_wxString_2_sv( pTHX_ const wxString& str, SV* out );
+
+Stores a string into a C<SV*>, and returns the C<SV*>.
+
+I<Introduced before wxPerl 0.14>
+
+=head1 AUTHOR
+
+Mattia Barbon <mbarbon at cpan dot org>
+
+=cut

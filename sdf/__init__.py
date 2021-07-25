@@ -35,3 +35,6 @@ from .simplify import (
 from .slic3r import (
     slic3r,
 )
+from .pycam import (
+    pycam,
+)

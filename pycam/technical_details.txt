@@ -1,0 +1,33 @@
+
+The DropCutter goes as folows:
+1) make lines along the X-axis (Lines)
+2) for each line, take a number of samples (Samples)
+3) at each sample, drop the cutter until it hits the model, this is a cutter location point
+4) connect the cutter location points along the line
+
+
+The PushCutter goes as follows:
+1) make slices along the Z-axis (Levels)
+2) make lines along the X-axis (Lines)
+3) push the cutter along the line until it hits the model, this is a cutter location
+   if we do not hit anything, we're finished
+4) skip the parts where the model is above the current z-level
+5) go back to 3
+
+
+The PathAccumulator connects the cutter locations by cutting in between,
+it is useful mainly for debugging
+
+The SimpleCutter connects the cutter locations in an on-off (cut/don't cut) pattern,
+it is useful only for debugging
+
+The ZigZagCutter connects the cutter locations by cutting in between points,
+then come back along the next line in reverse direction.
+it is useful mainly in combination with the DropCutter
+
+The PolygonCutter extracts polygonial sections from the cutter scanlines,
+then cuts those in a zig-zag pattern
+it is useful mainly in combination with the PushCutter
+
+The ContourCutter extracts contours from the cutter scanlines,
+it is useful only in combination with the PushCutter

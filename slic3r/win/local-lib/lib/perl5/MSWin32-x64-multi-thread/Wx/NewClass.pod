@@ -1,0 +1,188 @@
+=head1 NAME
+
+NewClass - adding a new class to wxPerl
+
+=head1 CHECKLIST
+
+=over 4
+
+=item * Are there constants or events that need to be wrapped?
+
+see L</"CONSTANTS"> and L</"EVENTS">.
+
+=item * Is the class is derived from wxObject, from wxEvtHandler or from
+another class?
+
+see L</"CHOOSING A TYPEMAP">.
+
+=item * Are class instances destroyed by wxWidgets or should they be
+garbage collected like normal Perl objects?
+
+see L</"DESTRUCTORS AND THREADS">.
+
+=item * Does the class have overloaded methods?
+
+see L</"OVERLOADING">.
+
+=item * Does the class have virtual methods that should be overridable
+from Perl?
+
+see L</"VIRTUAL METHODS">.
+
+=back
+
+=head1 SKELETON
+
+Add a new file F<XS/NewClass.xsp> and update the F<MANIFEST>.  Choose
+a relevant F<.xs> file in the top level directory (eg. F<Controls.xs>)
+and add this line:
+
+    INCLUDE_COMMAND: $^X -MExtUtils::XSpp::Cmd -e xspp -- -t typemap.xsp XS/NewClass.xsp
+
+A skeleton for F<NewClass.xsp>:
+
+    %module{Wx};
+
+    #include <wx/newclass.h> // use the relevant wxWidgets header(s)
+
+    %name{Wx::NewClass} class wxNewClass : public wxSomeBaseClass
+    {
+        # constructors see the CONSTRUCTORS section
+        wxNewClass( wxWindow* some_window, const wxString& str );
+
+        # destructors
+        ~wxNewClass();
+
+        # methods
+        wxString GetString() const;
+        void SetString( const wxString& str );
+    };
+
+Add the typemap definition to F<typemap.tmpl>.  See L</"CHOOSING A
+TYPEMAP">.
+
+If adding a class related to one of the wxPerl submodules
+(C<Wx::RichText>, C<Wx::Html>, ...) add the F<.xsp> file to the
+relevant subdirectory and modify the F<.xs> and F<typemap> files in
+that subdirectory.
+
+=head1 CHOOSING A TYPEMAP
+
+There are five typemaps that should work for most wxWidgets objects:
+
+=over 4
+
+=item * C<O_NON_WXOBJECT>
+
+for all classes that do not derive from C<wxObject> AND do not need to
+be garbage collected.
+
+=item * C<O_NON_WXOBJECT_THR>
+
+for all classes that do not derive from C<wxObject> AND need to be
+garbage collected (see L</"DESTRUCTORS AND THREADS">).
+
+=item * C<O_WXOBJECT>
+
+for all classes that derive from C<wxObject> AND do not need to be
+garbage collected.
+
+=item * C<O_WXOBJECT_THR>
+
+for all classes derived from C<wxObject> AND need to be garbage
+collected (see L</"DESTRUCTORS AND THREADS">).
+
+=item * C<O_WXEVTHANDLER>
+
+for all classes that derive from C<wxEvtHandler>.  See also
+L</"CONSTRUCTORS">.
+
+=back
+
+=head1 CONSTRUCTORS
+
+For C<O_WXEVTHANDLER> typemaps, there is some additional code that
+needs to be added to the constructor:
+
+    wxNewClass( wxWindow* some_window, const wxString& str )
+        %code{% RETVAL = new wxNewClass( some_window, str );
+                wxPli_create_evthandler( aTHX_ RETVAL, CLASS );
+                %};
+
+=head1 DESTRUCTORS AND THREADS
+
+For many classes not derived from C<wxEvtHandler> you need to add a
+destructor to free the C++ object when the Perl object is garbage
+collected.  At the XS++ level this means adding
+
+    ~wxNewClass();
+
+to the class definition, but there is a catch: the Perl threading
+model.
+
+Without going into details, this is needed for Perl threads compatibility:
+
+=over 4
+
+=item * Use the correct typemap
+
+choose either C<O_NON_WXOBJECT_THR> or C<O_WXOBJECT_THR>.
+
+=item * Implement a C<CLONE> method
+
+add this code inside the class declaration:
+
+    %{
+    static void
+    wxNewClass::CLONE()
+      CODE:
+        wxPli_thread_sv_clone( aTHX_ CLASS, (wxPliCloneSV)wxPli_detach_object );
+    %}
+
+=item * Fix the destructor.
+
+modify the destructor like this:
+
+    ~wxNewClass()
+        %code%{  wxPli_thread_sv_unregister( aTHX_ "Wx::NewClass", THIS, ST(0) );
+                 delete THIS;
+                 %};
+
+=back
+
+=head1 VIRTUAL METHODS
+
+The wrapping of virtual functions whose arguments are simple C++ types
+(integrals, bool, floating point) and common wxWidgets types
+(wxString) should be automatic: at the top of the file, load the
+plugin that handles virtual methods
+
+    %loadplugin{build::Wx::XSP::Virtual};
+
+and decorate virtual/pure virtual methods using the C<%Virtual> directive
+
+    // pure virtual
+    virtual wxString GetTitle() const = 0 %Virtual{pure};
+
+    // virtual, not pure
+    virtual int GetBestFittingWidth(unsigned int idx) const %Virtual;
+
+If the class contains pure virtual methods, it will be marked as
+abstract, and it will have no constructors.
+
+For abstract classes, XS++ will create an additional Perl-level class,
+called C<< Wx::Pl<classname> >>; in order to override the virtual
+methods, you must derive from this class, and not from
+C<< Wx::<classname> >>.
+
+TODO allow changing the default behaviour for abstract/concrete classes
+
+TODO allow overriding the class name
+
+TODO allow specifying custom code
+
+TODO handle multiple return values
+
+TODO customized type mapping
+
+=cut

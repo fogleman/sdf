@@ -1,0 +1,60 @@
+{
+   "abstract" : "converts Perl XS code into C code",
+   "author" : [
+      "Ken Williams <ken@mathforum.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.0401, CPAN::Meta::Converter version 2.150005, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "unknown"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "ExtUtils-ParseXS",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.46"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Carp" : "0",
+            "Cwd" : "0",
+            "DynaLoader" : "0",
+            "Exporter" : "5.57",
+            "ExtUtils::CBuilder" : "0",
+            "ExtUtils::MakeMaker" : "6.46",
+            "File::Basename" : "0",
+            "File::Spec" : "0",
+            "Symbol" : "0",
+            "Test::More" : "0.47"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "http://rt.perl.org/rt3/"
+      },
+      "repository" : {
+         "type" : "git",
+         "url" : "git://perl5.git.perl.org/gitroot/perl.git"
+      }
+   },
+   "version" : "3.35",
+   "x_serialization_backend" : "JSON::PP version 2.27400"
+}

@@ -1,0 +1,41 @@
+{
+   "abstract" : "control superclass method dispatch",
+   "author" : [
+      "chromatic"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Build version 0.4222",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "SUPER",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "Test::Simple" : "0.61"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Scalar::Util" : "1.20",
+            "Sub::Identify" : "0.03",
+            "perl" : "v5.6.2"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "http://rt.cpan.org/NoAuth/Bugs.html?Dist=SUPER"
+      },
+      "repository" : {
+         "url" : "https://github.com/chromatic/SUPER.git"
+      }
+   },
+   "version" : "1.20141117",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

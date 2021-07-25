@@ -1,0 +1,188 @@
+{
+   "abstract" : "get, unpack, build and install modules from CPAN",
+   "author" : [
+      "- Tatsuhiko Miyagawa"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Milla version v1.0.17, Dist::Zilla version 6.009, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "App-cpanminus",
+   "no_index" : {
+      "directory" : [
+         "eg",
+         "examples",
+         "inc",
+         "share",
+         "t",
+         "xt"
+      ],
+      "file" : [
+         "lib/App/cpanminus/fatscript.pm"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "develop" : {
+         "recommends" : {
+            "Archive::Tar" : "0",
+            "Archive::Zip" : "0",
+            "Compress::Zlib" : "0",
+            "File::HomeDir" : "0",
+            "Module::Signature" : "0"
+         },
+         "requires" : {
+            "App::FatPacker" : "0",
+            "CPAN::DistnameInfo" : "0",
+            "CPAN::Meta" : "2.132830",
+            "CPAN::Meta::Check" : "0",
+            "CPAN::Meta::Prereqs" : "0",
+            "CPAN::Meta::Requirements" : "0",
+            "CPAN::Meta::YAML" : "0",
+            "Capture::Tiny" : "0",
+            "Digest::SHA" : "0",
+            "Dist::Milla" : "v1.0.17",
+            "Exporter" : "5.63",
+            "File::Temp" : "0",
+            "File::pushd" : "0",
+            "Getopt::Long" : "0",
+            "HTTP::Tiny" : "0",
+            "JSON" : "0",
+            "JSON::PP" : "0",
+            "LWP::Simple" : "0",
+            "LWP::UserAgent" : "5.802",
+            "Module::CPANfile" : "0",
+            "Module::CoreList" : "0",
+            "Module::Install" : "0",
+            "Module::Metadata" : "0",
+            "Parse::CPAN::Meta" : "0",
+            "Parse::PMFile" : "0.26",
+            "Perl::Strip" : "0",
+            "String::ShellQuote" : "0",
+            "Test::More" : "0.90",
+            "Test::Pod" : "1.41",
+            "Test::Requires" : "0",
+            "Tie::File" : "0",
+            "YAML" : "0",
+            "YAML::Tiny" : "0",
+            "local::lib" : "0",
+            "version" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "perl" : "5.008001"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/miyagawa/cpanminus/issues"
+      },
+      "homepage" : "https://github.com/miyagawa/cpanminus",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/miyagawa/cpanminus.git",
+         "web" : "https://github.com/miyagawa/cpanminus"
+      }
+   },
+   "version" : "1.7043",
+   "x_contributors" : [
+      "Aaron Moses <mosesa02@localhost.localdomain>",
+      "Alessandro Ghedini <al3xbio@gmail.com>",
+      "Andrew Rodland <andrew@cleverdomain.org>",
+      "Andy Jones <andy@broadbean.com>",
+      "andyjones <andy_jones@outgun.com>",
+      "Ash Berlin <ash_github@firemirror.com>",
+      "Ben Bullock <benkasminbullock@gmail.com>",
+      "Breno G. de Oliveira <garu@cpan.org>",
+      "Brian Wightman <MidLifeXis@wightmanfam.org>",
+      "cho45 <cho45@lowreal.net>",
+      "Christian Walde <walde.christian@googlemail.com>",
+      "chromatic <chromatic@wgz.org>",
+      "Dagfinn Ilmari Mannsaker <ilmari@ilmari.org>",
+      "Dana M. Diederich <diederich@gmail.com>",
+      "Dave Goodell <davidjgoodell@gmail.com>",
+      "Dave Rolsky <autarch@urth.org>",
+      "David Golden <dagolden@cpan.org>",
+      "David Steinbrunner <dsteinbrunner@pobox.com>",
+      "Doug Bell <madcityzen@gmail.com>",
+      "fREW Schmidt <frioux@gmail.com>",
+      "Fuji, Goro <g.psy.va@gmail.com>",
+      "Gareth Kirwan <gbjk@thermeon.com>",
+      "gfx <gfuji@cpan.org>",
+      "Graham Knop <haarg@haarg.org>",
+      "Graham Ollis <perl@wdlabs.com>",
+      "ikasam_a <masaki.nakagawa@gmail.com>",
+      "Ingy dot Net <ingy@ingy.net>",
+      "Jan Dubois <jand@activestate.com>",
+      "Jeffrey Ryan Thalhammer <jeff@imaginative-software.com>",
+      "Jesse Luehrs <doy@tozt.net>",
+      "J. Nick Koston <nick@cpanel.net>",
+      "jonallen <jj@jonallen.info>",
+      "Jonathan Scott Duff <duff@pobox.com>",
+      "Kahlil (Kal) Hodgson <kahlil.hodgson@dealmax.com.au>",
+      "Kenichi Ishigaki <ishigaki@cpan.org>",
+      "Kent Fredric <kentnl@cpan.org>",
+      "kmx <kmx@cpan.org>",
+      "Larry Leszczynski <larryl@atomiclearning.com>",
+      "lestrrat <lestrrat+github@gmail.com>",
+      "Masahiro Nagano <kazeburo@gmail.com>",
+      "Masayoshi Sekimura <sekimura@gmail.com>",
+      "Matthew Horsfall <wolfsage@gmail.com>",
+      "Matt S Trout <>",
+      "Matt S Trout <mst@shadowcat.co.uk>",
+      "Michael G. Schwern <schwern@pobox.com>",
+      "motemen <motemen@gmail.com>",
+      "moznion <moznion@gmail.com>",
+      "Norman Nunley <nnunley@gmail.com>",
+      "Olaf Alders <olaf@wundersolutions.com>",
+      "Olivier Mengue <dolmen@cpan.org>",
+      "Pedro Melo <melo@simplicidade.org>",
+      "Rafal Pocztarski <r.pocztarski@gmail.com>",
+      "reezer <kind@gmx.at>",
+      "Ricardo Signes <rjbs@cpan.org>",
+      "robario <webmaster@robario.com>",
+      "Robert Buels <rmb32@cornell.edu>",
+      "Rob Hoelz <rob@hoelz.ro>",
+      "Roman Jurkov <rjurkov@verio.net>",
+      "Sebastian Riedel <sri@cpan.org>",
+      "Shoichi Kaji <skaji@cpan.org>",
+      "Slaven Rezic <slaven@rezic.de>",
+      "Smylers <Smylers@stripey.com>",
+      "Stoned Elipot <stoned.elipot@gmail.com>",
+      "Syohei YOSHIDA <syohex@gmail.com>",
+      "Tatsuhiko Miyagawa <miyagawa@bulknews.net>",
+      "Tatsuhiko Miyagawa <miyagawa@gmail.com>",
+      "Thomas Sibley <tom@zulutango.org>",
+      "Tokuhiro Matsuno <tokuhirom@gmail.com>",
+      "Tuure Laurinolli <tuure.laurinolli@portalify.com>",
+      "vti <viacheslav.t@gmail.com>",
+      "Vyacheslav Matyukhin <mmcleric@yandex-team.ru>",
+      "xaicron <xaicron@gmail.com>",
+      "Yann Kerherve <yann@cyberion.net>",
+      "yappo <yappo@shibuya.pl>",
+      "zebardy <zebardy@gmail.com>"
+   ],
+   "x_serialization_backend" : "JSON::PP version 2.27400"
+}

@@ -1102,7 +1102,8 @@ f = hexagon(1).revolve(3)
 
 `helix_revolve` will take a 2D object and rotate it around the `Z` axis while
 linearly moving in a helix toward positive `Z`.  A practical use for this is to
-create threads.
+create threads.  By negating pitch, one can reverse the thread, changing the
+rotation from right-handed to left-handed.
 
 `helix_revolve(other, offset=0, pitch=1, rotations=1)`
 

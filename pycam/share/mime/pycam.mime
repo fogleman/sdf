@@ -1,0 +1,4 @@
+application/sla; pycam '%s'; description="Stereo Lithographic File"; test=test -n "$DISPLAY"; nametemplate=%s.stl
+image/vnd.dxf; pycam '%s'; description="Drawing Interchange File"; test=test -n "$DISPLAY"; nametemplate=%s.dxf
+image/svg+xml; pycam '%s'; description="Vector Graphics"; test=test -n "$DISPLAY" && which inkscape pstoedit >/dev/null; nametemplate=%s.svg
+application/postscript; pycam '%s'; description="Postscript"; test=test -n "$DISPLAY" && which pstoedit >/dev/null

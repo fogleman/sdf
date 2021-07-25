@@ -1,0 +1,63 @@
+{
+   "abstract" : "building, finding and using wxWidgets binaries",
+   "author" : [
+      "Mattia Barbon <mbarbon@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Build version 0.4222",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Alien-wxWidgets",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::CBuilder" : "0.24",
+            "File::Spec" : "1.50",
+            "LWP::Protocol::https" : "0",
+            "Module::Build" : "0.28"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.28"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Module::Pluggable" : "2.6",
+            "perl" : "5.006"
+         }
+      }
+   },
+   "provides" : {
+      "Alien::wxWidgets" : {
+         "file" : "lib/Alien/wxWidgets.pm",
+         "version" : "0.69"
+      },
+      "Alien::wxWidgets::Utility" : {
+         "file" : "lib/Alien/wxWidgets/Utility.pm",
+         "version" : "0.59"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "http://rt.cpan.org/NoAuth/Bugs.html?Dist=Alien-wxWidgets"
+      },
+      "homepage" : "http://www.wxperl.it/",
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ],
+      "repository" : {
+         "url" : "http://svn.code.sf.net/p/wxperl/code/Alien-wxWidgets"
+      },
+      "x_MailingList" : "http://lists.perl.org/list/wxperl-users.html"
+   },
+   "version" : "0.69",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

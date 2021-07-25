@@ -1,0 +1,58 @@
+{
+   "abstract" : "Perl extension for using OpenSSL",
+   "author" : [
+      "Maintained by Mike McCauley and Florian Ragwitz since November 2005"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Install version 1.16, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Net-SSLeay",
+   "no_index" : {
+      "directory" : [
+         "examples",
+         "ext",
+         "helper_script",
+         "inc",
+         "t"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "6.36"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "MIME::Base64" : "0",
+            "Test::More" : "0.60_01",
+            "perl" : "5.005"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://rt.cpan.org/Public/Dist/Display.html?Name=net-ssleay"
+      },
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ],
+      "repository" : {
+         "url" : "http://svn.debian.org/wsvn/net-ssleay"
+      }
+   },
+   "version" : "1.81",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

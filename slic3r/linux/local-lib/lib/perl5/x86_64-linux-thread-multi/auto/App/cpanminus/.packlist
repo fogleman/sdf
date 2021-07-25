@@ -1,0 +1,6 @@
+/home/travis/build/slic3r/Slic3r/local-lib/bin/cpanm
+/home/travis/build/slic3r/Slic3r/local-lib/lib/perl5/App/cpanminus.pm
+/home/travis/build/slic3r/Slic3r/local-lib/lib/perl5/App/cpanminus/fatscript.pm
+/home/travis/build/slic3r/Slic3r/local-lib/man/man1/cpanm.1
+/home/travis/build/slic3r/Slic3r/local-lib/man/man3/App::cpanminus.3
+/home/travis/build/slic3r/Slic3r/local-lib/man/man3/App::cpanminus::fatscript.3

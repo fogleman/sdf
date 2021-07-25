@@ -1,0 +1,36 @@
+{
+   "abstract" : "unknown",
+   "author" : [
+      "Marty Pauley <marty+perl@kasei.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 6.42, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Class-Accessor",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "base" : "1.01"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "version" : "0.34",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

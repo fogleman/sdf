@@ -1,0 +1,94 @@
+{
+   "abstract" : "automatically give your module the ability to have plugins",
+   "author" : [
+      "Simon Wistow <simon@thegestalt.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.04, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Module-Pluggable",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "optional_features" : {
+      "module_runtime" : {
+         "description" : "Optionally use Module::Runtime for requiring plugins rather than homegrown system",
+         "prereqs" : {
+            "runtime" : {
+               "requires" : {
+                  "Module::Runtime" : "0.012"
+               }
+            }
+         }
+      }
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "recommends" : {
+            "Module::Runtime" : "0.012"
+         },
+         "requires" : {
+            "Exporter" : "5.57",
+            "File::Basename" : "0",
+            "File::Find" : "0",
+            "File::Spec" : "3.00",
+            "File::Spec::Functions" : "0",
+            "if" : "0",
+            "perl" : "5.00503",
+            "strict" : "0"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Cwd" : "0",
+            "Data::Dumper" : "0",
+            "File::Copy" : "0",
+            "File::Find" : "0",
+            "File::Path" : "0",
+            "File::Spec::Functions" : "0",
+            "File::Temp" : "0",
+            "FindBin" : "0",
+            "Test::More" : "0",
+            "base" : "0",
+            "strict" : "0",
+            "warnings" : "0"
+         },
+         "suggests" : {
+            "App::Fatpacker" : "0.010000"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "mailto" : "bug-Module-Pluggable@rt.cpan.org",
+         "web" : "https://rt.cpan.org/Public/Dist/Display.html?Name=Module-Pluggable"
+      },
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/simonwistow/Module-Pluggable.git",
+         "web" : "https://github.com/simonwistow/Module-Pluggable"
+      }
+   },
+   "version" : "5.2",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}
