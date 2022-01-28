@@ -346,6 +346,22 @@ def gyroid(h,t,size,center = ORIGIN):
     return f
 
 @sdf3
+def graded_gyroid(h_min,h_max,t_min,t_max,size,center = ORIGIN):
+    size = np.array(size)
+    def f(p):
+        x = p[:,0]
+        y = p[:,1]
+        z = p[:,2]
+        h = h_min+(h_max-h_min)*(x+size[0]/2)/size[0]
+        t = t_min+(t_max-t_min)*(y+size[1]/2)/size[1]
+        d = np.abs(np.cos(x)*np.sin(y)+np.cos(y)*np.sin(z)+np.cos(z)*np.sin(x)-t)-h
+        q = np.abs(p - center) - size / 2
+        return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
+    return f
+
+
+
+@sdf3
 #note -- careful with bounds on this one
 def scherkSecond(h,size,center = ORIGIN):
     size = np.array(size)
@@ -532,6 +548,7 @@ def bend_radial(other, r0, r1, dz, e=ease.linear):
         z = z - dz * e(t)
         return other(_vec(x, y, z))
     return f
+
 
 @op3
 def transition_linear(f0, f1, p0=-Z, p1=Z, e=ease.linear):
