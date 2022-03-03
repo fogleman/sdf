@@ -349,8 +349,8 @@ def gyroid(h,t,size,center = ORIGIN):
 def FG_gyroid(h,t,size,center = ORIGIN):
     size = np.array(size)
     def f(p):
-        tt = t(p)
-        hh = h(p)
+        tt = _length(t(p))
+        hh = _length(h(p))
         x = p[:,0]
         y = p[:,1]
         z = p[:,2]
