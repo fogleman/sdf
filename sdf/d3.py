@@ -359,6 +359,14 @@ def rotate(other, angle, vector=Z):
     return f
 
 @op3
+def rotate_by_matrix(other, mat33):
+    # inverse = transpose
+    back2cano = mat33.copy()
+    def f(p): 
+        return other( p@back2cano )
+    return f
+
+@op3
 def rotate_to(other, a, b):
     a = _normalize(np.array(a))
     b = _normalize(np.array(b))
