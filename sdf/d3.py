@@ -578,6 +578,29 @@ def transition_linear(f0, f1, p0=-Z, p1=Z, e=ease.linear):
     return f
 
 @op3
+def transition_spherical(f0, f1,r0=5, x0=0,y0=0,z0=0,k=1.0, e=ease.linear):
+    def f(p):
+        d1 = f0(p)
+        d2 = f1(p)
+        r = (p[:,0]-x0)**2+(p[:,1]-y0)**2+(p[:,2]-z0)**2 - r0**2
+        t = 1./(1.0+np.exp(k*r))
+        t = e(t).reshape((-1, 1))
+        return t * d2 + (1 - t) * d1
+    return f
+
+@op3
+def transition_sdf(f0, f1,f2,k=0.25,h=1.0, e=ease.linear):
+    def f(p):
+        d1 = f0(p)
+        d2 = f1(p)
+        d3 = f2(p)
+        r = _length(d3-h)
+        t = 1./(1.0+np.exp(k*r))
+        t = e(t).reshape((-1, 1))
+        return t * d2 + (1 - t) * d1
+    return f
+
+@op3
 def transition_radial(f0, f1, r0=0, r1=1, e=ease.linear):
     def f(p):
         d1 = f0(p)
