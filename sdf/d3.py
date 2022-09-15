@@ -345,19 +345,47 @@ def gyroid(h,t,size,center = ORIGIN):
         return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
     return f
 
+# @sdf3
+# def FG_gyroid(h,t,size,center = ORIGIN):
+#     size = np.array(size)
+#     def f(p):
+#         tt = _length(t(p))
+#         hh = _length(h(p))
+#         x = p[:,0]
+#         y = p[:,1]
+#         z = p[:,2]
+#         d = np.abs(np.cos(x)*np.sin(y)+np.cos(y)*np.sin(z)+np.cos(z)*np.sin(x)-tt)-hh
+#         q = np.abs(p - center) - size / 2
+#         return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
+#     return f
+
 @sdf3
-def FG_gyroid(h,t,size,center = ORIGIN):
+def FG_gyroid(h_min,h_max,fh,t_min,t_max,ft,size,k=1.0,center = ORIGIN, e = ease.linear):
     size = np.array(size)
     def f(p):
-        tt = _length(t(p))
-        hh = _length(h(p))
+        Gh = _length(fh(p))
+        Gt = _length(ft(p))
         x = p[:,0]
         y = p[:,1]
         z = p[:,2]
-        d = np.abs(np.cos(x)*np.sin(y)+np.cos(y)*np.sin(z)+np.cos(z)*np.sin(x)-tt)-hh
+        h = h_min+(h_max-h_min)*np.clip(Gh,0,1)
+        h = e(h).reshape((-1, 1))
+        t = t_min+(t_max-t_min)*np.clip(Gt,0,1)
+        t = e(t).reshape((-1, 1))
+        d = np.abs(np.cos(x)*np.sin(y)+np.cos(y)*np.sin(z)+np.cos(z)*np.sin(x)-t)-h
         q = np.abs(p - center) - size / 2
         return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
     return f
+
+# def transition_general(f0, f1, f2, k=1.0, e=ease.linear):
+#     def f(p):
+#         d1 = f0(p)
+#         d2 = f1(p)
+#         G = f2(p)
+#         t = np.clip(1./(1.+np.exp(k*G)), 0, 1)
+#         t = e(t).reshape((-1, 1))
+#         return t * d2 + (1 - t) * d1
+#     return f
 
 @sdf3
 def graded_gyroid(h_min,h_max,t_min,t_max,size,center = ORIGIN):
@@ -607,6 +635,28 @@ def transition_radial(f0, f1, r0=0, r1=1, e=ease.linear):
         d2 = f1(p)
         r = np.hypot(p[:,0], p[:,1])
         t = np.clip((r - r0) / (r1 - r0), 0, 1)
+        t = e(t).reshape((-1, 1))
+        return t * d2 + (1 - t) * d1
+    return f
+
+@op3
+def transition_sigmoid(f0, f1, k=1.0, e=ease.linear):
+    def f(p):
+        d1 = f0(p)
+        d2 = f1(p)
+        G = p[:,2]
+        t = np.clip(1./(1.+np.exp(k*G)), 0, 1)
+        t = e(t).reshape((-1, 1))
+        return t * d2 + (1 - t) * d1
+    return f
+
+@op3
+def transition_general(f0, f1, f2, k=1.0, e=ease.linear):
+    def f(p):
+        d1 = f0(p)
+        d2 = f1(p)
+        G = f2(p)
+        t = np.clip(1./(1.+np.exp(k*G)), 0, 1)
         t = e(t).reshape((-1, 1))
         return t * d2 + (1 - t) * d1
     return f
