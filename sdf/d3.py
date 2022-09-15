@@ -334,13 +334,13 @@ def schwarzD(h,size, center = ORIGIN):
 
 
 @sdf3
-def gyroid(h,t,size,center = ORIGIN):
+def gyroid(thickness,topology,n,size = (1,1,1),center = ORIGIN):
     size = np.array(size)
     def f(p):
         x = p[:,0]
         y = p[:,1]
         z = p[:,2]
-        d = np.abs(np.cos(x)*np.sin(y)+np.cos(y)*np.sin(z)+np.cos(z)*np.sin(x)-t)-h
+        d = np.abs(np.cos(n*x)*np.sin(n*y)+np.cos(n*y)*np.sin(n*z)+np.cos(n*z)*np.sin(n*x)-topology)-thickness
         q = np.abs(p - center) - size / 2
         return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
     return f
