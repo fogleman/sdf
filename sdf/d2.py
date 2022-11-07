@@ -262,6 +262,7 @@ def equilateral_polygon(n, r):
 
 @sdf2
 def hexagon(r):
+    r *= 3 ** 0.5 / 2
     def f(p):
         k = np.array((3 ** 0.5 / -2, 0.5, np.tan(np.pi / 6)))
         p = np.abs(p)
