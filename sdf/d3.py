@@ -288,7 +288,7 @@ def tetrahedron(r):
         x = p[:,0]
         y = p[:,1]
         z = p[:,2]
-        return (_max(np.abs(x + y) - z, np.abs(x - y) + z) - 1) / np.sqrt(3)
+        return (_max(np.abs(x + y) - z, np.abs(x - y) + z) - r) / np.sqrt(3)
     return f
 
 @sdf3
