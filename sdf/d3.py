@@ -21,6 +21,7 @@ _ops = {}
 class SDF3:
     def __init__(self, f):
         self.f = f
+        self.dim = 3
     def __call__(self, p):
         return self.f(p).reshape((-1, 1))
     def __getattr__(self, name):
@@ -41,6 +42,8 @@ class SDF3:
         return mesh.generate(self, *args, **kwargs)
     def save(self, path, *args, **kwargs):
         return mesh.save(path, self, *args, **kwargs)
+    def show(self, *args, **kwargs):
+        return mesh.show(self, *args, **kwargs)
     def show_slice(self, *args, **kwargs):
         return mesh.show_slice(self, *args, **kwargs)
 

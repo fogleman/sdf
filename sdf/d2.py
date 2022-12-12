@@ -2,7 +2,7 @@ import functools
 import numpy as np
 import operator
 
-from . import dn, d3, ease
+from . import dn, d3, ease, mesh
 
 # Constants
 
@@ -20,6 +20,7 @@ _ops = {}
 class SDF2:
     def __init__(self, f):
         self.f = f
+        self.dim = 2
     def __call__(self, p):
         return self.f(p).reshape((-1, 1))
     def __getattr__(self, name):
@@ -36,6 +37,10 @@ class SDF2:
     def k(self, k=None):
         self._k = k
         return self
+    def generate(self, *args, **kwargs):
+        return mesh.generate(self, *args, **kwargs)
+    def show(self, *args, **kwargs):
+        return mesh.show(self, *args, **kwargs)
 
 def sdf2(f):
     def wrapper(*args, **kwargs):
