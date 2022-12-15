@@ -1,0 +1,217 @@
+=head1 NAME
+
+ExtUtils::XSpp::Plugin - XS++ plugin interface
+
+=head1 DESCRIPTION
+
+The XS++ plugin interface is B<EXPERIMENTAL> and subject to change.
+If you still want to use it, read the source of this module.
+
+=begin internal
+
+=head1 SYNTAX
+
+    %loadplugin{MyPlugin};
+
+    int foo(int y) %FuncTag{Foo};
+
+    class klass
+    {
+        %ClassTag{Klass};
+
+        void bar() %MethodTag{Bar};
+    };
+
+There are two ways a plugin can modify the code emitted by XS++: it
+can run after the parsing completes and modify the expression tree
+before it is emitted or it can handle custom annotation tags
+associated with a class/function/method.
+
+A custom tag can have either positional or named parameters:
+
+    # positional
+    %Foo{Id}{% multi
+               line
+               block %}{AnotherId};
+
+    # named
+    %Bar{
+        %AParam{Id};
+        %AnotherParam{% block %};
+        %AThirdParam{AnotherId};
+    };
+
+No check is performed on parameter names/types/count.  The parser only
+gives an error if the annotation is not handled by any plugin.
+
+Positional parameters are passed to tag handlers as an array reference
+in the C<positional> parameter; named handlers are passed as
+an hash reference in the C<named> parameter.
+
+The value of a special block parameter is an array reference with an
+element for each line in the special block.  For consistency, the
+value of an identifier parameter is a single-element array reference.
+
+=head1 XS++ METHODS
+
+These methods are defined in the parser object.
+
+=head2 add_post_process_plugin
+
+    $parser->add_post_process_plugin( plugin => $instance,
+                                      method => 'post_process',
+                                      );
+
+Registers a post-processing plugin to be called after the parsing
+finishes.
+
+=head2 add_function_tag_plugin
+
+    $parser->add_function_tag_plugin( plugin => $instance,
+                                      # optional
+                                      tag    => $tag,
+                                      method => 'handle_function_tag',
+                                      );
+
+Add a plugin to handle functions annotated with tags.
+
+=head2 add_class_tag_plugin
+
+    $parser->add_class_tag_plugin( plugin => $instance,
+                                   # optional
+                                   tag    => $tag,
+                                   method => 'handle_class_tag',
+                                   );
+
+Add a plugin to handle classes annotated with tags.
+
+=head2 add_method_tag_plugin
+
+    $parser->add_method_tag_plugin( plugin => $instance,
+                                    # optional
+                                    tag    => $tag,
+                                    method => 'handle_method_tag',
+                                    );
+
+Add a plugin to handle methods annotated with tags.
+
+=head2 add_toplevel_tag_plugin
+
+    $parser->add_toplevel_tag_plugin( plugin => $instance,
+                                      # optional
+                                      tag    => $tag,
+                                      method => 'handle_toplevel_tag',
+                                      );
+
+Add a plugin to handle top-level directives.
+
+=head1 PLUGIN METHODS
+
+These methods can be defined by the plugin to modify the emitted code.
+
+=head2 register_plugin
+
+    sub register_plugin {
+        my( $class, $parser ) = @_;
+
+        # call the various add_*_plugin methods to register the plugin
+    }
+
+This method is called once for each loaded plugin, the first time the
+parser sees the C<%loadplugin> directive.
+
+TODO add another method that is called once for each C<%loadplugin>
+declaration, and allow passing parameters to the plugin.
+
+=head2 post_process
+
+    sub post_process {
+        my( $self, $nodes ) = @_;
+
+        # process and mutate the list of nodes
+    }
+
+=head2 handle_function_tag
+
+    sub handle_function_tag {
+        my( $self, $function, $tag, %args ) = @_;
+
+        # do something useful
+    }
+
+C<$function> is a C<Function> node.  C<$tag> is the tag string,
+without the C<%> prefix.  C<%args> are the arguments passed to the
+tag.
+
+If the method handles the tag, it must return C<1> to the caller.
+
+If the return value is a list, the first element is the
+handled/not-handled flag, remaining elements are a list of nodes to
+add to the node list returned by the parser.
+
+The method is called after parsing of the function completes.
+
+=head2 handle_class_tag
+
+    sub handle_class_tag {
+        my( $self, $class, $tag, %args ) = @_;
+
+        # do something useful
+    }
+
+C<$class> is a C<Class> node.  C<$tag> is the tag string, without the
+C<%> prefix.  C<%args> are the arguments passed to the tag.  The
+handler for the class is called after the handlers for its methods.
+
+If the method handles the tag, it must return C<1> to the caller.
+
+If the return value is a list, the first element is the
+handled/not-handled flag, remaining elements are a list of nodes to
+add to the node list in the class.
+
+The method is called after parsing of the class completes, and after the
+handlers for methods contained in the class.
+
+=head2 handle_method_tag
+
+    sub handle_method_tag {
+        my( $self, $method, $tag, %args ) = @_;
+
+        # do something useful
+    }
+
+C<$method> is a C<Method> node.  C<$tag> is the tag string, without
+the C<%> prefix.  C<%args> are the arguments passed to the tag.
+
+If the method handles the tag, it must return C<1> to the caller.
+
+If the return value is a list, the first element is the
+handled/not-handled flag, remaining elements are a list of nodes to
+add to the node list in the containing class.
+
+The method is called after the method has been added to the class and
+before the handler for class tags.
+
+=head2 handle_toplevel_tag
+
+    sub handle_toplevel_tag {
+        my( $self, undef, $tag, %args ) = @_;
+
+        # do something useful
+    }
+
+C<$tag> is the tag string, without the C<%> prefix.  C<%args> are the
+arguments passed to the tag.  The C<undef> value is for uniformity
+with other tag handlers.
+
+If the method handles the tag, it must return C<1> to the caller.
+
+If the return value is a list, the first element is the
+handled/not-handled flag, remaining elements are a list of nodes to
+add to the node list returned by the parser.
+
+The method is called after the parsing of the tag completes.
+
+=end internal
+
+=cut

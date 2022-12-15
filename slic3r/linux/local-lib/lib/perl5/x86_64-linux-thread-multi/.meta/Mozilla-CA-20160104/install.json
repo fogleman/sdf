@@ -1,0 +1,1 @@
+{"name":"Mozilla::CA","pathname":"A/AB/ABH/Mozilla-CA-20160104.tar.gz","target":"Mozilla::CA","version":"20160104","dist":"Mozilla-CA-20160104","provides":{"Mozilla::CA":{"file":"lib/Mozilla/CA.pm","version":"20160104"}}}

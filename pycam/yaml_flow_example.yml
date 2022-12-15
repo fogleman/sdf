@@ -1,0 +1,248 @@
+---
+# example processing flow description (not implemented)
+
+models:
+        model1:
+                source:
+                        type: file
+                        location: samples/Box0.stl
+                transformations:
+                        - action: scale
+                          scale_target: factor
+                          axes:
+                                  x: 1.25
+                        - action: scale
+                          scale_target: factor
+                          axes: 0.7
+                        - action: scale
+                          scale_target: size
+                          axes:
+                                  x: 10
+                        - action: shift
+                          shift_target: distance
+                          axes:
+                                  x: -20
+                        - action: shift
+                          shift_target: align_max
+                          axes:
+                                  z: 0
+                        - action: shift
+                          shift_target: align_min
+                          axes: [10, 20, 0]
+                        - action: shift
+                          shift_target: center
+                          axes:
+                                  x: 50
+                        - action: rotate
+                          center: [10, 10, 0]
+                          vector: [0, 0, 1]
+                          angle: 90
+                        - action: projection
+                          center:
+                                  z: 0
+                          vector:
+                                  x: 0
+                                  y: 0
+                                  z: 1
+                        - action: multiply_matrix
+                          matrix:
+                                  - [1, 0, 0]
+                                  - [0, 1, 0]
+                                  - [0, 0, -1]
+        model2:
+                source:
+                        type: copy
+                        original: model1
+                transformations:
+                        - action: toggle_polygon_directions
+                        - action: revise_polygon_directions
+                        - action: extrude
+                          shape: bulge
+                          height: 1.0
+                          width: 2.3
+                          accuracy: 0.2
+        model2_support_grid:
+                source:
+                        type: support_bridges
+                        models:
+                                -  model1
+                        layout: grid
+                        grid:
+                                distances: {x: 10, y: 20}
+                                offsets:
+                                        x: [5, 10, 0]
+                                        y: [-5]
+                        shape:
+                                height: 2
+                                width: 1
+                                length: 10
+        model3:
+                source:
+                        type: url
+                        location: http://foo.example.org/baz.stl
+        model3_support_grid:
+                source:
+                        type: support_bridges
+                        models:
+                                -  model3
+                        layout: distributed
+                        distribution: corners
+                        minimum_count: 3
+                        average_distance: 4
+                        shape:
+                                height: 2
+                                width: 1
+                                length: 10
+
+tools:
+        tool1:
+                shape: flat_bottom
+                tool_id: 1
+                diameter: 3
+                feed: 300
+                spindle:
+                        spin_up_enabled: true
+                        spin_up_delay: 3
+                        speed: 1200
+
+processes:
+        process_slicing:
+                strategy: slice
+                path_pattern: grid
+                overlap: 0.10
+                step_down: 1.0
+                grid_direction: x
+                milling_style: ignore
+        process_engrave:
+                strategy: engrave
+                step_down: 1.0
+                trace_models:
+                        - model2
+
+bounds:
+        bounds1:
+                specification: absolute
+                lower:
+                        x: -10
+                        y: 0
+                        z: -5
+                upper:
+                        x: 30
+                        y: 20
+                        z: 0
+        bounds2:
+                specification: margins
+                reference_models:
+                        - model1
+                lower:
+                        x: 10%
+                        y: 10%
+                        z: 0
+                upper:
+                        x: 10%
+                        y: 10%
+                        z: 5
+
+tasks:
+        task1:
+                type: milling
+                tool: tool1
+                process: process_slicing
+                bounds: bounds1
+                collision_models:
+                        - model1
+        task2:
+                type: milling
+                tool: tool1
+                process: process_engrave
+                bounds: bounds2
+
+toolpaths:
+        toolpath1:
+                source:
+                        type: task
+                        item: task1
+                transformations:
+                        - action: crop
+                          lower:
+                                  x: 0
+                                  y: 0
+                          upper:
+                                  x: 30
+                                  y: 40
+                        - action: clone
+                          offset: [20, 110%, 0]
+                          clone_count: 1
+                        - action: shift
+                          shift_target: align_min
+                          axes:
+                                  x: 0
+                                  y: 0
+                        - action: shift
+                          shift_target: align_max
+                          axes: [null, null, 0]
+
+        toolpath2:
+                source:
+                        type: copy
+                        original: toolpath1
+                transformations:
+                        - action: clone
+                          offset:
+                                  x: 102%
+                          count: 5
+                        - action: clone
+                          offset:
+                                  y: 105%
+                          count: 3
+
+export_settings:
+        tp_settings1:
+                gcode:
+                        safety_height: 25
+                        plunge_feedrate: 50
+                        step_width:
+                                x: 0.1
+                                y: 0.1
+                                z: 0.1
+                        corner_style:
+                                mode: optimize_tolerance
+                                naive_tolerance: 0.1
+                                motion_tolerance: 0.05
+
+exports:
+        export1:
+                source:
+                        type: toolpath
+                        items:
+                                - toolpath1
+                format:
+                        type: gcode
+                        dialect: linuxcnc
+                        comment: Complete grid of 5x3 toolpaths.
+                        export_settings: tp_settings1
+                target:
+                        type: file
+                        location: grid_5x3.ngc
+        export2:
+                source:
+                        type: toolpath
+                        items:
+                                - toolpath1
+                                - toolpath2
+                format:
+                        type: preview_2d
+                        filetype: png
+                target:
+                        type: clipboard
+        export_support_model:
+                source:
+                        type: model
+                        models:
+                                - model1_support
+                format:
+                        type: model
+                        filetype: stl
+                target:
+                        type: file
+                        location: model1_support.stl

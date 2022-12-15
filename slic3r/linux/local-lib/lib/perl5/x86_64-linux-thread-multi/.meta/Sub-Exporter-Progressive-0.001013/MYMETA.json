@@ -1,0 +1,55 @@
+{
+   "abstract" : "Only use Sub::Exporter if you need it",
+   "author" : [
+      "Arthur Axel \"fREW\" Schmidt <Sub-Exporter-Progressive@afoolishmanifesto.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 6.008, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Sub-Exporter-Progressive",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Test::Pod" : "1.41"
+         }
+      },
+      "runtime" : {
+         "requires" : {}
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0.88"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/frioux/Sub-Exporter-Progressive/issues"
+      },
+      "homepage" : "https://github.com/frioux/Sub-Exporter-Progressive",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/frioux/Sub-Exporter-Progressive.git",
+         "web" : "https://github.com/frioux/Sub-Exporter-Progressive"
+      }
+   },
+   "version" : "0.001013",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

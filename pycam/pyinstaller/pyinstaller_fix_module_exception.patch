@@ -1,0 +1,15 @@
+diff -ruN pyinstaller-1.4/iu.py pyinstaller-1.4.fixed//iu.py
+--- pyinstaller-1.4/iu.py	2010-02-11 01:23:39.000000000 +0100
++++ pyinstaller-1.4.fixed//iu.py	2010-08-23 19:07:50.000000000 +0200
+# see http://www.pyinstaller.org/ticket/205
+# Exceptions are thrown for imported modules are not available in Windows.
+@@ -451,7 +451,8 @@
+             if ctx and hasattr(sys.modules[ctx], nmparts[i]):
+                 debug("importHook done with %s %s %s (case 1)" % (name, __globals_name, fromlist))
+                 return sys.modules[nmparts[0]]
+-            del sys.modules[fqname]
++            if fqname in sys.modules:
++                del sys.modules[fqname]
+             raise ImportError, "No module named %s" % fqname
+         if fromlist is None:
+             debug("importHook done with %s %s %s (case 2)" % (name, __globals_name, fromlist))

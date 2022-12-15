@@ -7,7 +7,8 @@ import itertools
 import numpy as np
 import time
 
-from . import progress, stl
+from . import progress, stl, step
+from . import simplify as simp
 
 WORKERS = multiprocessing.cpu_count()
 SAMPLES = 2 ** 22
@@ -84,7 +85,9 @@ def generate(
         sdf,
         step=None, bounds=None, samples=SAMPLES,
         workers=WORKERS, batch_size=BATCH_SIZE,
-        verbose=True, sparse=True):
+        verbose=True, sparse=True,
+        simplify=False, simp_ratio=0.5, simp_agressive=7,
+        simp_add_random=None, simp_smooth=False, simp_cut=False):
 
     start = time.time()
 
@@ -146,15 +149,40 @@ def generate(
         seconds = time.time() - start
         print('%d triangles in %g seconds' % (triangles, seconds))
 
+    if simplify:
+        points = simp.simplify(sdf,points,simp_ratio=simp_ratio, simp_agressive=simp_agressive,
+                      simp_add_random=simp_add_random, simp_smooth=simp_smooth, simp_cut=simp_cut)
+
     return points
 
 def save(path, *args, **kwargs):
     points = generate(*args, **kwargs)
     if path.lower().endswith('.stl'):
         stl.write_binary_stl(path, points)
+    elif path.lower().endswith('.step') or path.lower().endswith('.stp'):
+        step.write_step(path, points)
     else:
         mesh = _mesh(points)
         mesh.write(path)
+
+def save_mesh(path, points):
+    if path.lower().endswith('.stl'):
+        stl.write_binary_stl(path, points)
+    elif path.lower().endswith('.step') or path.lower().endswith('.stp'):
+        step.write_step(path, points)
+    else:
+        mesh = _mesh(points)
+        mesh.write(path)
+
+def read_mesh(path):
+    import meshio
+    if path.lower().endswith('.stl'):
+        return stl.read_binary_stl(path)
+    elif path.lower().endswith('.step') or path.lower().endswith('.stp'):
+        print("read of step not implemented, please convert to stp or other meshio format")
+    else:
+        out = meshio.read(path)
+        return out.points[out.cells[0][1].reshape(-1,1),:].reshape(-1,3)
 
 def _mesh(points):
     import meshio

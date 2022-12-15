@@ -1,0 +1,54 @@
+<ui>
+  <menubar name="MenuBar">
+    <menu action="FileMenu">
+      <menuitem action="OpenModel"/>
+      <menuitem action="OpenRecentModel" name="OpenRecentModelMenu"/>
+      <separator />
+      <menu action="ExportMenu" />
+      <separator />
+    </menu>
+    <menu action="EditMenu">
+      <menuitem action="UndoButton"/>
+      <separator />
+    </menu>
+    <menu action="SettingsMenu">
+      <menuitem action="ResetWorkspace"/>
+      <menuitem action="LoadWorkspace"/>
+      <menuitem action="SaveWorkspace"/>
+      <menuitem action="SaveAsWorkspace"/>
+      <separator />
+      <menuitem action="GeneralSettings"/>
+    </menu>
+    <menu action="ViewMenu" />
+    <menu action="HelpMenu">
+      <menuitem action="HelpUserManual"/>
+      <menuitem action="HelpIntroduction"/>
+      <menu action="HelpMenuMisc">
+        <menuitem action="HelpSupportedFormats"/>
+        <menuitem action="HelpModelTransformations"/>
+        <menuitem action="HelpGCodeExport"/>
+        <menuitem action="HelpSimulation"/>
+        <menuitem action="HelpServerMode"/>
+        <menuitem action="HelpCommandLine"/>
+        <menuitem action="HelpHotkeys"/>
+        <menuitem action="HelpTouchOff"/>
+      </menu>
+      <menu action="HelpMenuGUI">
+        <menuitem action="HelpToolTypes"/>
+        <menuitem action="HelpProcessSettings"/>
+        <menuitem action="HelpBoundsSettings"/>
+        <menuitem action="HelpProjectSetup"/>
+        <menuitem action="Help3DView"/>
+      </menu>
+      <separator />
+      <menuitem action="ProjectWebsite"/>
+      <menuitem action="Forum"/>
+      <menuitem action="FeatureRequest"/>
+      <menuitem action="BugTracker"/>
+      <menuitem action="DevelopmentBlog"/>
+      <separator />
+      <menuitem action="About"/>
+    </menu>
+  </menubar>
+</ui>
+

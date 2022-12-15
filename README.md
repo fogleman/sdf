@@ -36,8 +36,13 @@ Have a cool example? Submit a PR!
 
 | [gearlike.py](examples/gearlike.py) | [knurling.py](examples/knurling.py) | [blobby.py](examples/blobby.py) | [weave.py](examples/weave.py) |
 | --- | --- | --- | --- |
-| ![gearlike](docs/images/gearlike.png) | ![knurling](docs/images/knurling.png) | ![blobby](docs/images/blobby.png) | ![weave](docs/images/weave.png) |
-| ![gearlike](docs/images/gearlike.jpg) | ![knurling](docs/images/knurling.jpg) | ![blobby](docs/images/blobby.jpg) | ![weave](docs/images/weave.jpg) |
+| ![gearlike](docs/images/gearlike.png)| ![knurling](docs/images/knurling.png)| ![blobby](docs/images/blobby.png)| ![weave](docs/images/weave.png)|
+| ![gearlike](docs/images/gearlike.jpg)| ![knurling](docs/images/knurling.jpg)| ![blobby](docs/images/blobby.jpg)| ![weave](docs/images/weave.jpg)|
+
+More examples!
+| [pawn.py](examples/pawn.py) | [steering_wheel.py](examples/steering_wheel.py) | [spinning_top.py](examples/spinning_top.py) |
+| --- | --- | --- |
+| ![pawn](docs/images/pawn.png)| ![steering wheel](docs/images/steering_wheel.png)| ![spinning_top](docs/images/spinning_top.png)|
 
 ## Requirements
 
@@ -143,6 +148,32 @@ By default, `samples=2**22` is used.
 *Tip*: Use the default resolution while developing your SDF. Then when you're done,
 crank up the resolution for your final output.
 
+## Fast Quadric Mesh Simplification
+
+Simplification of the mesh can be accomplished at the same time by using:
+
+```python
+f.save('out.stl', samples=2**24, simplify=True)
+# to simplify (remove 80%) of the mesh after rendering, use:
+f.save('out.stl', samples=2**24, simplify=True, simp_ratio=0.2)
+# to change the simplification agressive value use
+f.save('out.stl', samples=2**24, simplify=True, simp_agressive=5)
+```
+
+or generate once and then simplify afterwards:
+
+```python
+points = f.generate()
+points = simplify(points)
+save_mesh("test_output.stl",points)  # save as STL file
+#save_mesh("test_output.stp",points)  # save as STEP file
+```
+
+By default, `simp_ratio=0.5, simp_agressive=7` is used.
+
+For more information see https://github.com/sp4cerat/Fast-Quadric-Mesh-Simplification
+
+
 ## Batches
 
 The SDF is sampled in batches. By default the batches have `32**3 = 32768`
@@ -186,6 +217,20 @@ If you want to save an STL after `generate`, just use:
 write_binary_stl(path, points)
 ```
 
+## Reading and Saving Mesh Files
+
+To read the points from a mesh file use `read_mesh(file)` and to save use `save_mesh(file, points)`.
+The format of the file is determined by the suffix.  For a full list of supported formats, refer to
+meshio.  The additonal STEP file format is only available for saving.
+
+An example of reading a STL file, simplifying it, and then writing it out as a STEP file:
+
+```python
+points = read_mesh("my_mesh.stl")  # This reads a STL file
+points = simplify(points)          # Reduce the mesh to about half
+save_mesh("my_mesh.stp",points)    # Write the mesh out to a STEP file
+```
+
 ## Visualizing the SDF
 
 <img width=350 align="right" src="docs/images/show_slice.png">
@@ -218,7 +263,7 @@ surprisingly fast (for marching cubes). Meshes of adequate detail can
 still be quite large in terms of number of triangles.
 
 The core "engine" of the `sdf` library is very small and can be found in
-[mesh.py](https://github.com/fogleman/sdf/blob/main/sdf/mesh.py).
+[mesh.py](sdf/mesh.py).
 
 In short, there is nothing algorithmically revolutionary here. The goal is
 to provide a simple, fun, and easy-to-use API for generating 3D models in our
@@ -226,15 +271,15 @@ favorite language Python.
 
 ## Files
 
-- [sdf/d2.py](https://github.com/fogleman/sdf/blob/main/sdf/d2.py): 2D signed distance functions
-- [sdf/d3.py](https://github.com/fogleman/sdf/blob/main/sdf/d3.py): 3D signed distance functions
-- [sdf/dn.py](https://github.com/fogleman/sdf/blob/main/sdf/dn.py): Dimension-agnostic signed distance functions
-- [sdf/ease.py](https://github.com/fogleman/sdf/blob/main/sdf/ease.py): [Easing functions](https://easings.net/) that operate on numpy arrays. Some SDFs take an easing function as a parameter.
-- [sdf/mesh.py](https://github.com/fogleman/sdf/blob/main/sdf/mesh.py): The core mesh-generation engine. Also includes code for estimating the bounding box of an SDF and for plotting a 2D slice of an SDF with matplotlib.
-- [sdf/progress.py](https://github.com/fogleman/sdf/blob/main/sdf/progress.py): A console progress bar.
-- [sdf/stl.py](https://github.com/fogleman/sdf/blob/main/sdf/stl.py): Code for writing a binary [STL file](https://en.wikipedia.org/wiki/STL_(file_format)).
-- [sdf/text.py](https://github.com/fogleman/sdf/blob/main/sdf/text.py): Generate 2D SDFs for text (which can then be extruded)
-- [sdf/util.py](https://github.com/fogleman/sdf/blob/main/sdf/util.py): Utility constants and functions.
+- [sdf/d2.py](sdf/d2.py): 2D signed distance functions
+- [sdf/d3.py](sdf/d3.py): 3D signed distance functions
+- [sdf/dn.py](sdf/dn.py): Dimension-agnostic signed distance functions
+- [sdf/ease.py](sdf/ease.py): [Easing functions](https://easings.net/) that operate on numpy arrays. Some SDFs take an easing function as a parameter.
+- [sdf/mesh.py](sdf/mesh.py): The core mesh-generation engine. Also includes code for estimating the bounding box of an SDF and for plotting a 2D slice of an SDF with matplotlib.
+- [sdf/progress.py](sdf/progress.py): A console progress bar.
+- [sdf/stl.py](sdf/stl.py): Code for writing a binary [STL file](https://en.wikipedia.org/wiki/STL_(file_format)).
+- [sdf/text.py](sdf/text.py): Generate 2D SDFs for text (which can then be extruded)
+- [sdf/util.py](sdf/util.py): Utility constants and functions.
 
 ## SDF Implementation
 
@@ -296,6 +341,8 @@ See the [customizable box example](examples/customizable_box.py) for some starti
 
 ### sphere
 
+Draw a sphere with the radius centered around `center`, by default this is the origin (0,0,0).
+
 <img width=128 align="right" src="docs/images/sphere.png">
 
 `sphere(radius=1, center=ORIGIN)`
@@ -308,12 +355,14 @@ f = sphere(1, (1, 2, 3)) # translated sphere
 
 ### box
 
+Draw a 3D box with sides specified centered around `center`, by default this is the origin (0,0,0).
+
 <img width=128 align="right" src="docs/images/box2.png">
 
 `box(size=1, center=ORIGIN, a=None, b=None)`
 
 ```python
-f = box(1) # all side lengths = 1
+f = box(1) # all side lengths = 1, like a cube
 f = box((1, 2, 3)) # different side lengths
 f = box(a=(-1, -1, -1), b=(3, 4, 5)) # specified by bounds
 ```
@@ -322,14 +371,19 @@ f = box(a=(-1, -1, -1), b=(3, 4, 5)) # specified by bounds
 
 <img width=128 align="right" src="docs/images/rounded_box.png">
 
-`rounded_box(size, radius)`
+Draw a 3D rounded box with sides specified centered around `center`, by default this is the origin (0,0,0).  The radius of curvature is specified by `radius`.
+
+`rounded_box(size, radius, center=ORIGIN)`
 
 ```python
 f = rounded_box((1, 2, 3), 0.25)
 ```
 
 ### wireframe_box
+
 <img width=128 align="right" src="docs/images/wireframe_box.png">
+
+Draw a 3D box with round wires (diameter is specified by thickness) and centered around `center`, by default this is the origin (0,0,0).  The radius of curvature is specified by `radius`.
 
 `wireframe_box(size, thickness)`
 
@@ -338,7 +392,10 @@ f = wireframe_box((1, 2, 3), 0.05)
 ```
 
 ### torus
+
 <img width=128 align="right" src="docs/images/torus.png">
+
+torus is like a doughnut shape, like a circle with radius, `r2`, rotated around the `Z` axis at a radius, `r1`, from the center.
 
 `torus(r1, r2)`
 
@@ -347,7 +404,10 @@ f = torus(1, 0.25)
 ```
 
 ### capsule
+
 <img width=128 align="right" src="docs/images/capsule.png">
+
+capsule is a cylinder with rounded ends extending from `-Z` to `Z` and having the radius, `radius`.
 
 `capsule(a, b, radius)`
 
@@ -356,16 +416,23 @@ f = capsule(-Z, Z, 0.5)
 ```
 
 ### capped_cylinder
+
 <img width=128 align="right" src="docs/images/capped_cylinder.png">
+
+capped_cylinder is a flat ended cylinder extending from `a` to `b`, both 3D vectors, and having the radius, `radius`.
 
 `capped_cylinder(a, b, radius)`
 
 ```python
+# note: Z = np.array((0, 0, 1))
 f = capped_cylinder(-Z, Z, 0.5)
 ```
 
 ### rounded_cylinder
+
 <img width=128 align="right" src="docs/images/rounded_cylinder.png">
+
+rounded_cylinder is a flat ended cylinder with curved edges extending from `a` to `b`, scalers along the Z axis, and having the radius, `ra`, and the edges having a radius of `rb`.
 
 `rounded_cylinder(ra, rb, h)`
 
@@ -377,15 +444,20 @@ f = rounded_cylinder(0.5, 0.1, 2)
 
 <img width=128 align="right" src="docs/images/capped_cone.png">
 
+capped_cone is a flat ended cone extending from `a` to `b`, both 3D vectors, and having the radii, `ra` and `rb`.
+
 `capped_cone(a, b, ra, rb)`
 
 ```python
+# note: Z = np.array((0, 0, 1))
 f = capped_cone(-Z, Z, 1, 0.5)
 ```
 
 ### rounded_cone
 
 <img width=128 align="right" src="docs/images/rounded_cone.png">
+
+rounded_cone is a hemisphere ended cone extending along the Z axis from 0 to `h`, and having the radii, `r1` and `r2`.
 
 `rounded_cone(r1, r2, h)`
 
@@ -397,6 +469,8 @@ f = rounded_cone(0.75, 0.25, 2)
 
 <img width=128 align="right" src="docs/images/ellipsoid.png">
 
+ellipsoid is like a distored sphere centered at the origin, size is specified by a 3D array of scalars.
+
 `ellipsoid(size)`
 
 ```python
@@ -406,6 +480,10 @@ f = ellipsoid((1, 2, 3))
 ### pyramid
 
 <img width=128 align="right" src="docs/images/pyramid.png">
+
+pyramid is the simplest 3D flat sided object, consisting of one side being a
+triangle at the base and 3 more equal sized triangles matching those edges and
+meeting at the point `h` along the `Z` axis.
 
 `pyramid(h)`
 
@@ -455,10 +533,45 @@ f = dodecahedron(1)
 f = icosahedron(1)
 ```
 
+## Infinite 2D Primitives
+
+The following SDFs extend to infinity in some or all axes.  They can only
+effectively be used in combination with other shapes, as shown in the examples
+below.
+
+### line
+
+<img width=128 align="right" src="docs/images/2d_line.png">
+
+`line(normal=UP, point=ORIGIN)`
+
+`line` is an infinite cut line, with the positive side being inside and the
+negative side being outside.
+
+```python
+f = (circle() & line()).extrude(0.1)
+```
+
+### crop
+
+<img width=128 align="right" src="docs/images/2d_crop.png">
+
+`crop(x0=None, y0=None, x1=None, y1=None, k=None)`
+
+`crop` is useful for cutting a shape on one or more axis-aligned planes.  Note
+that one can accomplish the same affect by four line cuts with axis normals and
+points defined on the edges.
+
+```python
+f = (circle() & crop(y0=-0.5, y1=0.5, x0=0)).extrude(0.1)
+```
+
+
 ## Infinite 3D Primitives
 
-The following SDFs extend to infinity in some or all axes.
-They can only effectively be used in combination with other shapes, as shown in the examples below.
+The following SDFs extend to infinity in some or all axes.  They can only
+effectively be used in combination with other shapes, as shown in the examples
+below.
 
 ### plane
 
@@ -466,7 +579,8 @@ They can only effectively be used in combination with other shapes, as shown in 
 
 `plane(normal=UP, point=ORIGIN)`
 
-`plane` is an infinite plane, with one side being positive (outside) and one side being negative (inside).
+`plane` is an infinite plane, with the positive side being inside and the
+negative side being outside.
 
 ```python
 f = sphere() & plane()
@@ -478,7 +592,9 @@ f = sphere() & plane()
 
 `slab(x0=None, y0=None, z0=None, x1=None, y1=None, z1=None, k=None)`
 
-`slab` is useful for cutting a shape on one or more axis-aligned planes.
+`slab` is useful for cutting a shape on one or more axis-aligned planes.  Note
+that the same effect can be accomplished by using multiple planes cutting with
+a normal starting at points on the cut plane.
 
 ```python
 f = sphere() & slab(z0=-0.5, z1=0.5, x0=0)
@@ -490,7 +606,9 @@ f = sphere() & slab(z0=-0.5, z1=0.5, x0=0)
 
 `cylinder(radius)`
 
-`cylinder` is an infinite cylinder along the Z axis.
+`cylinder` is an infinite cylinder along the Z axis.  This is useful for
+cutting a hole in an object (- operation) or widdling down an object
+so it fits within a cylinder (& operation).
 
 ```python
 f = sphere() - cylinder(0.5)
@@ -498,9 +616,9 @@ f = sphere() - cylinder(0.5)
 
 ## Text
 
-Yes, even text is supported!
+<p align="center"><img src="docs/images/2d_text.png"></p>
 
-![Text](docs/images/text-large.png)
+Yes, even text is supported!
 
 `text(font_name, text, width=None, height=None, pixels=PIXELS, points=512)`
 
@@ -511,7 +629,7 @@ TEXT = 'Hello, world!'
 w, h = measure_text(FONT, TEXT)
 
 f = rounded_box((w + 1, h + 1, 0.2), 0.1)
-f -= text(FONT, TEXT).extrude(1)
+f -= text(FONT, TEXT).extrude(0.2).k(0.05)
 ```
 
 Note: [PIL.ImageFont](https://pillow.readthedocs.io/en/stable/reference/ImageFont.html),
@@ -552,6 +670,10 @@ f = sphere().translate((0, 0, 2))
 
 <img width=128 align="right" src="docs/images/scale.png">
 
+Scale and figure larger or smaller with `factor`.  Unity, 1.0, will leave the
+object the same and smaller numbers will shrink, such as 0.5 which scales to
+half the size, and 2.0 which scales to double the size.
+
 `scale(other, factor)`
 
 Note that non-uniform scaling is an inexact SDF.
@@ -561,14 +683,47 @@ f = sphere().scale(2)
 f = sphere().scale((1, 2, 3)) # non-uniform scaling
 ```
 
-### rotate
+### rotate and rotateD
 
 <img width=128 align="right" src="docs/images/rotate.png">
 
+Given an angle and rotation vector, rotate the figure by `angle` in radians
+(for rotate) or degrees (for rotateD), around the vector axis.  So a rotation
+around Z will translate points around the X-Y plane and leave the Z values the
+same.
+
 `rotate(other, angle, vector=Z)`
+`rotateD(other, angle_in_degrees, vector=Z)`
 
 ```python
 f = capped_cylinder(-Z, Z, 0.5).rotate(pi / 4, X)
+f = capped_cylinder(-Z, Z, 0.5).rotateD(45, X)
+```
+
+### mirror
+
+<img width=128 align="right" src="docs/images/mirror.png">
+
+This function reflects the 3d image over the plane specified by the vector.
+For example, using `Z` will reflect across the `Z` plane mapping every positive
+`Z` point to it's negative counterpart and vice versa.
+
+`mirror(other, vector, center=ORIGIN)`
+
+```python
+f = circle(3).taper_extrude(3,1).translate((0,0,-3))
+# draw it again upside down
+f |= circle(3).taper_extrude(3,1).translate((0,0,-3)).mirror([0,0,1])
+```
+
+### mirror_copy
+
+<img width=128 align="right" src="docs/images/mirror_copy.png">
+
+`mirror_copy(other, vector, center=ORIGIN)`
+
+```python
+f = circle(3).taper_extrude(3,1).translate((0,0,-3)).mirror_copy([0,0,1])
 ```
 
 ### orient
@@ -702,9 +857,22 @@ f = capped_cylinder(-Z, Z, 0.5).circular_array(8, 4)
 
 ## Miscellaneous
 
+<img width=128 align="right" src="docs/images/example.png">
+
+Some of the functions demonstrated below use an example as a starting point:
+
+```python
+f = sphere(1) & box(1.5)
+c = cylinder(0.5)
+f -= c.orient(X) | c.orient(Y) | c.orient(Z)
+example = f
+```
+
 ### blend
 
 <img width=128 align="right" src="docs/images/blend.png">
+
+Blending of two objects using the scalar distance function between values of two objects with scalar k.
 
 `blend(a, *bs, k=0.5)`
 
@@ -716,6 +884,8 @@ f = sphere().blend(box())
 
 <img width=128 align="right" src="docs/images/dilate.png">
 
+Decrease the scalar distance value by radius, `r`, making the object edges dilate, or appear to inflate.
+
 `dilate(other, r)`
 
 ```python
@@ -726,6 +896,8 @@ f = example.dilate(0.1)
 
 <img width=128 align="right" src="docs/images/erode.png">
 
+Increase the scalar distance value by radius, `r`, making the object edges erode, or appear to deflate.
+
 `erode(other, r)`
 
 ```python
@@ -735,6 +907,8 @@ f = example.erode(0.1)
 ### shell
 
 <img width=128 align="right" src="docs/images/shell.png">
+
+Create a shell at every boundary, where the scalar distance value crosses positive and negative values.  The thickness of the shell created on the edge is defined by `thickness`.
 
 `shell(other, thickness)`
 
@@ -816,6 +990,10 @@ f = box().transition_radial(sphere(), e=ease.in_out_quad)
 
 <img width=128 align="right" src="docs/images/wrap_around.png">
 
+This function will take an XYZ cartesian coordinate space and convert into
+polar coordinates where the X axis is mapped into the radial axis, Y axis into
+the angular, and Z is left alone.
+
 `wrap_around(other, x0, x1, r=None, e=ease.linear)`
 
 ```python
@@ -837,9 +1015,52 @@ f = text(FONT, TEXT).extrude(0.1).orient(Y).wrap_around(-w / 2, w / 2)
 f = hexagon(1).extrude(1)
 ```
 
+### rounded_extrude
+
+<img width=128 align="right" src="docs/images/rounded_extrude.png">
+
+Extrude a 2D and add round edges on border.
+
+`rounded_extrude(other, h, radius=0)`
+
+```python
+f = hexagon(10).rounded_extrude(5, radius=2)
+```
+
+<img width=128 align="right" src="docs/images/rounded_extrude_neg.png">
+
+Note: when using a negative value, the rounding will go in the opposite direction.
+
+```python
+f = hexagon(10).rounded_extrude(5, radius=-2)
+```
+
+### rounded_extrude_stack
+
+<img width=128 align="right" src="docs/images/rounded_extrude_stack.png">
+
+Extrude two 2D images and add round edges on border and at the intersection weld the joints.
+
+`rounded_extrude_stack(other_bottom, other_top, height_bottom, height_top, radius)`
+
+To increase tensile strength, sometimes it is useful to add more material at
+joints, so increasing the weld_radius will add more fill.
+
+`rounded_extrude_stack(other_bottom, other_top, height_bottom, height_top, radius, weld_radius)`
+
+```python
+f = rounded_extrude_stack(rectangle([16,6]),rectangle([6,16]), 5, 7, radius=1)
+# to alter the weld radius between the two objects:
+f = rounded_extrude_stack(rectangle([16,6]),rectangle([6,16]), 5, 7, radius=1, weld_radius=2):
+```
+
 ### extrude_to
 
 <img width=128 align="right" src="docs/images/extrude_to.png">
+
+`extrude_to` takes two different 2D objects and blends them together by an ease
+operator, by default it is linear, so as to make a smooth transition between
+the two objects.
 
 `extrude_to(a, b, h, e=ease.linear)`
 
@@ -847,14 +1068,47 @@ f = hexagon(1).extrude(1)
 f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)
 ```
 
+### taper_extrude
+
+<img width=128 align="right" src="docs/images/taper_extrude.png">
+
+In `taper_extrude`, slope is the amount of contracting per unit Z over the
+height of the extrude.  A negative value will cause the image to expand and
+corners will become a larger rounded edge.
+
+`taper_extrude(other, height, slope=0, e=ease.linear)`
+
+```python
+f = rectangle(10).taper_extrude(6, slope=0.1)
+```
+
+
 ### revolve
 
 <img width=128 align="right" src="docs/images/revolve.png">
+
+`revolve` takes a 2D object and rotates it around the `Z` axis.  Offset is how
+far the center point is moved away from the origin on the `XY` plane.
 
 `revolve(other, offset=0)`
 
 ```python
 f = hexagon(1).revolve(3)
+```
+
+### helix_revolve
+
+<img width=128 align="right" src="docs/images/helix_revolve.png">
+
+`helix_revolve` will take a 2D object and rotate it around the `Z` axis while
+linearly moving in a helix toward positive `Z`.  A practical use for this is to
+create threads.  By negating pitch, one can reverse the thread, changing the
+rotation from right-handed to left-handed.
+
+`helix_revolve(other, offset=0, pitch=1, rotations=1)`
+
+```python
+f = polygon([[3,0],[4,.5],[4,1],[3,1.5]]).helix_revolve(pitch=2, rotations=4.3)
 ```
 
 ## 3D to 2D Operations
@@ -871,11 +1125,264 @@ f = example.translate((0, 0, 0.55)).slice().extrude(0.1)
 
 ## 2D Primitives
 
+Note: The examples 2D functions below are called and then extruded to show how
+to convert a 2D to a 3D.
+
 ### circle
-### line
+
+<img width=128 align="right" src="docs/images/2d_circle.png">
+
+`circle(radius=1, center=ORIGIN)`
+
+```python
+f = circle(2).extrude(0.1)
+```
+
 ### rectangle
+
+<img width=128 align="right" src="docs/images/2d_rectangle.png">
+
+`rectangle(size=1, center=ORIGIN, a=None, b=None)`
+
+```python
+f = rectangle([2,1]).extrude(0.1)
+# or you can specify the corners:
+f = rectangle(a=[-2,-1],b=[2,1]).extrude(0.1)
+```
+
 ### rounded_rectangle
+
+<img width=128 align="right" src="docs/images/2d_rounded_rectangle.png">
+
+`rounded_rectangle(size=1, radius=0.1, center=ORIGIN, a=None, b=None)`
+
+```python
+f = rounded_rectangle([2,1],0.2).extrude(0.1)
+# or you can specify the corners:
+f = rectangle(a=[-2,-1],b=[2,1],radius=0.2).extrude(0.1)
+```
+
 ### equilateral_triangle
+
+<img width=128 align="right" src="docs/images/2d_equilateral_triangle.png">
+
+`equilateral_triangle(r, center=ORIGIN)`
+
+```python
+f = equilateral_triangle(3).extrude(0.1)
+```
+
 ### hexagon
+
+<img width=128 align="right" src="docs/images/2d_hexagon.png">
+
+`hexagon(r)`
+
+```python
+f = hexagon(2).extrude(0.1)
+```
+
+### equilateral_polygon
+
+<img width=128 align="right" src="docs/images/2d_equilateral_polygon.png">
+
+`equilateral_polygon(n, r)`
+
+`equilateral_polygon` makes a shape with equal sides, for example `n=3` is a
+triangle, `n=4` is square, `n=5` is a pentagon, and so forth.  Note: The right edge
+will always be vertical and the radius is the distance to the center of a flat face.
+
+```python
+f = equilateral_polygon(5,10).extrude(0.1)
+```
+
 ### rounded_x
+
+<img width=128 align="right" src="docs/images/2d_rounded_x.png">
+
+`rounded_x(w, r)`
+
+```python
+f = rounded_x(10,2).extrude(0.1)
+```
+
+### rounded_cog
+
+<img width=128 align="right" src="docs/images/2d_rounded_cog.png">
+
+`rounded_cog(outer_r, cog_r, num)`
+
+```python
+f = rounded_cog(38, 6, 14).extrude(0.1)
+```
+
 ### polygon
+
+<img width=128 align="right" src="docs/images/2d_polygon.png">
+
+`polygon(points)`
+
+```python
+f = polygon([[-16,-16],[14,-8],[3,4],[0,12]]).extrude(0.1)
+```
+
+### rounded_polygon
+
+<img width=128 align="right" src="docs/images/2d_rounded_polygon.png">
+
+The points provided to the curve polygon are in the form of [x,y,curve_radius] where a
+curve_radius value of negative will create an arc in the left hand rotation and
+positive in the right hand rotation.  A curve_radius of 0 implies a straight line.
+
+`rounded_polygon(points_with_curve)`
+
+```python
+f = rounded_polygon([[-2,0,0],[0,2,-2**0.5],[2,0,-2**0.5],[0,-2,0]]).extrude(0.1)
+```
+
+## Rounded Polygon Operations
+
+### round_polygon_corners
+
+<img width=128 align="right" src="docs/images/2d_round_polygon_corners.png">
+
+This function will change 
+When matching three curves, concave-convex-concave or convex-concave-convex, this function
+will move the points along the outer curves in order to match the center curve exactly.
+
+`round_polygon_corners(points_with_curve, radius)`
+`round_polygon_corners(points_with_curve, [radii...], [index_of_vertex...])`
+
+```python
+pts1 = [[10,0,0],[1,1,-20],[3,10,0]]
+pts2 = [[-10,0,0],[-1,1,20],[-3,10,0]]
+pts3 = [[10,-10,0],[1,-9,-18],[3,0,20]]
+pts4 = [[-10,-10,0],[-1,-9,-18],[-3,0,20]]
+f = rounded_polygon(pts1).shell(0.1).extrude(0.1)
+f |= rounded_polygon(pts2).shell(0.1).extrude(0.1)
+f |= rounded_polygon(pts3).shell(0.1).extrude(0.1)
+f |= rounded_polygon(pts4).shell(0.1).extrude(0.1)
+rpts1 = round_polygon_corners(pts1,1)
+rpts2 = round_polygon_corners(pts2,1)
+rpts3 = round_polygon_corners(pts3,1)
+rpts4 = round_polygon_corners(pts4,1)
+f |= rounded_polygon(rpts1).extrude(0.1)
+f |= rounded_polygon(rpts2).extrude(0.1)
+f |= rounded_polygon(rpts3).extrude(0.1)
+f |= rounded_polygon(rpts4).extrude(0.1)
+```
+
+### round_polygon_smooth_ends
+
+<img width=128 align="right" src="docs/images/2d_round_polygon_smooth_ends.png">
+
+When matching three curves, concave-convex-concave or convex-concave-convex, this function
+will move the points along the outer curves in order to match the center curve exactly.
+
+`round_polygon_smooth_ends(index_of_side_to_modify)`
+
+```python
+pts = [[3,0,0],[2,0,-0.75],[1,0,2],[0,0,-0.75],[0,1,0],[3,1,0]]
+f = rounded_polygon(pts).translate((0,3)).shell(0.1).extrude(0.1)
+rpts = round_polygon_smooth_ends(pts,[1])
+f |= rounded_polygon(rpts).shell(0.1).extrude(0.1)
+```
+
+## 2D Operations
+
+### edge
+
+<img width=128 align="right" src="docs/images/2d_edge.png">
+
+`edge(width)`
+
+```python
+
+f = rounded_polygon([
+   [-4,-1,0],[-6,-1,-1],[-6,1,-1],  [-4,1,-1], [-1,1,0],  # Left
+   [-1,4,0], [-1,6,-1], [1,6,-1],   [1,4,-1],  [1,1,0],   # Top
+   [4,1,0],  [6,1,-1],  [6,-1,-1],  [4,-1,-1], [1,-1,0],  # Right
+   [1,-8,0], [1,-10,-1],[-1,-10,-1],[-1,-8,-1],[-1,-1,0]  # Bottom
+   ]).edge(0.1).extrude(0.1)
+```
+
+### mirror
+
+<img width=128 align="right" src="docs/images/2d_mirror.png">
+
+`mirror(other, axis=Y, center=ORIGIN)`
+
+```
+s = circle(2).translate((3,3))
+# draw another on the side, mirrored over the negative X
+s |= circle(2).translate((3,3)).mirror([1,0])
+f = s.extrude(0.1)
+```
+
+### mirror_copy
+
+<img width=128 align="right" src="docs/images/2d_mirror_copy.png">
+
+`mirror_copy(other, axis=Y, center=ORIGIN)`
+
+```python
+s = circle(2).translate((3,3)).mirror_copy([1, 0.1])
+f = s.extrude(0.1)
+```
+
+## Math Functions
+
+Standard math routines provided by Python are available, and additional functions available are:
+
+### Trigonometric
+`arc_sinD(slope)`
+`arc_cosD(slope)`
+`arc_tanD(slope)`
+`arc_tan2D(y,x)`
+
+Returns an angle in degrees.
+
+`sinD(ang)`
+`cosD(ang)`
+`tanD(ang)`
+
+Takes degrees and returns the trigonometric value.
+
+## Building GCODE output
+
+To make GCODE files, one needs to choose between which method to print, either additive method (such as plastic printing) or subtractive (such as CNC milling).  These two interfaces rely on external packages, in particular slic3r and pycam.  To call them, use the following functions:
+
+```python
+f = sphere(1)
+points = f.generate(samples=None,step=resolution,batch_size=48, simplify=True, simp_agressive=7,simp_ratio=0.1)
+```
+
+The two methods below use the existing python code for generating a figure.
+
+### Slic3r
+
+```python
+# Write out gcode for this object for additive manufacturing
+# Usage and details can be found https://manual.slic3r.org/
+slic3r("steeringwheel.gcode",points,options={'layer-height': 0.2})
+
+#slic3r("steeringwheel.gcode",points,options={
+#  'layer-height': 0.2,
+#  'nozzle-diameter': 0.35,
+#  'filament-diameter': 2.85,
+#  'temperature': 185,
+#  'first-layer-temperature': 195,
+#  'layer-height': 0.2,
+#  })
+```
+
+### PyCAM
+
+```python
+# Write out gcode for this object for cnc manufacturing
+pycam("pycnc_steeringwheel_rough.yaml",points)
+```
+
+an example yaml file is provided in the pycam project here:
+
+https://raw.githubusercontent.com/eddeliu/pycam-1/master/yaml_flow_example.yml

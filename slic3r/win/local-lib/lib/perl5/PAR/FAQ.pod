@@ -1,0 +1,365 @@
+=encoding utf8
+
+=head1 NAME
+
+PAR::FAQ - Frequently Asked Questions about PAR
+
+=head1 SYNOPSIS
+
+This is the Frequently Asked Questions list for the Perl Archive Toolkit.
+This (included) FAQ list might be outdated. The Wiki version at the above URL
+is guaranteed to be up to date.
+
+=head1 DESCRIPTION
+
+=head2 Where is the Windows binary version?
+
+You can find windows binaries here:
+
+L<http://www.cpan.org/authors/id/S/SM/SMUELLER/>
+
+There are three ways to install them. Sorted in order of preference:
+
+=head3 cpan
+
+Run the I<cpan> command line tool that comes with Perl. In the I<cpan> shell, type
+
+  install PAR
+
+and wait for the script to download and extract PAR and its dependencies. If you have a C compiler installed, PAR will be built on your computer for your specific version of Perl. If you do not have a C compiler, the installer will look at the site referenced above for a compatible binary release and ask you whether you would like to install it.
+
+=head3 ppm
+
+If you are using ActivePerl from ActiveState, you can use the 'ppm' program that comes with the ActiveState Perl. Instructions can be found below. PAR is available from various PPM repositories and some packages are compatible with some versions of ActivePerl and not with others. There is an incomplete PAR-Win32 Binary Compatibility List at L<http://par.wikia.com/wiki/PAR_PPM_Compatibility_List> There are at least three relevant PPM repositories: The default ActiveState one, the bribes repository which is used in the example below and Randy Kobes' repository at L<http://theoryx5.uwinnipeg.ca/ppms/>.
+
+    C:\> ppm3
+    # activestate was out of date compared to this one
+    % rep add bribes http://www.bribes.org/perl/ppm
+    # move it to first place on list of repositories
+    % rep up bribes
+    CPAN>upgrade -install PAR
+
+And finally, 'q' to quit and that's all :-) You have access to pp and so on...
+
+=head3 manual
+
+For reference, here's the old explanation of how to install it by hand:
+The file you need will be called PAR-X.XX-MSWin32-x86-multi-thread-Y.Y.Y.par where X.XX is the version of PAR you will use and Y.Y.Y is the version of Perl you have. Unzip this file (you may need to rename it to end with .zip instead of .par first) and copy all the files in the script directory into a directory in your PATH. Now you should be able to use PAR.
+
+=head2 Can PAR bundle all its prerequisites?
+
+I<Note:> This entry needs serious attention.
+
+Yes and no.
+
+It would be possible to do this but it would also introduce a maintenance nightmare. A new version of PAR would have to be released whenever a new version of any of the dependencies came out. This is already painful with the included L<Module::Install>.
+
+The original proposal which led to this FAQ entry considered the case where you want to install PAR without a working CPAN.pm/CPAN shell installation or without internet connectivity. By default, PAR will try to install its dependencies from CPAN using the CPAN.pm module.
+
+Given that you have a development machine with PAR installed and with a working CPAN.pm, it is reasonably simple to create one or more .par distributions of PAR's dependencies. Install L<PAR::Dist::FromCPAN>. Then you can create .par distributions (read: binaries installable with the pure-perl PAR::Dist on the same architecture) for the PAR dependencies as follows:
+
+  mkdir par_files
+  cpan2par --pattern PAR --follow --out par_files/ --merge --skip File::.*
+           --skip Getopt::Std --skip Carp --skip Data::Dumper --skip Time::Local
+           --skip 'Test\b.*' --skip Text::ParseWords --skip ExtUtils::.*
+           --skip Getopt::Long --skip Text::Abbrev --skip DirHandle --skip Pod::.*
+
+(Line breaks inserted for readability.) What happens here? cpan2par uses the API of the CPAN.pm module to fetch the PAR distribution from CPAN, unpacks it, builds it, creates a .par archive from its compiled state and then does the same for any of its dependencies. And then for its dependencies dependencies and... You get the idea. This is what the --follow option does. We add a couple of --skip options to skip core modules which we need not include and any Test::* modules. The --merge option merges all of the .par distributions into the original PAR one. Voila! (Future versions of PAR::Dist::FromCPAN might include an option --skip-core which would skip any modules contained in the core distribution.)
+
+After this command worked its magic, you should have a single file PAR-VERSION-ARCHNAME-PERLVERSION.par in the subdirectory 'par_files/'. You can now install PAR and its non-core dependencies on any machine that has the architecture of your development system (and a binary compatible perl version) using L<PAR::Dist> as follows:
+
+  perl -MPAR::Dist -einstall_par
+
+Provided that you run the command from within the directory containing the aforementioned .par file (and no other .par file).
+
+Since you might not even have PAR::Dist on the target machine, you can do this simple hack to get a basic installer:
+
+  perl -MPAR::Dist -e'open my $fh, "<", $INC{"PAR/Dist.pm"}; print <$fh>;
+       print "\npackage main;\nPAR::Dist::install_par(\@ARGV ? shift(\@ARGV)
+       : ());\n\n"'
+       > installer.pl
+
+(Again: Line breaks inserted for readability.) This looks for your installed copy of PAR::Dist, reads it, writes it to STDOUT and appends two lines of code: "package main;" and a call to PAR::Dist::install_par. By default, it will install any (single) .par file in the current directory. If supplied with a file name as first argument, it will install the specified file. It should have no non-core dependencies! So shipping the generated PAR-....par file and the installer.pl file to the target machine and running "perl installer.pl" should just magically install PAR and its dependencies for you.
+
+Now, this whole trick works equally well for any other modules. In fact, if you have PAR on the target machine, you needn't even install the modules in the .par file in order to use them! You can just add "use PAR 'foo-bar.par';" to your code and any modules will be loaded from the .par file as necessary. ("perl -MPAR=foo-bar.par your_script.pl" works, too.) The documentation of the PAR module has details on this.
+
+Finally, note that you can install L<PAR::Repository::Client> on the target machines and subsequently use PAR 0.951 and later to automatically fetch any unfulfilled dependencies from a (remote or local) repository:
+
+  use PAR { repository => 'http://my_local_secure_host/repository' };
+
+or:
+
+  use PAR { repository => 'file:///path/to/repository' };
+
+Details, again, in the L<PAR> documentation and in the L<PAR::Repository::Client> documentation.
+
+Answer from: Steffen Mueller, 16 August 2006
+
+=head2 If I try to compile my wxGlade generated script, it doesn't run. What's wrong?
+
+I<Note:> Is this still a problem?
+
+Comment out the line that starts with " unless (caller) ", and compile it again. Note that this is considered a bug; clearing the caller stack is a development in progress.
+
+=head2 I get a link error '/usr/bin/ld: cannot find -lperl' during the 'make' step of the installation on Debian. What's wrong?
+
+Install the C<libperl-dev> package. 
+
+Note that Debian provides (usually up-to-date) packages of the modules 
+in the PAR ecosystem: L<Module::Scandeps>, L<PAR>,
+L<PAR::Dist> and L<PAR::Packer>; the corresponding packages are called
+C<libmodule-scandeps-perl>,  C<libpar-dist-perl>, C<libpar-perl>
+and C<libpar-packer-perl>.
+
+=head2 I specify a .ico file with --icon for Win32, but the icon is still the black and white camel. What's wrong?
+
+Unlike Perl2EXE, which can use a standard 16-color bitmap as an application icon, PAR requires a true Windows icon file. Download a trial version of Microangelo and use that to create your .ico file. The latest Netpbm tools at L<http://netpbm.sourceforge.net/> has ppmtowinicon, which can tack a pbm and convert it to a windows icon. It is open source and has win32 ports.
+
+Gimp for Windows can also create Windows icon files L<http://gimp-win.sourceforge.net/>.
+
+=head2 I added a directory to my PAR file using "zip -r" or winzip, and then generated an executable from this PAR file, and the executable failed to run (IO error: reading header signature :..). What's wrong?
+
+As pointed out by Alan Stewart, zip adds a directory entry for the new directory, and it causes the PAR executable to fail. Just use :
+
+  zip -r -D hello.par my_dir/ 
+
+or the Archive::Zip::addTree as follows :
+
+  $zip->addTree( $root, $dest, sub { -f } )
+
+=head2 On what platforms can I run PAR? On what platforms will the resulting executable run?
+
+Win32 (95/98/ME/NT4/2K/XP), FreeBSD, Linux, AIX, Solaris, Darwin and Cygwin.
+
+The resulting executable will run on any platforms that supports the binary format of the generating platform.
+
+=head2 How do I extract my script out of packed executable?
+
+In other words, "I did a `pp foo.pl' and I lost foo.pl, how do I get it back?".
+
+The answer is to just use unzip/winzip/winrar/whatever to decompress the executable, treating it like a normal Zip file. You may need to rename the executable into a .zip extension first.
+
+=head2 Can PAR completely hide my source code?
+
+Not completely, but possible to a degree. Starting from version 0.76, PAR supports an input filter mechanism, which can be used to implement source obfuscators (or even product activation schemes).
+
+But if you are looking for 100% bulletproof way of hiding source code, it is not possible with any language. Learning Perl, 3rd Edition has this answer to offer (quoted with permission from Randal Schwartz):
+
+If you're wishing for an opaque binary, though, we have to tell
+you that they don't exist. If someone can install and run your
+program, they can turn it back into source code. Granted, this
+won't necessarily be the same source that you started with, but
+it will be some kind of source code. The real way to keep your
+secret algorithm a secret is, alas, to apply the proper number
+of attorneys; they can write a license that says "you can do
+this with the code, but you can't do that. And if you break our
+rules, we've got the proper number of attorneys to ensure that
+you'll regret it."
+
+Other than that, I would point you at L<PAR::Filter::Crypto>. Be sure to read the CAVEATS and WARNINGS sections of the documentation.
+
+=head2 On Windows XP, pp crashes saying that "par.exe has encountered a problem"
+
+This is believed to be fixed by PAR 0.76_99. The following answer applies to PAR 0.76 and earlier:
+
+You may be able to escape this problem by setting some executables to Windows 95 compatibility mode. Specifically, find "parl.exe" (probably in "C:\perl\5.8.0\bin") using Windows Explorer, and right-click on it and choose "Properties". Choose the "Compatibility" tab and tick the box for "Run this program with compatibility mode for" and check that the dropdown shows "Windows 95". Then click OK.
+
+Now you can hopefully run pp as normal to generate an EXE. Before you can run the generated EXE, you'll need to set its compatibility mode too, in the same way as you did for parl.exe.
+
+This workaround is known not to work in all cases, and the developers are working on a solution to the problem. See these posts for more info:
+
+L<http://www.mail-archive.com/par@perl.org/msg00423.html>, 
+L<http://www.mail-archive.com/par@perl.org/msg00435.html>, 
+L<http://www.mail-archive.com/par@perl.org/msg00573.html>, 
+L<http://www.mail-archive.com/par@perl.org/msg00670.html>
+
+=head2 Perl Tk tips
+
+On Windows XP start your script with
+
+  use strict; use Encode::Unicode; use Tk;
+
+Some widgets use xbm bitmaps which don't get picked up by PAR. The error is:
+
+  couldn't read bitmap file "": No such file or directory
+  error reading bitmap file "" at Tk/Widget.pm line 205.
+  at Tk/Widget.pm line 203
+
+Fix is to find the missing xbm files (perl -V tells you where to start looking) and add them to the executable eg
+
+copy missing xbm files to script directory then:
+
+    % pp --add cbxarrow.xbm --add arrowdownwin.xbm -o test test.pl
+
+=head2 Problem with Win32::Perms and Perms.DLL
+
+With a script my.pl using Win32::Perms, pp -o my.exe my.pl you may have:
+
+  Can't locate loadable object for module Win32::Perms in @INC
+  (@INC contains: CODE(0xb97eec) CODE(0xc8a99c) .)
+  at ../blib/lib/PAR/Heavy.pm line 78
+
+In fact the dll is Perms.DLL wit DLL in capital letters. That's the problem. The bootstrap function of PAR in the Dynaloader module fails looking for Perms.dll in the table of dlls which contains only Perms.DLL. And so the solution is just rename Perms.DLL in Perms.dll and do pp -o my.exe my.pl ... and everything goes right.
+
+=head2 Under Win32, a pp packed executable has trouble executing other perl scripts or pp packed executable
+
+I<Note:> Is this still current?
+
+When running on a Win32 system, if a perl script is packed with pp and invokes another Perl script or pp packed executable, either with system() or backticks, the invoked program runs with the copy of perl5x.dll already loaded into memory. If the calling executable was packed with "pp -d", the perl5x.dll is the one from the installed perl bin directory. Otherwise, it is the one packed with the executable. The perl5x.dll from the bin dir knows the @INC paths for the installed libraries; the one in the executable does not. Because of this, a program packed without "-d" calling a program with packed with "-d" or calling perl.exe to run a plain Perl script may fail. This is a Win32 limitation.
+
+=head2 How can I make a .exe that runs with no console window under Windows?
+
+Use the --gui switch, ie
+
+    % pp --gui -o file.exe file.pl
+
+I found that this is not documented on all versions of pp ... Some versions have a more complete doc than others when you type "pp -h" etc. (This should be reasonably documented now.)
+
+When searching for an answer to this myself, I found many references to using "exetype" ... it comes as a .bat with ActivePerl, or you can find an exetype.pl from several places. You run "exetype file.exe [WINDOWS|CONSOLE]". This worked, I think, but still did not achieve the desired result on my PAR executable. While the exe itself did not generate a console window, par.exe (which was invoked in my exe somewhere) DID generate a console window, with a titlebar saying "par.exe <strange-looking path to file in temp dir>", whereas before changing the console window title bar just displayed the path to my .exe.
+
+=head2 How can I change the icon of the generated .exe file under Windows?
+
+There is another not-completely-documented switch that only works on windows, --icon MyIcon.ico. So just use this:
+
+    % pp --icon "c:\path to\MyIcon.ico" -o file.exe file.pl.
+
+(This should also be documented now?)
+
+=head2 The command line parameters (@ARGV) of a pp-ed binary called from another pp-ed binary are missing or broken. What the...?
+
+This was a bug in releases up to and including PAR-0.90. Please upgrade to PAR 0.91 or later and the problem will go away.
+
+=head2 I want to include a pp-ed binary in an RPM package. How can I make this work?
+
+The binary executables outputted by pp (on Linux) are not valid ELF binaries because it basically attaches a zip archive to the binary loader and does not modify the ELF headers to reflect that. When building an RPM archive, the validity of the ELF headers is checked by default. This can result in problems when packaging pp-ed binaries in RPM archives.
+
+Scott McBrien helped track down what can be done to get this to work:
+
+  [I]t appears that the RPM archive that is generated gets a list of
+  the MD5 sums for components of the executable file calculated by
+  prelink.  By disabling prelink, it fixed the problem; in my RPM .spec
+  file:
+  %define         __prelink_undo_cmd     %{nil}
+
+After quite some time, it seems like the smart folks at Redhat found the culprit. I'm glad *they* did, because I wouldn't have:
+
+  It appears that we found a solution that works. It like the pp
+  executables are already stripped, so we don't want rpm stripping them
+  again, which, of course, renders them useless.
+  
+  In this case, we added the following lines to the spec file to keep rpm
+  from running the strip process and not produce debuginfo packages:
+  
+  %define __spec_install_post :
+  %define debug_package %{nil}
+  
+  Don't forget to add the ":" character to __spec_install_post as above or
+  this won't work.
+
+Much praise to all who helped track this down! The discussion can be found in the following RT tickets:
+L<http://rt.cpan.org/Public/Bug/Display.html?id=18536|#18536> and L<http://rt.cpan.org/Public/Bug/Display.html?id=19609|#19609>.
+
+-- Steffen Mueller, 22 July 2006
+
+=head2 How can I package Wx applications?
+
+Have a look at the separately maintained L<Wx::Perl::Packager> module.
+
+-- Steffen Mueller, 3 July 2006
+
+=head2 How can I package Catalyst web applications?
+
+Catalyst has some builtin PAR support. I found the following URL to be very helpful:
+
+L<http://catalyst.infogami.com/cookbook/par>.
+
+-- Steffen Mueller, 21 July 2006
+
+=head2 The resulting files are huge! How can I reduce the size of the output file?
+
+The executables generated by pp generally contain a copy of your Perl shared libraries, the Perl core modules and any module dependencies your packaged application may have. That is a lot. Sometimes, PAR packages too much. It adheres to the philosophy of rather making the application work than generating a streamlined executable. If you want to optimize this, you will have to do so by excluding specific modules.
+
+Chris Dolan's recent post to the PAR mailing list explains this well. Quoting Chris: (L<http://www.nntp.perl.org/group/perl.par/2490>)
+
+  [...]
+  I've found a few tricks that can help a lot:
+
+  * If you know the target platform has Perl pre-installed (e.g. Mac OS X)
+    then use the "--dependent" flag. This skips all of the core modules,
+    yielding a much smaller executable.
+    
+    One significant caveat is moving to older systems.  For example,
+    Mac OS X 10.2 had Perl 5.6.0 which has 146 fewer core modules than
+    Perl 5.8.6 which shipped with Mac OS X 10.4, and (even more significantly)
+    is binary-incompatible with any extra XS modules added from CPAN.
+    Other platforms can be even harder to predict.
+  
+  * Watch for modules that pull in lots of dependencies
+    
+    A good example is DBI.  If your program uses DBI, then Module::ScanDeps
+    pulls in ALL of the DBD::* modules (some of which are large) installed on
+    your system, because it cannot realistically parse the DBI->connect()
+    arguments which specify which database drivers are actually needed.
+    In one of my MySQL-based applications, I use this invocation of PAR:
+    
+      pp -X DBD::SQLite -X DBD::CSV -X DBD::File -X DBD::Excel
+    
+    which saves quite a few bytes, because both DBD::SQLite and DBD::Excel
+    have lots of CPAN dependencies.  The actual list if DBD::* modules you
+    need to exclude depends on your system.  Here's a short command that will
+    reveal all DBD::* modules on a unix-like system:
+    
+      perl -MModule::ScanDeps -le'print for map {"DBD/".$_->{name}} Module::ScanDeps::_glob_in_inc("DBD")'
+    
+    Another smaller example is SOAP::Transport::* where most installations
+    only need SOAP::Transport::HTTP.
+    [...]
+
+Similar techniques can be applied when a module makes use of L<Module::Pluggable> for plugins.
+
+Finally, there is a PAR filter available as a separate distribution on CPAN which compresses the source code as much as possible by first parsing it using PPI and then spitting out a reduced functional equivalent:
+L<PAR::Filter::Squish>.
+
+-- Steffen Mueller, August 2006
+
+=head2 How do I use Win32::GUI::SplashScreen with PAR?
+
+When using pp to package an application that uses Win32::GUI::SplashScreen, try adding the splashscreen bitmap manually as suggested in the Win32::GUI::SplashScreen docs:
+
+  pp -a SPLASHFILE.bmp -o xxx.exe xxx.pl
+
+=head2 The Perl Packager scripts says that it can create executable that runs in same OS. Can I use it to create Win32 binary with linux machine? Or what should I use to create Win32 executable binary on linux from my script?
+
+It is not possible to create stand-alone binaries for different platform than what you are currently running on. This is a generally hard problem since you would have to cross-compile all XS modules and perl itself. Not nice. 
+
+For example, if you would like to develop an application on Linux and ship it for both Linux/x86 and Win32/x86, it works well to set up a Virtual Machine with a Windows (XP or 2000 or whatever) and a Perl installation. On that machine, use PAR/pp to package your application for Win32.
+
+See also the question "On what platforms can I run PAR? On what platforms will the resulting executable run?".
+
+-- Steffen Mueller, 2 November 2006
+
+=head1 SEE ALSO
+
+L<PAR>, L<PAR::Tutorial>
+
+=head1 AUTHORS
+
+Audrey Tang E<lt>cpan@audreyt.orgE<gt>, 
+Steffen Mueller E<lt>smueller@cpan.orgE<gt>
+
+You can write
+to the mailing list at E<lt>par@perl.orgE<gt>, or send an empty mail to
+E<lt>par-subscribe@perl.orgE<gt> to participate in the discussion.
+
+Please submit bug reports to E<lt>bug-par@rt.cpan.orgE<gt>.
+
+=head1 COPYRIGHT
+
+Copyright 2003-2008 by Audrey Tang E<lt>cpan@audreyt.orgE<gt>.
+
+This document is free documentation; you can redistribute it and/or
+modify it under the same terms as Perl itself.
+
+See F<LICENSE>.
+
+=cut

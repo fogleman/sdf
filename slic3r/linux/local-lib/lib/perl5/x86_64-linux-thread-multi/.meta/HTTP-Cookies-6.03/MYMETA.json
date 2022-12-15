@@ -1,0 +1,126 @@
+{
+   "abstract" : "HTTP cookie jars",
+   "author" : [
+      "Gisle Aas <gisle@activestate.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 6.008, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "HTTP-Cookies",
+   "no_index" : {
+      "directory" : [
+         "examples",
+         "t",
+         "xt"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "develop" : {
+         "requires" : {
+            "Test::CPAN::Changes" : "0.19",
+            "Test::Code::TidyAll" : "0.50",
+            "Test::More" : "0.88"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Carp" : "0",
+            "HTTP::Date" : "6",
+            "HTTP::Headers::Util" : "6",
+            "HTTP::Request" : "0",
+            "Time::Local" : "0",
+            "locale" : "0",
+            "perl" : "5.008001",
+            "strict" : "0",
+            "vars" : "0"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "HTTP::Response" : "0",
+            "Test" : "0",
+            "Test::More" : "0",
+            "URI" : "0",
+            "warnings" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/libwww-perl/http-cookies/issues"
+      },
+      "homepage" : "https://github.com/libwww-perl/http-cookies",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/libwww-perl/http-cookies.git",
+         "web" : "https://github.com/libwww-perl/http-cookies"
+      }
+   },
+   "version" : "6.03",
+   "x_contributors" : [
+      "Adam Kennedy <adamk@cpan.org>",
+      "Adam Sjogren <asjo@koldfront.dk>",
+      "Alexey Tourbin <at@altlinux.ru>",
+      "Alex Kapranoff <ka@nadoby.ru>",
+      "Alex Peters <lxp@cpan.org>",
+      "amire80 <amir.aharoni@gmail.com>",
+      "Andreas J. Koenig <andreas.koenig@anima.de>",
+      "Bill Mann <wfmann@alum.mit.edu>",
+      "Bron Gondwana <brong@fastmail.fm>",
+      "Chase Whitener <capoeirab@cpan.org>",
+      "Daniel Hedlund <Daniel.Hedlund@eprize.com>",
+      "David E. Wheeler <david@justatheory.com>",
+      "DAVIDRW <davidrw@cpan.org>",
+      "Father Chrysostomos <sprout@cpan.org>",
+      "FWILES <FWILES@cpan.org>",
+      "Gavin Peters <gpeters@deepsky.com>",
+      "Graeme Thompson <Graeme.Thompson@mobilecohesion.com>",
+      "Hans-H. Froehlich <hfroehlich@co-de-co.de>",
+      "Ian Kilgore <iank@cpan.org>",
+      "Jacob J <waif@chaos2.org>",
+      "James McCoy <vega.james@gmail.com>",
+      "jefflee <shaohua@gmail.com>",
+      "john9art <john9art@yahoo.com>",
+      "Mark Stosberg <MARKSTOS@cpan.org>",
+      "Mike Schilli <m@perlmeiser.com>",
+      "murphy <murphy@genome.chop.edu>",
+      "Olaf Alders <olaf@wundersolutions.com>",
+      "Ondrej Hanak <ondrej.hanak@ubs.com>",
+      "Perlover <perlover@perlover.com>",
+      "Peter Rabbitson <ribasushi@cpan.org>",
+      "phrstbrn <phrstbrn@gmail.com>",
+      "Robert Stone <talby@trap.mtview.ca.us>",
+      "Rolf Grossmann <rg@progtech.net>",
+      "ruff <ruff@ukrpost.net>",
+      "sasao <sasao@yugen.org>",
+      "Sean M. Burke <sburke@cpan.org>",
+      "Slaven Rezic <slaven@rezic.de>",
+      "Spiros Denaxas <s.denaxas@gmail.com>",
+      "Steve Hay <SteveHay@planit.com>",
+      "Todd Lipcon <todd@amiestreet.com>",
+      "Tom Hukins <tom@eborcom.com>",
+      "Tony Finch <dot@dotat.at>",
+      "Toru Yamaguchi <zigorou@cpan.org>",
+      "Ville Skyttä <ville.skytta@iki.fi>",
+      "Yuri Karaban <tech@askold.net>",
+      "Zefram <zefram@fysh.org>"
+   ],
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

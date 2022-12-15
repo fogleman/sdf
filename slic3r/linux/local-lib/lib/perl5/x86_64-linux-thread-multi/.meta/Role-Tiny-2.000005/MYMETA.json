@@ -1,0 +1,69 @@
+{
+   "abstract" : "Roles. Like a nouvelle cuisine portion size slice of Moose.",
+   "author" : [
+      "mst - Matt S. Trout (cpan:MSTROUT) <mst@shadowcat.co.uk>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.24, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Role-Tiny",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "xt"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {}
+      },
+      "configure" : {
+         "requires" : {}
+      },
+      "develop" : {
+         "recommends" : {
+            "Class::Method::Modifiers" : "1.05",
+            "Moo" : "0",
+            "namespace::autoclean" : "0"
+         }
+      },
+      "runtime" : {
+         "recommends" : {
+            "Class::Method::Modifiers" : "1.05"
+         },
+         "requires" : {
+            "Exporter" : "5.57",
+            "perl" : "5.006"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0.88"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "mailto" : "bug-Role-Tiny@rt.cpan.org",
+         "web" : "https://rt.cpan.org/Public/Dist/Display.html?Name=Role-Tiny"
+      },
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ],
+      "repository" : {
+         "type" : "git",
+         "url" : "git://github.com/moose/Role-Tiny.git",
+         "web" : "https://github.com/moose/Role-Tiny"
+      },
+      "x_IRC" : "irc://irc.perl.org/#moose"
+   },
+   "version" : "2.000005",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

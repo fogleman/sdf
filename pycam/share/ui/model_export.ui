@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <object class="GtkAction" id="SaveAsModel">
+    <property name="label">Save Model _as ...</property>
+    <property name="short_label">Save Model as ...</property>
+    <property name="tooltip">Save the current model to a new STL file.</property>
+    <property name="stock_id">gtk-save-as</property>
+  </object>
+  <object class="GtkAction" id="SaveModel">
+    <property name="label">_Save Model</property>
+    <property name="short_label">_Save Model</property>
+    <property name="tooltip">Save the current model to the STL file.</property>
+  </object>
+</interface>

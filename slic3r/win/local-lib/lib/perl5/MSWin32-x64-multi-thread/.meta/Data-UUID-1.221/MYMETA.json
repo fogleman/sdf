@@ -1,0 +1,50 @@
+{
+   "abstract" : "Globally/Universally Unique Identifiers (GUIDs/UUIDs)",
+   "author" : [
+      "Ricardo Signes <rjbs[at]cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.0401, CPAN::Meta::Converter version 2.150005, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "bsd"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Data-UUID",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Digest::MD5" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/rjbs/Data-UUID/issues"
+      },
+      "repository" : {
+         "url" : "https://github.com/rjbs/Data-UUID"
+      }
+   },
+   "version" : "1.221",
+   "x_serialization_backend" : "JSON::PP version 2.27400"
+}

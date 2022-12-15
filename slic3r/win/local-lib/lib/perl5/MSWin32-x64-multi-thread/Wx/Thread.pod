@@ -1,0 +1,108 @@
+=head1 NAME
+
+Thread - using wxPerl with threads
+
+=head1 SYNOPSIS
+
+  # the order of these use()s is important
+  use threads;
+  use threads::shared;
+  use Wx;
+
+  my $DONE_EVENT : shared = Wx::NewEventType;
+
+  my $worker = threads->create( \&work );
+
+  # create frames, etc
+  my $frame = Wx::Frame->new( ... );
+  EVT_COMMAND( $frame, -1, $DONE_EVENT, \&done );
+  $app->MainLoop;
+
+  sub done {
+      my( $frame, $event ) = @_;
+
+      print $event->GetData;
+  }
+
+  sub work {
+      # ... do stuff, create a shared $result value
+
+      my $threvent = new Wx::PlThreadEvent( -1, $DONE_EVENT, $result );
+      Wx::PostEvent( $frame, $threvent );
+  }
+
+  # event handler
+  sub OnCreateThread {
+      # @_ = () is necessary to avoid "Scalars leaked"
+      my( $self, $event ) = @_; @_ = ();
+
+      threads->create( ... );
+  }
+
+=head1 DESCRIPTION
+
+Threaded GUI application are somewhat different from non-GUI threaded
+applications in that the main thread (which runs the GUI) must never
+block.  Also, in wxWidgets, no thread other than the main thread can
+manipulate GUI objects.  This leads to a hybrid model where worker
+threads must send events to the main thread in order to change the GUI
+state or signal their termination.
+
+=head2 Order of module loading
+
+It's necessary for C<use Wx> to happen after <use threads::shared>.
+
+=head2 Sending events from worker threads
+
+C<Wx::PlThreadEvent> can be used to communicate between worker and
+GUI threads.  The event can carry a I<shared> value between threads.
+
+  my $DONE_EVENT : shared = Wx::NewEventType;
+
+  sub work {
+      # ... do some stuff
+      my $progress = new Wx::PlThreadEvent( -1, $DONE_EVENT, $progress );
+      Wx::PostEvent( $frame, $progress );
+
+      # ... do stuff, create a shared $result value
+      my $end = new Wx::PlThreadEvent( -1, $DONE_EVENT, $result );
+      Wx::PostEvent( $frame, $end );
+  }
+
+The target of the event can be any C<Wx::EvtHandler>
+
+=head2 Receiving events from worker threads
+
+C<Wx::PlThreadEvent> is a command event and can be handled as such.
+The C<< ->GetData >> method can be used to retrieve the I<shared> data
+contained inside the event.
+
+  my $DONE_EVENT : shared = Wx::NewEventType;
+
+  EVT_COMMAND( $frame, -1, $DONE_EVENT, \&done );
+
+  sub done {
+      my( $frame, $event ) = @_;
+
+      print $event->GetData;
+  }
+
+=head2 Creating new threads
+
+Creating new threads from event handlers works without problems except
+from a little snag.  In order not to trigger a bug in the Perl
+interpreter, all event handler that directly or indirectly cause a
+thread creation must clean C<@_> before starting the thread.
+
+For example:
+
+  sub OnCreateThread {
+      my( $self, $event ) = @_; @_ = ();
+
+      threads->create( ... );
+  }
+
+failure to do that will cause "scalars leaked" warnings from the Perl
+interpreter.
+
+=cut

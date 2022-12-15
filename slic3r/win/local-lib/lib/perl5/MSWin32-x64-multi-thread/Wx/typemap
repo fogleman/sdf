@@ -1,0 +1,786 @@
+#############################################################################
+## Name:        typemap
+## Purpose:     typemap template
+## Author:      Mattia Barbon
+## Modified by:
+## Created:     29/10/2000
+## RCS-ID:      $Id: typemap.tmpl 3521 2014-05-12 10:09:20Z mdootson $
+## Copyright:   (c) 2000-2013 Mattia Barbon
+## Licence:     This program is free software; you can redistribute it and/or
+##              modify it under the same terms as Perl itself
+#############################################################################
+
+TYPEMAP
+wxFlexSizerGrowMode     T_ENUM
+wxEdge                  T_ENUM
+wxRelationship          T_ENUM
+wxWindowID              T_WINDOWID
+wxStockCursor           T_ENUM
+wxEventType             T_ENUM
+wxCheckBoxState         T_ENUM
+wxBitmapType            T_ENUM
+const char *            T_PV
+wxCoord                 T_IV
+float                   T_NV
+wxFontEncoding          T_ENUM
+wxFontFamily            T_ENUM
+wxFontStyle             T_ENUM
+wxFontWeight            T_ENUM
+wxRegionContain         T_ENUM
+wxSashEdgePosition      T_ENUM
+wxSashDragStatus        T_ENUM
+wxListColumnFormat      T_ENUM
+wxRasterOperationMode   T_ENUM
+wxPolygonFillMode       T_ENUM
+wxFloodFillStyle        T_ENUM
+wxMappingMode           T_ENUM
+off_t                   T_IV
+ResourceCat             T_ENUM
+wxSeekMode              T_ENUM
+WXCOLORREF              T_IV
+EntryType               T_ENUM
+wxKillError             T_ENUM
+wxSignal                T_ENUM
+wxItemKind              T_ENUM
+wxLayoutDirection       T_ENUM
+PlClassName             T_CLASSNAME
+wxUint32                T_IV
+wxLongLong_t            T_IV
+wxULongLong_t           T_UV
+wxIntPtr                T_IV
+wxUIntPtr               T_UV
+wxByte                  T_U_CHAR
+wxTextCtrlHitTestResult T_ENUM
+wxArrayString           T_ARRAYSTRING
+wxArrayString *         T_ARRAYSTRING
+wxPliUserDataCD **      T_ARRAYUSERDATA
+wxArrayInt              T_ARRAYINT
+wxTextPos               T_IV
+wxTextAttrAlignment     T_ENUM
+wxIdleMode              T_ENUM
+wxDouble                T_DOUBLE
+wxAnimationType         T_ENUM
+wxUpdateUIMode          T_ENUM
+wxWindowVariant         T_ENUM
+wxImageResizeQuality    T_ENUM
+wxAlignment             T_ENUM
+
+wxFindReplaceDialogStyles T_ENUM
+wxFindReplaceFlags      T_ENUM
+
+wxBackgroundStyle       T_ENUM
+wxSystemColour          T_ENUM
+wxSystemFont            T_ENUM
+wxSystemMetric          T_ENUM
+wxSystemScreenType      T_ENUM
+wxOrientation           T_ENUM
+wxBatteryState          T_ENUM
+wxPowerType             T_ENUM
+wxDirection             T_ENUM
+wxPenStyle              T_ENUM
+wxPenCap                T_ENUM
+wxPenJoin               T_ENUM
+wxBrushStyle            T_ENUM
+wxShowEffect            T_ENUM
+wxTipKind               T_ENUM
+
+wxDialogLayoutAdaptationMode T_ENUM
+
+wxLogTraceMask          T_UV 
+wxLogLevel              T_UV 
+wxTraceMask             T_UV
+wxTreeItemIdValue       T_UV
+wxTreeItemIcon          T_UV
+
+wxKeyCode               T_KEYCODE
+wxChar                  T_IV
+
+wxStockHelpStringClient T_ENUM
+
+wxDateTime *            O_NON_WXOBJECT
+
+Wx_UserDataCD *         O_USERDATACD
+wxPliUserDataCD *       O_USERDATACD
+
+Wx_UserDataO *          O_USERDATAO
+wxPliUserDataO *        O_USERDATAO
+
+SV_null *               T_SV_NULL
+
+wxClassInfo *           O_NON_WXOBJECT
+wxPropertyInfo *        O_NON_WXOBJECT
+const wxClassInfo *     O_NON_WXOBJECT
+const wxPropertyInfo *  O_NON_WXOBJECT
+const wxTypeInfo *      O_NON_WXOBJECT
+wxTypeInfo *            O_NON_WXOBJECT
+wxPropertyAccessor *    O_NON_WXOBJECT
+wxTypeKind              T_ENUM
+wxPropertyInfoFlags     T_ENUM
+
+wxObject *              O_WXOBJECT
+
+wxApp *                 O_WXOBJECT
+wxStandardPaths *       O_NON_WXOBJECT
+wxWindow *              O_WXOBJECT
+wxPlWindow *            O_WXOBJECT
+wxPlControl *           O_WXOBJECT
+wxFrame *               O_WXOBJECT
+wxTopLevelWindow *      O_WXOBJECT
+wxEvtHandler *          O_WXOBJECT
+wxMiniFrame *           O_WXOBJECT
+wxPopupWindow *         O_WXOBJECT
+wxPopupTransientWindow * O_WXOBJECT
+wxPlPopupTransientWindow * O_WXOBJECT
+wxDisplay *             O_NON_WXOBJECT_THR
+wxVideoMode *           O_NON_WXOBJECT_THR
+wxEventBlocker *        O_NON_WXOBJECT_THR
+wxWindowUpdateLocker *  O_NON_WXOBJECT_THR
+wxRichToolTip *         O_NON_WXOBJECT_THR
+
+wxMenuBar *             O_WXOBJECT
+wxMenu *                O_WXOBJECT
+wxMenuItem *            O_WXOBJECT
+
+wxRearrangeList *       O_WXOBJECT_NAMED
+wxRearrangeCtrl *       O_WXOBJECT_NAMED
+wxRearrangeDialog *     O_WXOBJECT_NAMED
+
+wxDirFilterListCtrl *   O_WXEVTHANDLER
+wxDirCtrl *             O_WXEVTHANDLER
+wxFileCtrl *            O_WXEVTHANDLER
+wxGenericDirCtrl *      O_WXEVTHANDLER
+wxAnimationCtrl *       O_WXEVTHANDLER
+wxStatusBar *           O_WXEVTHANDLER
+wxToolBar *             O_WXEVTHANDLER
+wxToolBarBase *         O_WXEVTHANDLER
+wxToolBarSimple *       O_WXEVTHANDLER
+wxPanel *               O_WXOBJECT
+wxDialog *              O_WXOBJECT
+wxControl *             O_WXOBJECT
+wxButton *              O_WXEVTHANDLER
+wxCommandLinkButton *   O_WXEVTHANDLER
+wxStaticText *          O_WXEVTHANDLER
+wxStaticLine *          O_WXEVTHANDLER
+wxTextCtrl *            O_WXOBJECT
+wxTextCtrlBase *        O_WXOBJECT
+wxPropertySheetDialog * O_WXEVTHANDLER
+wxPlValidator *         O_WXOBJECT
+wxValidator *           O_WXOBJECT
+wxCheckBox *            O_WXEVTHANDLER
+wxChoice *              O_WXEVTHANDLER
+wxComboBox *            O_WXEVTHANDLER
+wxComboCtrl *           O_WXEVTHANDLER
+wxComboCtrlBase *       O_WXEVTHANDLER
+wxComboPopup *          O_NON_WXOBJECT
+wxPlComboPopup *        O_NON_WXOBJECT
+wxOwnerDrawnComboBox *  O_WXEVTHANDLER
+wxPlOwnerDrawnComboBox * O_WXEVTHANDLER
+wxControlWithItems *    O_WXOBJECT
+wxEditableListBox *     O_WXOBJECT
+wxListBox *             O_WXEVTHANDLER
+wxStaticBox *           O_WXEVTHANDLER
+wxRadioButton *         O_WXEVTHANDLER
+wxRadioBox *            O_WXEVTHANDLER
+wxScrollBar *           O_WXEVTHANDLER
+wxNotebook *            O_WXEVTHANDLER
+wxBookCtrl *            O_WXEVTHANDLER
+wxBookCtrlBase *        O_WXEVTHANDLER
+wxCheckListBox *        O_WXEVTHANDLER
+wxGauge *               O_WXEVTHANDLER
+wxBitmapButton *        O_WXEVTHANDLER
+wxTreeCtrl *            O_WXOBJECT
+wxListCtrl *            O_WXOBJECT
+wxListView *            O_WXEVTHANDLER
+wxStaticBitmap *        O_WXEVTHANDLER
+wxSpinButton *          O_WXEVTHANDLER
+wxSpinCtrl *            O_WXEVTHANDLER
+wxSpinCtrlDouble *      O_WXEVTHANDLER
+wxSlider *              O_WXEVTHANDLER
+wxScrolledWindow *      O_WXOBJECT
+wxVScrolledWindow *     O_WXEVTHANDLER
+wxHScrolledWindow *     O_WXEVTHANDLER
+wxHVScrolledWindow *    O_WXEVTHANDLER
+wxPlVScrolledWindow *   O_WXEVTHANDLER
+wxPlHScrolledWindow *   O_WXEVTHANDLER
+wxPlHVScrolledWindow *  O_WXEVTHANDLER
+wxVListBox *            O_WXEVTHANDLER
+wxPlVListBox *          O_WXEVTHANDLER
+wxSplitterWindow *      O_WXEVTHANDLER
+wxSearchCtrl *          O_WXEVTHANDLER
+wxSashWindow *          O_WXEVTHANDLER
+wxToggleButton *        O_WXEVTHANDLER
+wxBitmapToggleButton *  O_WXEVTHANDLER
+wxSplashScreen *        O_WXOBJECT
+wxSplashScreenWindow *  O_WXOBJECT
+wxListbook *            O_WXEVTHANDLER
+wxChoicebook *          O_WXEVTHANDLER
+wxToolbook *            O_WXEVTHANDLER
+wxTreebook *            O_WXEVTHANDLER
+wxHyperlinkCtrl *       O_WXEVTHANDLER
+wxPickerBase *          O_WXEVTHANDLER
+wxColourPickerCtrl *    O_WXEVTHANDLER
+wxFilePickerCtrl *      O_WXEVTHANDLER
+wxDirPickerCtrl *       O_WXEVTHANDLER
+wxFontPickerCtrl *      O_WXEVTHANDLER
+wxCollapsiblePane *     O_WXEVTHANDLER
+wxBitmapComboBox *      O_WXEVTHANDLER
+wxInfoBar *             O_WXEVTHANDLER
+wxHeaderCtrl *          O_WXEVTHANDLER
+wxPlHeaderCtrl *        O_WXEVTHANDLER
+wxHeaderCtrlSimple *    O_WXEVTHANDLER
+wxPlHeaderCtrlSimple *  O_WXEVTHANDLER
+wxHeaderColumn *        O_NON_WXOBJECT_THR
+wxSettableHeaderColumn * O_NON_WXOBJECT_THR
+wxHeaderColumnSimple *  O_NON_WXOBJECT_THR
+wxPlHeaderColumn *      O_NON_WXOBJECT_SELF
+wxPlSettableHeaderColumn * O_NON_WXOBJECT_SELF
+wxBannerWindow *        O_WXEVTHANDLER
+
+wxWizard *              O_WXOBJECT
+wxWizardPage *          O_WXOBJECT
+wxWizardPageSimple *    O_WXOBJECT
+
+wxColourDialog *        O_WXOBJECT
+wxFileDialog *          O_WXOBJECT
+wxDirDialog *           O_NON_WXOBJECT
+wxNumberEntryDialog *   O_WXOBJECT
+wxMultiChoiceDialog *   O_WXOBJECT
+wxSingleChoiceDialog *  O_WXOBJECT
+wxMultipleChoiceDialog* O_WXOBJECT
+wxTextEntryDialog *     O_WXOBJECT
+wxPasswordEntryDialog * O_WXOBJECT
+wxFontDialog *          O_WXOBJECT
+wxPageSetupDialog *     O_WXOBJECT
+wxPrintDialog *         O_WXOBJECT
+wxMessageDialog *       O_WXOBJECT
+wxProgressDialog *      O_WXOBJECT
+wxFindReplaceDialog *   O_WXOBJECT
+wxPropertySheetDialog * O_WXOBJECT
+
+wxFindReplaceData *     O_NON_WXOBJECT
+wxColourData *          O_WXOBJECT_THR
+wxFontData *            O_WXOBJECT_THR
+
+wxSizer *               O_WXOBJECT
+wxPlSizer *             O_WXOBJECT
+wxBoxSizer *            O_WXOBJECT
+wxStaticBoxSizer *      O_WXOBJECT
+wxNotebookSizer *       O_WXOBJECT
+wxGridSizer *           O_WXOBJECT
+wxFlexGridSizer *       O_WXOBJECT
+wxSizerItem *           O_WXOBJECT
+wxGridBagSizer *        O_WXOBJECT
+wxGBPosition *          O_NON_WXOBJECT
+wxGBSpan *              O_NON_WXOBJECT
+wxGBPosition            O_GBPOSITION
+wxGBSpan                O_GBSPAN
+wxGBPosition &          O_GBPOSITION
+wxGBSpan &              O_GBSPAN
+wxGBSizerItem *         O_WXOBJECT
+wxStdDialogButtonSizer * O_WXOBJECT
+wxWrapSizer *           O_WXOBJECT
+
+wxDC *                  O_WXOBJECT_THR
+wxMemoryDC *            O_WXOBJECT_THR
+wxPrinterDC *           O_WXOBJECT_THR
+wxWindowDC *            O_WXOBJECT_THR
+wxClientDC *            O_WXOBJECT_THR
+wxPaintDC *             O_WXOBJECT_THR
+wxScreenDC *            O_WXOBJECT_THR
+wxBufferedDC *          O_WXOBJECT_THR
+wxBufferedPaintDC *     O_WXOBJECT_THR
+wxAutoBufferedPaintDC * O_WXOBJECT_THR
+wxMirrorDC *            O_WXOBJECT_THR
+wxSVGFileDC *           O_WXOBJECT_THR
+wxGCDC *                O_WXOBJECT_THR
+wxOverlay *             O_NON_WXOBJECT_THR
+wxDCOverlay *           O_NON_WXOBJECT_THR
+wxDCClipper *           O_NON_WXOBJECT_THR
+
+wxTaskBarIcon *         O_WXOBJECT
+wxNotificationMessage * O_NON_WXOBJECT_THR
+
+wxTextAttr *            O_NON_WXOBJECT_THR
+
+wxLog *                 O_NON_WXOBJECT
+wxLogTextCtrl *         O_NON_WXOBJECT
+wxLogNull *             O_NON_WXOBJECT_THR
+wxLogGui *              O_NON_WXOBJECT
+wxLogWindow *           O_NON_WXOBJECT
+wxLogChain *            O_NON_WXOBJECT
+wxLogPassThrough *      O_NON_WXOBJECT
+wxLogStderr *           O_NON_WXOBJECT
+wxPlLog *               O_NON_WXOBJECT
+wxPlLogPassThrough *    O_NON_WXOBJECT
+wxLogRecordInfo *       O_NON_WXOBJECT
+wxPlLogFormatter *      O_NON_WXOBJECT
+wxLogFormatter *        O_NON_WXOBJECT
+
+wxLocale *              O_NON_WXOBJECT_THR
+wxLanguageInfo *        O_NON_WXOBJECT_THR
+const wxLanguageInfo *  O_NON_WXOBJECT_THR
+
+wxStopWatch *           O_NON_WXOBJECT_THR
+
+wxAboutDialogInfo *     O_NON_WXOBJECT
+
+wxPoint                 O_POINT
+wxSize                  O_SIZE
+wxPosition              O_POSITION
+wxColour                O_NON_WXOBJECT_VAL
+wxPoint &               O_POINT
+wxSize &                O_SIZE
+wxPosition &            O_POSITION
+wxColour &              O_NON_WXOBJECT_VAL
+
+wxVariant*              O_NON_WXOBJECT_THR
+wxVariant               O_VARIANT
+
+wxProcess *             O_WXOBJECT
+wxSound *               O_NON_WXOBJECT_THR
+
+wxTipProvider *         O_NON_WXOBJECT
+
+wxDrawObject *          O_NON_WXOBJECT
+wxSize *                O_NON_WXOBJECT_THR
+wxPoint *               O_NON_WXOBJECT_THR
+wxRect *                O_NON_WXOBJECT_THR
+wxPosition *            O_NON_WXOBJECT_THR
+wxColour *              O_NON_WXOBJECT_THR
+wxCaret *               O_NON_WXOBJECT
+wxCaretSuspend *        O_NON_WXOBJECT_THR
+wxWindowDisabler *      O_NON_WXOBJECT_THR
+wxBusyCursor *          O_NON_WXOBJECT_THR
+wxBusyInfo *            O_NON_WXOBJECT_THR
+wxTimerRunner *         O_NON_WXOBJECT_THR
+
+wxLayoutConstraints *   O_WXOBJECT
+wxIndividualLayoutConstraint * O_WXOBJECT
+
+wxDropTarget *          O_NON_WXOBJECT
+wxListItem *            O_NON_WXOBJECT_THR
+wxListItemAttr *        O_NON_WXOBJECT_THR
+wxPliTreeItemData *     O_NON_WXOBJECT
+wxTreeItemData *        O_NON_WXOBJECT
+wxTreeItemId *          O_NON_WXOBJECT_THR
+
+wxAnimation *           O_WXOBJECT_THR
+wxFontMapper *          O_NON_WXOBJECT
+wxFontEnumerator *      O_NON_WXOBJECT_THR
+wxPlFontEnumerator *    O_NON_WXOBJECT_VXSP_THR
+wxNativeFontInfo *      O_NON_WXOBJECT_THR
+wxFont *                O_WXOBJECT_THR
+wxRegion *              O_WXOBJECT_THR
+wxRegionIterator *      O_WXOBJECT_THR
+wxIcon *                O_WXOBJECT_THR
+wxIconBundle *          O_NON_WXOBJECT
+wxIconLocation *        O_NON_WXOBJECT
+wxBitmap *              O_WXOBJECT_THR
+wxCursor *              O_WXOBJECT_THR
+const wxCursor *        O_WXOBJECT_THR
+wxToolTip *             O_WXOBJECT
+wxPen *                 O_WXOBJECT_THR
+wxMask *                O_WXOBJECT
+wxBrush *               O_WXOBJECT_THR
+wxBitmapHandler *       O_WXOBJECT
+wxPalette *             O_WXOBJECT_THR
+wxMimeTypesManager *    O_NON_WXOBJECT_THR
+wxFileType *            O_NON_WXOBJECT
+wxFileTypeInfo *        O_NON_WXOBJECT
+
+wxImage *               O_WXOBJECT_THR
+wxImageHandler *        O_WXOBJECT
+wxBMPHandler *          O_WXOBJECT
+wxGIFHandler *          O_WXOBJECT
+wxPCXHandler *          O_WXOBJECT
+wxPNMHandler *          O_WXOBJECT
+wxTIFFHandler *         O_WXOBJECT
+wxJPEGHandler *         O_WXOBJECT
+wxPNGHandler *          O_WXOBJECT
+wxXPMHandler *          O_WXOBJECT
+wxIFFHandler *          O_WXOBJECT
+wxICOHandler *          O_WXOBJECT
+wxCURHandler *          O_WXOBJECT
+wxANIHandler *          O_WXOBJECT
+wxTGAHandler *          O_WXOBJECT
+
+wxImageList *           O_WXOBJECT_THR
+
+wxToolBarToolBase *     O_NON_WXOBJECT
+
+wxAcceleratorEntry *    O_NON_WXOBJECT_THR
+wxAcceleratorTable *    O_WXOBJECT_THR
+
+wxTimer *               O_WXOBJECT
+
+wxSingleInstanceChecker * O_NON_WXOBJECT_THR
+
+wxWave *                O_NON_WXOBJECT
+
+wxGraphicsRenderer *    O_WXOBJECT
+wxGraphicsBrush *       O_WXOBJECT_THR
+wxGraphicsContext *     O_WXOBJECT_THR
+wxGraphicsFont *        O_WXOBJECT_THR
+wxGraphicsMatrix *      O_WXOBJECT_THR
+wxGraphicsObject *      O_WXOBJECT_THR
+wxGraphicsPath *        O_WXOBJECT_THR
+wxGraphicsPen *         O_WXOBJECT_THR
+wxGraphicsGradientStop * O_NON_WXOBJECT_THR
+wxGraphicsGradientStops * O_NON_WXOBJECT_THR
+wxTreeListCtrl *        O_WXEVTHANDLER
+wxTreeListItem *        O_NON_WXOBJECT_THR
+wxTreeListItemComparator * O_NON_WXOBJECT_THR
+wxPlTreeListItemComparator * O_NON_WXOBJECT_SELF
+
+# events
+wxEvent *               O_WXOBJECT_THR
+wxActivateEvent *       O_WXOBJECT_THR
+wxBookCtrlEvent *       O_WXOBJECT_THR
+wxClipboardTextEvent *  O_WXOBJECT_THR
+wxCloseEvent *          O_WXOBJECT_THR
+wxCommandEvent *        O_WXOBJECT_THR
+wxContextMenuEvent *    O_WXOBJECT_THR
+wxEraseEvent *          O_WXOBJECT_THR
+wxFindDialogEvent *     O_WXOBJECT_THR
+wxFocusEvent *          O_WXOBJECT_THR
+wxFileCtrlEvent *       O_WXOBJECT_THR
+wxKeyEvent *            O_WXOBJECT_THR
+wxHelpEvent *           O_WXOBJECT_THR
+wxIconizeEvent *        O_WXOBJECT_THR
+wxIdleEvent *           O_WXOBJECT_THR
+wxInitDialogEvent *     O_WXOBJECT_THR
+wxJoystickEvent *       O_WXOBJECT_THR
+wxListbookEvent *       O_WXOBJECT_THR
+wxListEvent *           O_WXOBJECT_THR
+wxMaximizeEvent *       O_WXOBJECT_THR
+wxMenuEvent *           O_WXOBJECT_THR
+wxMouseCaptureChangedEvent * O_WXOBJECT_THR
+wxMouseCaptureLostEvent * O_WXOBJECT_THR
+wxMouseEvent *          O_WXOBJECT_THR
+wxMoveEvent *           O_WXOBJECT_THR
+wxNotebookEvent *       O_WXOBJECT_THR
+wxNotifyEvent *         O_WXOBJECT_THR
+wxPaintEvent *          O_WXOBJECT_THR
+wxQueryLayoutInfo *     O_WXOBJECT_THR
+wxSashEvent *           O_WXOBJECT_THR
+wxSizeEvent *           O_WXOBJECT_THR
+wxScrollEvent *         O_WXOBJECT_THR
+wxScrollWinEvent *      O_WXOBJECT_THR
+wxSpinEvent *           O_WXOBJECT_THR
+wxSplitterEvent *       O_WXOBJECT_THR
+wxSetCursorEvent *      O_WXOBJECT_THR
+wxSysColourChangedEvent * O_WXOBJECT_THR
+wxTaskBarIconEvent *    O_WXOBJECT_THR
+wxTimerEvent *          O_WXOBJECT_THR
+wxTreeEvent *           O_WXOBJECT_THR
+wxUpdateUIEvent *       O_WXOBJECT_THR
+wxTextUrlEvent *        O_WXOBJECT_THR
+wxProcessEvent *        O_WXOBJECT_THR
+wxWizardEvent *         O_WXOBJECT_THR
+wxTreebookEvent *       O_WXOBJECT_THR
+wxNavigationKeyEvent *  O_WXOBJECT_THR
+wxChildFocusEvent *     O_WXOBJECT_THR
+wxHyperlinkEvent *      O_WXOBJECT_THR
+wxPowerEvent *          O_WXOBJECT_THR
+wxColourPickerEvent *   O_WXOBJECT_THR
+wxFileDirPickerEvent *  O_WXOBJECT_THR
+wxFontPickerEvent *     O_WXOBJECT_THR
+wxWindowCreateEvent *   O_WXOBJECT_THR
+wxWindowDestroyEvent *  O_WXOBJECT_THR
+wxCollapsiblePaneEvent * O_WXOBJECT_THR
+wxHeaderCtrlEvent *     O_WXOBJECT_THR
+wxTreeListEvent *       O_WXOBJECT_THR
+
+wxPlEvent *             O_WXOBJECT_THR
+wxPlCommandEvent *      O_WXOBJECT_THR
+wxPlThreadEvent *       O_WXOBJECT_THR
+
+wxConfigBase *          O_NON_WXOBJECT
+wxConfig *              O_NON_WXOBJECT
+wxFileConfig *          O_NON_WXOBJECT
+
+wxArtProvider *         O_WXOBJECT
+wxPlArtProvider *       O_WXOBJECT
+
+wxPlEventFilter *       O_NON_WXOBJECT_THR
+wxEventFilter *         O_NON_WXOBJECT_THR
+
+wxUIActionSimulator *   O_NON_WXOBJECT_THR
+
+OUTPUT
+O_WXOBJECT
+    wxPli_object_2_sv( aTHX_ $arg, $var );
+
+O_WXOBJECT_THR
+    wxPli_object_2_sv( aTHX_ $arg, $var );
+    wxPli_thread_sv_register( aTHX_ ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt}, $var, $arg );
+
+O_WXEVTHANDLER
+    wxPli_evthandler_2_sv( aTHX_ $arg, $var );
+    
+O_WXOBJECT_NAMED
+    wxPli_namedobject_2_sv( aTHX_ $arg, $var, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+    
+O_WXOBJECT_NAMED_THR
+    wxPli_namedobject_2_sv( aTHX_ $arg, $var, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+    wxPli_thread_sv_register( aTHX_ ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt}, $var, $arg );
+
+O_WXCLIENTDATACONTAINER
+    wxPli_clientdatacontainer_2_sv( aTHX_ $arg, $var, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_WXCLIENTDATACONTAINER_THR_SV
+    wxPli_clientdatacontainer_2_sv( aTHX_ $arg, $var, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+    wxPli_thread_sv_register( aTHX_ ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt}, SvRV( $arg ), $arg );
+
+O_NON_WXOBJECT
+    wxPli_non_object_2_sv( aTHX_ $arg, $var, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_NON_WXOBJECT_THR
+    wxPli_non_object_2_sv( aTHX_ $arg, $var, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+    wxPli_thread_sv_register( aTHX_ ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt}, $var, $arg );
+
+O_NON_WXOBJECT_THR_SV
+    wxPli_non_object_2_sv( aTHX_ $arg, $var, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+    wxPli_thread_sv_register( aTHX_ ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt}, SvRV( $arg ), $arg );
+
+O_SIZE
+    wxPli_non_object_2_sv( aTHX_ $arg, new $type($var), ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_GBPOSITION
+    wxPli_non_object_2_sv( aTHX_ $arg, new $type($var), ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_GBSPAN
+    wxPli_non_object_2_sv( aTHX_ $arg, new $type($var), ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_POINT
+    wxPli_non_object_2_sv( aTHX_ $arg, new $type($var), ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_POSITION
+    wxPli_non_object_2_sv( aTHX_ $arg, new $type($var), ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+T_KEYCODE
+    sv_setiv( $arg, $var );
+
+T_UV
+    sv_setuv( $arg, (UV)$var );
+
+INPUT
+O_WXOBJECT
+    $var = (${(my $t=$type)=~s/^Wx_/wx/;\$t}) wxPli_sv_2_object( aTHX_ $arg, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_WXOBJECT_THR
+    $var = (${(my $t=$type)=~s/^Wx_/wx/;\$t}) wxPli_sv_2_object( aTHX_ $arg, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_WXEVTHANDLER
+    $var = (${(my $t=$type)=~s/^Wx_/wx/;\$t}) wxPli_sv_2_object( aTHX_ $arg, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_WXOBJECT_NAMED
+    $var = (${(my $t=$type)=~s/^Wx_/wx/;\$t}) wxPli_sv_2_object( aTHX_ $arg, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+    
+O_WXOBJECT_NAMED_THR
+    $var = (${(my $t=$type)=~s/^Wx_/wx/;\$t}) wxPli_sv_2_object( aTHX_ $arg, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_WXCLIENTDATACONTAINER
+    $var = (${(my $t=$type)=~s/^Wx_/wx/;\$t}) wxPli_sv_2_object( aTHX_ $arg, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_WXCLIENTDATACONTAINER_THR_SV
+    $var = (${(my $t=$type)=~s/^Wx_/wx/;\$t}) wxPli_sv_2_object( aTHX_ $arg, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_NON_WXOBJECT
+    $var = (${(my $t=$type)=~s/^Wx_/wx/;\$t}) wxPli_sv_2_object( aTHX_ $arg, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_NON_WXOBJECT_VAL
+    $var = *($type *) wxPli_sv_2_object( aTHX_ $arg, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_NON_WXOBJECT_THR
+    $var = (${(my $t=$type)=~s/^Wx_/wx/;\$t}) wxPli_sv_2_object( aTHX_ $arg, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_NON_WXOBJECT_THR_SV
+    $var = (${(my $t=$type)=~s/^Wx_/wx/;\$t}) wxPli_sv_2_object( aTHX_ $arg, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_POINT
+    $var = wxPli_sv_2_wxpoint( aTHX_ $arg );
+
+O_SIZE
+    $var = wxPli_sv_2_wxsize( aTHX_ $arg );
+
+O_POSITION
+    $var = wxPli_sv_2_wxposition( aTHX_ $arg );
+
+O_GBPOSITION
+    $var = wxPli_sv_2_wxgbposition( aTHX_ $arg );
+
+O_GBSPAN
+    $var = wxPli_sv_2_wxgbspan( aTHX_ $arg );
+
+T_KEYCODE
+    $var = wxPli_sv_2_keycode( aTHX_ $arg );
+
+T_UV
+    $var = ($type)SvUV( $arg );
+
+T_CLASSNAME
+    $var = wxPli_get_class( aTHX_ $arg );
+
+O_VARIANT
+    $var = wxPli_sv_2_wxvariant( aTHX_ $arg );
+
+#
+# Wx_UserData*
+#
+
+INPUT
+O_USERDATACD
+    if( SvOK( $arg ) )
+    {
+        $var = new wxPliUserDataCD( $arg );
+    }
+    else
+        $var = 0;
+
+O_USERDATAO
+    if( SvOK( $arg ) )
+    {
+        $var = new wxPliUserDataO( $arg );
+    }
+    else
+        $var = 0;
+
+OUTPUT
+O_USERDATACD
+    $arg = ( $var == 0 ) ? &PL_sv_undef : $var->GetData();
+    SvREFCNT_inc( $arg ); // xsubpp mortalizes it...
+
+O_USERDATAO
+    $arg = ( $var == 0 ) ? &PL_sv_undef : $var->GetData();
+    SvREFCNT_inc( $arg ); // xsubpp mortalizes it...
+
+#
+# Objects with a self reference
+#
+
+INPUT
+O_NON_WXOBJECT_SELF
+    $var = (${(my $t=$type)=~s/^Wx_/wx/;\$t}) wxPli_sv_2_object( aTHX_ $arg, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+OUTPUT
+O_NON_WXOBJECT_SELF
+    $arg = ( $var == 0 ) ? &PL_sv_undef : $var->GetSelf();
+    SvREFCNT_inc( $arg ); // xsubpp mortalizes it...
+
+#
+# Non Objects handled by Wx::XSP::Virtual XS++ plugin 
+#
+
+INPUT
+O_NON_WXOBJECT_VXSP
+    $var = (${(my $t=$type)=~s/^Wx_/wx/;\$t}) wxPli_sv_2_object( aTHX_ $arg, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+O_NON_WXOBJECT_VXSP_THR
+    $var = (${(my $t=$type)=~s/^Wx_/wx/;\$t}) wxPli_sv_2_object( aTHX_ $arg, ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt} );
+
+
+OUTPUT
+O_NON_WXOBJECT_VXSP
+    if( $var == 0 )
+    {
+       $arg = &PL_sv_undef;
+    } else {
+       SvSetSV_nosteal( $arg, $var->GetSelf() );
+    }
+
+O_NON_WXOBJECT_VXSP_THR
+    if( $var == 0 )
+    {
+       $arg = &PL_sv_undef;
+    } else {
+       SvSetSV_nosteal( $arg, $var->GetSelf() );
+       wxPli_thread_sv_register( aTHX_ ${(my $ntt=$ntype)=~s/^(?:const\s+)?(?:Wx_|wx|wxPl)(.*?)(?:Ptr)?$/$1/g;$ntt=qq{\"Wx::$ntt\"};\$ntt}, $var, $arg );
+    }
+
+#
+# SV_null
+#
+
+INPUT
+T_SV_NULL
+    $var = SvOK( $arg ) ? $arg : 0;
+
+OUTPUT
+T_SV_NULL
+    $arg = ( $var == 0 ) ? &PL_sv_undef : $var;
+    SvREFCNT_inc( $arg ); // xsubpp mortalizes it...
+
+#
+# streams
+#
+TYPEMAP
+wxPliInputStream        S_PL_ISTREAM
+wxPliOutputStream       S_PL_OSTREAM
+wxInputStream *         S_WX_ISTREAM
+wxOutputStream *        S_WX_OSTREAM
+Wx_InputStream *        O_NON_WXOBJECT
+Wx_OutputStream *       O_NON_WXOBJECT
+
+INPUT
+S_PL_ISTREAM
+    wxPli_sv_2_istream( aTHX_ $arg, $var );
+
+S_PL_OSTREAM
+    wxPli_sv_2_ostream( aTHX_ $arg, $var );
+
+
+OUTPUT
+S_WX_ISTREAM
+    wxPli_stream_2_sv( aTHX_ $arg, $var, "Wx::InputStream" );
+
+S_WX_OSTREAM
+    wxPli_stream_2_sv( aTHX_ $arg, $var, "Wx::OutputStream" );
+
+# Unicode support
+TYPEMAP
+wxChar *                T_WXCHAR
+const wxChar*           T_CONST_WXCHAR
+wxString                T_WXSTRING
+
+INPUT
+T_WXCHAR
+    WXCHAR_INPUT( $var, wxChar*, $arg );
+
+T_CONST_WXCHAR
+    WXCHAR_INPUT( $var, wxChar*, $arg );
+
+T_WXSTRING
+    WXSTRING_INPUT( $var, $type, $arg );
+
+OUTPUT
+T_WXCHAR
+    WXCHAR_OUTPUT( $var, $arg );
+
+T_CONST_WXCHAR
+    WXCHAR_OUTPUT( $var, $arg );
+
+T_WXSTRING
+    WXSTRING_OUTPUT( $var, $arg );
+
+# typemap for window ID
+INPUT
+T_WINDOWID
+    $var = wxPli_get_wxwindowid( aTHX_ $arg );
+
+OUTPUT
+T_WINDOWID
+    sv_setiv($arg, (IV)$var);
+
+INPUT
+T_ARRAYSTRING
+    wxPli_av_2_arraystring( aTHX_ $arg, & $var );
+
+INPUT
+T_ARRAYINT
+    wxPli_av_2_arrayint( aTHX_ $arg, & $var );
+
+INPUT
+T_ARRAYUSERDATA
+    wxPli_av_2_userdatacdarray( aTHX_ $arg, & $var );
+    wxPliArrayGuard<wxPliUserDataCD*> guard_$var = $var;

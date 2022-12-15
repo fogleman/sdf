@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="150"
+   height="261.06503"
+   id="svg4895"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="milling_climb.svg">
+  <title
+     id="title4942">Climb milling</title>
+  <defs
+     id="defs4897">
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="0 : 526.18109 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_z="744.09448 : 526.18109 : 1"
+       inkscape:persp3d-origin="372.04724 : 350.78739 : 1"
+       id="perspective4903" />
+    <inkscape:perspective
+       id="perspective4913"
+       inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
+       inkscape:vp_z="1 : 0.5 : 1"
+       inkscape:vp_y="0 : 1000 : 0"
+       inkscape:vp_x="0 : 0.5 : 1"
+       sodipodi:type="inkscape:persp3d" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="-332.59173"
+     inkscape:cy="385.08067"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1024"
+     inkscape:window-height="742"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata4900">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Climb milling</dc:title>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/" />
+        <dc:date>2010-10-15</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Lars Kruse</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <dc:rights>
+          <cc:Agent>
+            <dc:title>Lars Kruse</dc:title>
+          </cc:Agent>
+        </dc:rights>
+        <dc:subject>
+          <rdf:Bag>
+            <rdf:li>milling</rdf:li>
+            <rdf:li>climb</rdf:li>
+          </rdf:Bag>
+        </dc:subject>
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/3.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     transform="translate(-157.59173,-662.09209)">
+    <g
+       id="g4856"
+       transform="matrix(0.36036455,0,0,0.36036455,-238.80927,736.58965)">
+      <g
+         id="g4851">
+        <path
+           id="path4003"
+           d="m 1221.2577,-48.433667 c 0,0 -5.182,27.113974 -5.16,33.292364 0.019,5.23597 0.5757,7.57597 2.75,11.5496 3.3684,6.15618 8.3026,9.07993 19.579,11.60144 19.2299,4.29998 32.3953,10.05032 45.3367,19.80195 21.0107,15.83203 34.2692,35.70033 41.5144,62.210633 1.9691,7.20471 2.2934,10.7552 2.2751,24.90272 -0.019,15.0319 -0.2724,17.38976 -2.8417,26.5 -5.519,19.56951 -11.241,29.98285 -26.2594,47.78925 -15.6664,18.57463 -19.5163,25.21094 -38.887,67.03146 -7.86,16.96923 -13.6363,28.22211 -14.8091,28.84982 -2.9562,1.58207 -25.71,2.40131 -26.6021,0.9578 -0.3994,-0.6462 0.792,-9.82693 2.6474,-20.40162 2.0884,-11.90202 3.1711,-20.84703 2.8421,-23.47991 -1.0182,-8.149 -6.3822,-15.45255 -13.1859,-17.954 -1.5856,-0.58295 -7.6506,-2.18495 -13.4778,-3.56001 -22.0208,-5.19633 -38.7799,-14.4592 -53.7229,-29.69304 -29.6073,-30.18338 -39.4259,-71.40845 -26.2656,-110.28 5.3751,-15.87626 9.9293,-23.306493 26.5192,-43.266633 4.9146,-5.91308 11.6647,-15.30552 15.0001,-20.87209 6.0205,-10.04804 31.3903,-66.12819 31.3903,-66.12819 0,0 31.3572,1.148456 31.3572,1.148456 z"
+           style="fill:#feaf35;fill-opacity:1"
+           sodipodi:nodetypes="cssssssssssssssssssscc" />
+        <path
+           id="path3997"
+           d="m 1271.5568,150.13537 c -7.6655,-12.12802 -35.286,-40.36974 -34.8675,-41.46024 0.3755,-0.9787 13.9774,-2.28976 18.2122,-2.28976 6.9926,0 7.1382,-0.33047 4.5397,-10.3067 -3.637,-13.96343 -12.155,-24.24798 -25.228,-30.46027 -7.0514,-3.350805 -8.7173,-3.731705 -17.7804,-4.065595 -8.3704,-0.30837 -10.9777,-0.0147 -16,1.80187 -3.3,1.193655 -6.8788,2.251375 -7.953,2.350485 -1.9142,0.17662 -4.6409,-3.620425 -11.61,-16.167157 l -2.4147,-4.34737 2.3324,-1.88868 c 3.1686,-2.56578 16.8908,-6.78804 26.458,-8.14102 20.4992,-2.89896 48.0359,7.91633 61.5736,24.183502 10.111,12.149565 16.5131,26.802715 17.8186,40.783305 l 0.5844,6.25763 6.2963,0 c 3.463,0 19.0817,-0.50185 19.3793,-0.0203 0.7836,1.2678 -37.1278,46.0203 -38.6447,46.0203 -0.7007,0 -1.914,-1.0125 -2.6962,-2.25 z"
+           style="fill:#010100;fill-opacity:1"
+           sodipodi:nodetypes="cssssssscccsscccssc" />
+        <path
+           sodipodi:nodetypes="cccssscccccc"
+           style="fill:#010100;fill-opacity:1"
+           d="m 1295.952,382.30441 -50.0136,-0.44118 0,63.88478 c 0,47.43179 -0.3091,64.40782 -1.2,65.91557 -0.8112,1.37281 -5.4445,2.03078 -14.3,2.03078 -8.8556,0 -13.4888,-0.65797 -14.3,-2.03078 -0.8911,-1.50785 -1.2,-18.50255 -1.2,-66.00001 l 0,-35.37442 0,-28.59482 c 0,0 -50.145,-0.43118 -50.145,-0.43118 0,0 65.5082,-82.17237 65.5082,-82.17237 0,0 65.6504,83.21363 65.6504,83.21363 z"
+           id="path4817" />
+      </g>
+      <path
+         sodipodi:nodetypes="ccscccsssssssaaaac"
+         id="rect4822"
+         d="m 1100,-198.15625 0,121.46875 c 165.5602,0 299.7972,134.112278 300,299.625 2e-4,0.12521 0,0.24975 0,0.375 l 0,294.40625 109.5625,0 c 0,0 -14,-56.81184 -14,-89.48438 0,-32.67253 16,-56.81183 16,-89.48437 0,-32.67254 -16,-56.81184 -16,-89.48438 0,-32.67253 16,-56.81183 16,-89.48437 0,-32.67254 -16,-56.81184 -16,-89.484375 0,-32.672539 16,-56.811836 16,-89.484375 0,-32.672539 -16,-56.811836 -16,-89.48438 0,-32.67253 34.9331,-67.72887 14,-89.48437 -23.8263,-24.76243 -68.0268,12 -102.3906,12 -34.3638,0 -68.0268,-12 -102.3906,-12 -34.3638,0 -68.0269,12 -102.3907,12 -34.3638,0 -102.3906,-12 -102.3906,-12 z"
+         style="opacity:0.33000004;fill:#010100;fill-opacity:1;stroke:none" />
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,47 @@
+site_name: PyCAM
+site_description: Toolpath generator for 3-axis CNC machining
+site_url: http://pycam.sourceforge.net/
+
+repo_url: https://github.com/SebKuzminsky/pycam
+repo_name: GitHub
+
+theme: readthedocs
+
+pages:
+- Home: index.md
+- Installation:
+  - Installing: installation.md
+  - Requirements: requirements.md
+  - MacOS: installation-macos.md
+  - Release Notes: release-notes.md
+- Introduction:
+  - Introduction: introduction.md
+  - Features: features.md
+  - Screenshots: screenshots.md
+  - Supported Formats: supported-formats.md
+  - Getting Started: getting-started.md
+  - Modeling with Inkscape SVG: modeling-inkscape-svg.md
+  - Modeling with OpenSCAD DXF: modeling-openscad-dxf.md
+  - FAQ: faq.md
+- Using the GUI:
+  - Menu Items: menu-items.md
+  - 3D View: 3d-view.md
+  - Model Transformations: model-transformations.md
+  - Engrave Fonts: engrave-fonts.md
+  - Tool Types: tool-types.md
+  - Process Settings: process-settings.md
+  - Bounding Box: bounding-box.md
+  - Task Settings: task-settings.md
+- Advanced Usage:
+  - Keyboard Shortcuts: keyboard-shortcuts.md
+  - Command-line Examples: cli-examples.md
+  - Server Mode: server-mode.md
+  - Parallel Processing: parallel-processing.md
+  - Touch Off: touch-off.md
+  - OpenGL Troubles: opengl-troubles.md
+- Developers Guide:
+  - Developers Guide: developers-guide.md
+  - Video Translations: video-translations.md
+- External:
+  - Other Programs: other-programs.md
+  - Articles mentioning PyCAM: articles.md

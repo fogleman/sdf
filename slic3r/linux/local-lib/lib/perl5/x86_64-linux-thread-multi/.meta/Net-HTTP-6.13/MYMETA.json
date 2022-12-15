@@ -1,0 +1,151 @@
+{
+   "abstract" : "Low-level HTTP connection (client)",
+   "author" : [
+      "Gisle Aas <gisle@activestate.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Dist::Zilla version 6.008, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Net-HTTP",
+   "no_index" : {
+      "directory" : [
+         "examples",
+         "t",
+         "xt"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         },
+         "suggests" : {
+            "JSON::PP" : "2.27300"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Carp" : "0",
+            "Compress::Raw::Zlib" : "0",
+            "IO::Socket::INET" : "0",
+            "IO::Uncompress::Gunzip" : "0",
+            "URI" : "0",
+            "base" : "0",
+            "perl" : "5.006002",
+            "strict" : "0",
+            "vars" : "0",
+            "warnings" : "0"
+         },
+         "suggests" : {
+            "IO::Socket" : "0",
+            "IO::Socket::INET6" : "0",
+            "IO::Socket::IP" : "0",
+            "IO::Socket::SSL" : "1.38",
+            "Symbol" : "0"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Data::Dumper" : "0",
+            "IO::Select" : "0",
+            "Socket" : "0",
+            "Test::More" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://github.com/libwww-perl/Net-HTTP/issues"
+      },
+      "homepage" : "https://github.com/libwww-perl/Net-HTTP",
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/libwww-perl/Net-HTTP.git",
+         "web" : "https://github.com/libwww-perl/Net-HTTP"
+      },
+      "x_IRC" : "irc://irc.perl.org/#lwp",
+      "x_MailingList" : "mailto:libwww@perl.org"
+   },
+   "version" : "6.13",
+   "x_contributors" : [
+      "Adam Kennedy <adamk@cpan.org>",
+      "Adam Sjogren <asjo@koldfront.dk>",
+      "Alexey Tourbin <at@altlinux.ru>",
+      "Alex Kapranoff <ka@nadoby.ru>",
+      "amire80 <amir.aharoni@gmail.com>",
+      "Andreas J. Koenig <andreas.koenig@anima.de>",
+      "Andy Grundman <andyg@activestate.com>",
+      "Bill Mann <wfmann@alum.mit.edu>",
+      "Bron Gondwana <brong@fastmail.fm>",
+      "Chase Whitener <cwhitener@gmail.com>",
+      "Dagfinn Ilmari Mannsåker <ilmari@ilmari.org>",
+      "Daniel Hedlund <Daniel.Hedlund@eprize.com>",
+      "Dave Rolsky <autarch@urth.org>",
+      "David E. Wheeler <david@justatheory.com>",
+      "DAVIDRW <davidrw@cpan.org>",
+      "David Steinbrunner <dsteinbrunner@pobox.com>",
+      "Eric Wong <normalperson@yhbt.net>",
+      "Father Chrysostomos <sprout@cpan.org>",
+      "FWILES <FWILES@cpan.org>",
+      "Gavin Peters <gpeters@deepsky.com>",
+      "Gisle Aas <aas@oslonett.no>",
+      "Gisle Aas <gisle.aas@it.uib.no>",
+      "Gisle Aas <gisle@aas.no>",
+      "Gisle Aas <gisle@baux-2.lan>",
+      "Graeme Thompson <Graeme.Thompson@mobilecohesion.com>",
+      "Hans-H. Froehlich <hfroehlich@co-de-co.de>",
+      "Ian Kilgore <iank@cpan.org>",
+      "Jacob J <waif@chaos2.org>",
+      "Jason A Fesler <jfesler@badamount-lm.corp.yahoo.com>",
+      "Jay Hannah <jay.hannah@iinteractive.com>",
+      "Jean-Louis Martineau <martineau@zmanda.com>",
+      "jefflee <shaohua@gmail.com>",
+      "Jesse Luehrs <doy@tozt.net>",
+      "john9art <john9art@yahoo.com>",
+      "Karen Etheridge <ether@cpan.org>",
+      "Lasse Makholm <lasse@unity3d.com>",
+      "Marinos Yannikos <mjy@geizhals.at>",
+      "Mark Overmeer <MARKOV@cpan.org>",
+      "Mark Stosberg <mark@stosberg.com>",
+      "Mark Stosberg <MARKSTOS@cpan.org>",
+      "Mark Stosberg <mark@summersault.com>",
+      "Mike Schilli <github@perlmeister.com>",
+      "Mike Schilli <mschilli@yahoo-inc.com>",
+      "murphy <murphy@genome.chop.edu>",
+      "Olaf Alders <olaf@wundersolutions.com>",
+      "Ondrej Hanak <ondrej.hanak@ubs.com>",
+      "Peter Rabbitson <ribasushi@cpan.org>",
+      "phrstbrn <phrstbrn@gmail.com>",
+      "Robert Stone <talby@trap.mtview.ca.us>",
+      "Rolf Grossmann <rg@progtech.net>",
+      "ruff <ruff@ukrpost.net>",
+      "sasao <sasao@yugen.org>",
+      "Sean M. Burke <sburke@cpan.org>",
+      "Slaven Rezic <slaven@rezic.de>",
+      "Slaven Rezic <srezic@iconmobile.com>",
+      "Spiros Denaxas <s.denaxas@gmail.com>",
+      "Steffen Ullrich <Steffen_Ullrich@genua.de>",
+      "Steve Hay <SteveHay@planit.com>",
+      "Todd Lipcon <todd@amiestreet.com>",
+      "Tom Hukins <tom@eborcom.com>",
+      "Tony Finch <dot@dotat.at>",
+      "Toru Yamaguchi <zigorou@cpan.org>",
+      "uid39246 <uid39246>",
+      "Ville Skytta <ville.skytta@iki.fi>",
+      "Yuri Karaban <tech@askold.net>",
+      "Zefram <zefram@fysh.org>"
+   ],
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

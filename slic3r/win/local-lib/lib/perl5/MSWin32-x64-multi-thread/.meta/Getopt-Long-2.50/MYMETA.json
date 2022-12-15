@@ -1,0 +1,49 @@
+{
+   "abstract" : "Module to handle parsing command line options",
+   "author" : [
+      "Johan Vromans (jvromans@squirrel.nl)"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.24, CPAN::Meta::Converter version 2.150005, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "unknown"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Getopt-Long",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Pod::Usage" : "1.14"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/sciurius/perl-Getopt-Long.git",
+         "web" : "https://github.com/sciurius/perl-Getopt-Long"
+      }
+   },
+   "version" : "2.50",
+   "x_serialization_backend" : "JSON::PP version 2.27400"
+}

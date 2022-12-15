@@ -1,0 +1,1 @@
+{"name":"PAR","dist":"PAR-1.014","provides":{"PAR::SetupProgname":{"file":"lib/PAR/SetupProgname.pm","version":"1.002"},"PAR::SetupTemp":{"file":"lib/PAR/SetupTemp.pm","version":"1.002"},"PAR::Heavy":{"version":"0.12","file":"lib/PAR/Heavy.pm"},"PAR":{"version":"1.014","file":"lib/PAR.pm"}},"pathname":"R/RS/RSCHUPP/PAR-1.014.tar.gz","version":"1.014","target":"PAR"}

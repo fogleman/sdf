@@ -1,0 +1,36 @@
+---
+dist: xenial
+# use the container-based infrastructure
+sudo: required
+
+language: python
+python:
+  - "3.6"
+
+addons:
+  apt:
+    packages:
+      - build-essential
+      - codespell
+      - devscripts
+      - equivs
+      - fakeroot
+      - gir1.2-gtk-3.0
+      - help2man
+      - python3-flake8
+      - python3-gi
+      - python3-numpy
+      - python3-pytest
+      - python3-setuptools
+      - python3-svg.path
+      - python3-yaml
+
+script:
+  - make test
+  - ./setup.py sdist
+  - pycam/run_gui.py --help
+  - pycam/run_gui.py --version
+  - pycam/run_cli.py --help
+  - pycam/run_cli.py --version
+  - debian/rules prep-source
+  - dpkg-buildpackage -us -uc

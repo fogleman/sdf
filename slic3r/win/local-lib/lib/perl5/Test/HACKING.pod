@@ -1,0 +1,264 @@
+
+# this is in pod format (try `perldoc HACKING.pod`)
+
+=pod
+
+=head1 NAME
+
+HACKING.pod - contributing to TAP::Harness
+
+=head1 ABOUT
+
+This is the guide for TAP::Harness internals contributors (developers,
+testers, documenters.)
+
+If you are looking for more information on how to I<use> TAP::Harness,
+you probably want
+L<http://testanything.org/testing-with-tap/perl/tap::parser-cookbook.html>
+instead.
+
+=head1 Getting Started
+
+See the resources section in I<META.yml> or I<Build.PL> for links to the
+project mailing list, bug tracker, svn repository, etc.
+
+For ease of reference, at the time of writing the SVN repository was at:
+
+  http://svn.hexten.net/tapx
+
+To get the latest version of trunk:
+
+  git clone git://github.com/Perl-Toolchain-Gang/Test-Harness.git
+
+For best results, read the rest of this file, check RT for bugs which
+scratch your itch, join the mailing list, etc.
+
+=head1 Formatting
+
+=head2 perltidy
+
+The project comes with a C<.perltidyrc>, which perltidy will
+automatically use if the project root is your working directory.  This
+is setup by default to read and write the perl code on a pipe.  To
+configure your editor:
+
+=over 4
+
+=item * vim
+
+In C<.vimrc>, you can add the following lines:
+
+ nnoremap <Leader>pt :%!perltidy -q<cr> " only work in 'normal' mode
+ vnoremap <Leader>pt :!perltidy -q<cr>  " only work in 'visual' mode
+
+In other words, if your C<Leader> is a backslash, you can type C<\pt> to
+reformat the file using the C<.perltidyrc>.  If you are in visual mode
+(selecting lines with shift-v), then only the code you have currently have
+selected will be reformatted.
+
+=item * emacs
+
+For emacs, you can use this snippet from Sam Tregar
+(L<http://use.perl.org/~samtregar/journal/30185>):
+
+ (defun perltidy-region ()
+    "Run perltidy on the current region."
+    (interactive)
+    (save-excursion
+      (shell-command-on-region (point) (mark) "perltidy -q" nil t)
+      (cperl-mode)))
+
+ (defun perltidy-all ()
+    "Run perltidy on the current region."
+    (interactive)
+    (let ((p (point)))
+      (save-excursion
+        (shell-command-on-region (point-min) (point-max) "perltidy -q" nil t)
+        )
+      (goto-char p)
+      (cperl-mode)))
+
+ (global-set-key "\M-t" `perltidy-region)
+ (global-set-key "\M-T" `perltidy-all) 
+
+=back
+
+=head1 Tests and Coverage
+
+...
+
+=for eric_not_it
+  TODO link to a good guide on writing tests for TAP::Parser
+
+=head1 Writing for Compatibility
+
+...
+
+=for eric_not_it
+  TODO explain no bundling, PERL_CORE, etc
+
+=head1 Use TAP::Object
+
+TAP::Object is the common base class to all TAP::* modules, and should be for
+any that you write.
+
+=head1 Exception Handling
+
+Exceptions should be raised with L<Carp>:
+
+  require Carp;
+  Carp::croak("Unsupported syntax version: $version");
+
+  require Carp;
+  Carp::confess("Unsupported syntax version: $version");
+
+=head1 Deprecation cycle
+
+Any I<documented> sub that needs to be changed or removed (and would therefore
+cause a backwards-compat issue) must go through a deprecation cycle to give
+developers a chance to adjust:
+
+  1. Document the deprecation
+  2. Carp a suitable message
+  3. Release
+  4. Change the code
+  5. Release
+
+=head1 Documentation
+
+The end-user and API documentation is all in the 'lib/' directory.  In
+.pm files, the pod is "inline" to the code.  See L<perlpod> for more
+about pod.
+
+=head2 Pod Commands
+
+For compatibility's sake, we do not use the =head3 and =head4 commands.
+
+=over
+
+=item C<=head1 SECTION>
+
+Sections begin with an C<=head1> command and are all-caps.
+
+=for eric_not_it
+  I guess... Mixed case messes with various pod hacking tools.
+
+  NAME
+  VERSION
+  SYNOPSIS
+  CONSTRUCTOR
+  METHODS
+  CLASS METHODS
+  SOME OTHER SORT OF METHODS
+  SEE ALSO
+
+=item C<=head2 method>
+
+=for eric_not_it
+  The following is how I would do it, but opposite of what we have.
+
+The C<=head2> command documents a method.  The name of the method should have no adornment (e.g. don't CE<lt>method> or CE<lt>method($list, $of, $params)>.)
+
+These sections should begin with a short description of what the method
+does, followed by one or more examples of usage.  If needed, elaborate
+on the subtleties of the parameters and context after (and/or between)
+the example(s).
+
+  =head2 this_method
+
+  This method does some blah blah blah.
+
+    my @answer = $thing->this_method(@arguments);
+
+  =head2 that_thing
+
+  Returns true if the thing is true.
+
+    if($thing->that_thing) {
+      ...
+    }
+
+=item C<=item parameter>
+
+Use C<=item> commands for method arguments and parameters (and etc.)  In
+most html pod formatters, these I<do not> get added to the
+table-of-contents at the top of the page.
+
+=back
+
+=head2 Pod Formatting Codes
+
+=over
+
+=item LE<lt>Some::Module>
+
+Be careful of the wording of C<LE<lt>Some::ModuleE<gt>>.  Older pod
+formatters would render this as "the Some::Module manpage", so it is
+best to either word your links as "C<(see E<lt>Some::ModuleE<gt> for
+details.)>" or use the "explicit rendering" form of
+"C<E<lt>Some::Module|Some::ModuleE<gt>>".
+
+=back
+
+=head2 VERSION
+
+The version numbers are updated by L<Perl::Version>.
+
+=head2 DEVELOPER DOCS/NOTES
+
+The following "formats" are used with C<=begin>/C<=end> and C<=for>
+commands for pod which is not part of the public end-user/API
+documentation.
+
+=over
+
+=item note
+
+Use this if you are uncertain about a change to some pod or think it
+needs work.
+
+  =head2 some_method
+
+    ...
+
+  =for note
+    This is either falsely documented or a bug -- see ...
+
+=item developer
+
+  =begin developer
+
+  Long-winded explanation of why some code is the way it is or various
+  other subtleties which might incite head-scratching and WTF'ing.
+
+  =end developer
+
+=item deprecated
+
+  =for deprecated
+    removed in 0.09, kill by ~0.25
+
+=back
+
+=head1 Committing to Subversion
+
+If you have commit access, please bear this in mind.
+
+Development is done either on trunk or a branch, as appropriate:
+
+If it's something that might be controversial, break the build or take a long
+time (more than a couple of weeks) to complete then it'd probably be
+appropriate to branch. Otherwise it can go in trunk.
+
+If in doubt discuss it on the mailing list before you commit.
+
+=cut
+
+=for developer
+... or whatever.  I'm just making stuff up here.  If any of this is
+wrong, please correct it.  To the extent that there is an "official
+policy", it should be written down. --Eric
+
+=cut
+
+# vim:ts=2:sw=2:et:sta

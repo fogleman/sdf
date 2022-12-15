@@ -1,0 +1,44 @@
+#!/usr/bin/make -f
+# vim: noexpandtab
+# See debhelper(7) (uncomment to enable)
+# output every command that modifies files on the build system.
+DH_VERBOSE = 1
+
+# see EXAMPLES in dpkg-buildflags(1) and read /usr/share/dpkg/*
+DPKG_EXPORT_BUILDFLAGS = 1
+include /usr/share/dpkg/default.mk
+
+# see FEATURE AREAS in dpkg-buildflags(1)
+#export DEB_BUILD_MAINT_OPTIONS = hardening=+all
+
+# see ENVIRONMENT in dpkg-buildflags(1)
+# package maintainers to append CFLAGS
+#export DEB_CFLAGS_MAINT_APPEND  = -Wall -pedantic
+# package maintainers to append LDFLAGS
+#export DEB_LDFLAGS_MAINT_APPEND = -Wl,--as-needed
+
+
+# main packaging script based on dh7 syntax
+%:
+	dh $@ --with python2
+
+# This target updates pycam/Version.py and debian/changelog with current
+# information from git.  It's intended to be run before generating the
+# debian source package.
+prep-source:
+	$(MAKE) update-version
+	$(MAKE) update-deb-changelog
+	rm -f pycam/*.pyc
+
+override_dh_auto_clean:
+	$(MAKE) clean
+	debian/rules prep-source
+
+override_dh_auto_build:
+	$(MAKE) -C man
+	python setup.py build
+
+override_dh_auto_install:
+	python setup.py install --root=$(CURDIR)/debian/pycam --prefix=/usr
+	# remove redundant copy of docs
+	rm -rf $(CURDIR)/debian/pycam/usr/share/pycam/doc

@@ -1,0 +1,1 @@
+{"dist":"Algorithm-Diff-1.1903","pathname":"T/TY/TYEMQ/Algorithm-Diff-1.1903.tar.gz","version":"1.1903","target":"Algorithm::Diff","name":"Algorithm::Diff","provides":{"Algorithm::Diff::_impl":{"file":"lib/Algorithm/Diff.pm","version":"1.1903"},"Algorithm::Diff":{"version":"1.1903","file":"lib/Algorithm/Diff.pm"}}}

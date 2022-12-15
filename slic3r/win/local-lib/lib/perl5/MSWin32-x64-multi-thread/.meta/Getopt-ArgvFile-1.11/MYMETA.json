@@ -1,0 +1,38 @@
+{
+   "abstract" : "unknown",
+   "author" : [
+      "unknown"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 6.32, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "artistic_1"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Getopt-ArgvFile",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Test::Harness" : "1.25",
+            "Test::More" : "0.11",
+            "Text::ParseWords" : "3.1"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "version" : "1.11",
+   "x_serialization_backend" : "JSON::PP version 2.27400"
+}

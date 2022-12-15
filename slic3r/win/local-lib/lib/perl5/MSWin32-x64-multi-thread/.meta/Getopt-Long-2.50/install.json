@@ -1,0 +1,1 @@
+{"pathname":"J/JV/JV/Getopt-Long-2.50.tar.gz","name":"Getopt::Long","target":"Getopt::Long","version":"2.5","provides":{"Getopt::Long":{"file":"lib/Getopt/Long.pm","version":"2.5"},"Getopt::Long::Parser":{"file":"lib/Getopt/Long.pm","version":"2.5"},"Getopt::Long::CallBack":{"file":"lib/Getopt/Long.pm","version":"2.5"}},"dist":"Getopt-Long-2.50"}

@@ -1,0 +1,65 @@
+{
+   "abstract" : "Provides function returning the equivalent of C<${^GLOBAL_PHASE} eq 'DESTRUCT'> for older perls.",
+   "author" : [
+      "Yuval Kogman <nothingmuch@woobling.org>",
+      "Florian Ragwitz <rafl@debian.org>",
+      "Jesse Luehrs <doy@tozt.net>",
+      "Peter Rabbitson <ribasushi@cpan.org>",
+      "Arthur Axel 'fREW' Schmidt <frioux@gmail.com>",
+      "Elizabeth Mattijsen <liz@dijkmat.nl>",
+      "Graham Knop <haarg@haarg.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.24, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Devel-GlobalDestruction",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "xt"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {}
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Sub::Exporter::Progressive" : "0.001011",
+            "perl" : "5.006"
+         }
+      },
+      "test" : {
+         "requires" : {}
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "mailto" : "bug-Devel-GlobalDestruction@rt.cpan.org",
+         "web" : "https://rt.cpan.org/Public/Dist/Display.html?Name=Devel-GlobalDestruction"
+      },
+      "homepage" : "https://metacpan.org/release/Devel-GlobalDestruction",
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ],
+      "repository" : {
+         "type" : "git",
+         "url" : "git://git.shadowcat.co.uk/p5sagit/Devel-GlobalDestruction.git",
+         "web" : "http://git.shadowcat.co.uk/gitweb/gitweb.cgi?p=p5sagit/Devel-GlobalDestruction.git"
+      }
+   },
+   "version" : "0.14",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

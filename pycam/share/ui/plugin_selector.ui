@@ -1,0 +1,267 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <object class="GtkListStore" id="CategoryList">
+    <columns>
+      <!-- column-name label -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">Model</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="PluginsModel">
+    <columns>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+      <!-- column-name description -->
+      <column type="gchararray"/>
+      <!-- column-name enabled -->
+      <column type="gboolean"/>
+      <!-- column-name dependencies -->
+      <column type="gchararray"/>
+      <!-- column-name dependencies_satisfied -->
+      <column type="gboolean"/>
+      <!-- column-name source -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">ModelPosition</col>
+        <col id="1" translatable="yes">Shifting and alignment</col>
+        <col id="2">True</col>
+        <col id="3" translatable="yes">Models</col>
+        <col id="4">True</col>
+        <col id="5" translatable="yes">/home/...</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">OpenGLWindow</col>
+        <col id="1" translatable="yes">Visualize the scene via OpenGL</col>
+        <col id="2">False</col>
+        <col id="3" translatable="yes">Many</col>
+        <col id="4">False</col>
+        <col id="5" translatable="yes">http://somewher.org</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkListStore" id="StatusList">
+    <columns>
+      <!-- column-name label -->
+      <column type="gchararray"/>
+      <!-- column-name name -->
+      <column type="gchararray"/>
+    </columns>
+    <data>
+      <row>
+        <col id="0" translatable="yes">All</col>
+        <col id="1" translatable="yes">all</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Enabled</col>
+        <col id="1" translatable="yes">enabled</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Disabled</col>
+        <col id="1" translatable="yes">disabled</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Dependencies missing</col>
+        <col id="1" translatable="yes">dep_missing</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Dependencies satisfied</col>
+        <col id="1" translatable="yes">dep_satisfied</col>
+      </row>
+      <row>
+        <col id="0" translatable="yes">Not required</col>
+        <col id="1" translatable="yes">not_required</col>
+      </row>
+    </data>
+  </object>
+  <object class="GtkDialog" id="PluginManagerWindow">
+    <property name="width_request">640</property>
+    <property name="height_request">500</property>
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">Plugins</property>
+    <property name="role">pycam-plugins</property>
+    <property name="window_position">center</property>
+    <property name="type_hint">normal</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-box1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">3</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="ClosePluginManager">
+                <property name="label">gtk-close</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkButtonBox" id="buttonbox1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">spread</property>
+            <child>
+              <object class="GtkComboBox" id="StatusFilter">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="model">StatusList</property>
+                <child>
+                  <object class="GtkCellRendererText" id="cellrenderertext1"/>
+                  <attributes>
+                    <attribute name="text">0</attribute>
+                  </attributes>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkComboBox" id="CategoryFilter">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="model">CategoryList</property>
+                <child>
+                  <object class="GtkCellRendererText" id="cellrenderertext2"/>
+                  <attributes>
+                    <attribute name="text">0</attribute>
+                  </attributes>
+                </child>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">True</property>
+            <property name="position">1</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkScrolledWindow" id="scrolledwindow1">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="shadow_type">etched-out</property>
+            <child>
+              <object class="GtkTreeView" id="PluginsTable">
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="model">PluginsModel</property>
+                <property name="reorderable">True</property>
+                <property name="rules_hint">True</property>
+                <property name="search_column">0</property>
+                <property name="tooltip_column">5</property>
+                <child internal-child="selection">
+                  <object class="GtkTreeSelection" id="treeview-selection1"/>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="PluginsEnabled">
+                    <property name="title">Enabled</property>
+                    <property name="sort_column_id">2</property>
+                    <child>
+                      <object class="GtkCellRendererToggle" id="PluginsEnabledCell">
+                        <property name="xpad">1</property>
+                      </object>
+                      <attributes>
+                        <attribute name="sensitive">4</attribute>
+                        <attribute name="activatable">4</attribute>
+                        <attribute name="active">2</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="PluginsNameColumn">
+                    <property name="title">Name</property>
+                    <property name="sort_column_id">0</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="PluginsNameCell"/>
+                      <attributes>
+                        <attribute name="text">0</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="PluginsDescriptionColumn">
+                    <property name="sizing">autosize</property>
+                    <property name="title">Description</property>
+                    <property name="expand">True</property>
+                    <property name="sort_column_id">1</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="PluginsDescriptionCell">
+                        <property name="wrap_mode">word-char</property>
+                      </object>
+                      <attributes>
+                        <attribute name="text">1</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+                <child>
+                  <object class="GtkTreeViewColumn" id="PluginsDependenciesColumn">
+                    <property name="title">Dependencies</property>
+                    <property name="sort_column_id">3</property>
+                    <child>
+                      <object class="GtkCellRendererText" id="PluginsDependenciesCell"/>
+                      <attributes>
+                        <attribute name="markup">3</attribute>
+                      </attributes>
+                    </child>
+                  </object>
+                </child>
+              </object>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">True</property>
+            <property name="fill">True</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">ClosePluginManager</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkToggleAction" id="TogglePluginWindow">
+    <property name="label">Plugin Manager</property>
+    <property name="short_label">Plugin Manager</property>
+    <property name="icon_name">preferences-other</property>
+  </object>
+</interface>

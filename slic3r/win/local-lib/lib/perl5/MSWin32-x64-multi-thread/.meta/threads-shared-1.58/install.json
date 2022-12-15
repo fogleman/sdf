@@ -1,0 +1,1 @@
+{"target":"threads::shared","pathname":"J/JD/JDHEDDEN/threads-shared-1.58.tar.gz","version":"1.58","dist":"threads-shared-1.58","name":"threads::shared","provides":{"threads::shared":{"version":"1.58","file":"lib/threads/shared.pm"}}}

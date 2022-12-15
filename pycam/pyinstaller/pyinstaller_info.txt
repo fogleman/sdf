@@ -1,0 +1,27 @@
+PyInstaller (http://pyinstaller.org) can be used to create standalone binaries for Windows.
+
+How to build a standalone exe file (on Windows only):
+1) install the PyCAM dependency installer:
+   https://pycam.svn.sourceforge.net/svnroot/pycam/dependency_installer
+ * add "C:\GtkGLext\1.0\bin" to your PATH environment variable
+2) install UPX (compression)
+ * Debian/Ubuntu: apt-get install upx-ucl
+ * Windows: http://upx.sourceforge.net
+  * extract the archive to your program directory
+  * add this directory to your PATH environment variable
+3) download pyinstaller (svn co http://svn.pyinstaller.org/tags/1.5 pyinstaller)
+4) run "cmd.exe" (or open a terminal)
+5) "cd PATH_TO_PYCAM"
+6) "python PYINSTALLER_PATH/Configure.py"
+7) "python PYINSTALLER_PATH/Build.py pyinstaller/pycam.spec"
+8) test and upload the binary file "pycam-VERSION_standalone.?"
+
+Known issues:
+* multiprocessing on Windows: no server/client capabilities
+* python-setproctitle v1.0.1 causes a segfault - remove it from the build system
+* Linux: pre-built executable don't seem to work across different versions of libc 
+* Linux/MacOS?: you need to remove the reference to "windll" at the top of the "pycam" script (line 32-36)
+
+Debugging:
+* enable the "debug" parameter in the "EXE" call at the end of the spec file
+

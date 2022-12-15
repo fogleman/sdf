@@ -1,0 +1,56 @@
+{
+   "abstract" : "Provide https support for LWP::UserAgent",
+   "author" : [
+      "Gisle Aas <gisle@activestate.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.24, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "LWP-Protocol-https",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {}
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "IO::Socket::SSL" : "1.54",
+            "LWP::UserAgent" : "6.06",
+            "Mozilla::CA" : "20110101",
+            "Net::HTTPS" : "6",
+            "perl" : "5.008001"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0",
+            "Test::RequiresInternet" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "repository" : {
+         "url" : "http://github.com/libwww-perl/lwp-protocol-https"
+      },
+      "x_MailingList" : "mailto:libwww@perl.org"
+   },
+   "version" : "6.07",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

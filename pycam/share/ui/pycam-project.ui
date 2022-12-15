@@ -1,0 +1,517 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <object class="GtkAction" id="About">
+    <property name="label">_About</property>
+    <property name="stock_id">gtk-about</property>
+  </object>
+  <object class="GtkAction" id="BugTracker">
+    <property name="label">Report a _Bug</property>
+  </object>
+  <object class="GtkAction" id="DevelopmentBlog">
+    <property name="label">_Development Blog</property>
+  </object>
+  <object class="GtkAction" id="EditMenu">
+    <property name="label">_Edit</property>
+  </object>
+  <object class="GtkAction" id="ExportMenu">
+    <property name="label">_Export</property>
+    <property name="short_label">_Export</property>
+  </object>
+  <object class="GtkAction" id="FeatureRequest">
+    <property name="label">Re_quest a Feature</property>
+  </object>
+  <object class="GtkAction" id="FileMenu">
+    <property name="label">_File</property>
+  </object>
+  <object class="GtkAction" id="Forum">
+    <property name="label">_Forum</property>
+  </object>
+  <object class="GtkAction" id="GeneralSettings">
+    <property name="label">_Preferences</property>
+    <property name="tooltip">Configure PyCAM</property>
+    <property name="stock_id">gtk-preferences</property>
+  </object>
+  <object class="GtkAction" id="Help3DView">
+    <property name="label">3D _View</property>
+  </object>
+  <object class="GtkAction" id="HelpBoundsSettings">
+    <property name="label">_Bounds Settings</property>
+  </object>
+  <object class="GtkAction" id="HelpCommandLine">
+    <property name="label">_Command Line Usage</property>
+  </object>
+  <object class="GtkAction" id="HelpGCodeExport">
+    <property name="label">_GCode Export</property>
+  </object>
+  <object class="GtkAction" id="HelpHotkeys">
+    <property name="label">_Keyboard Shortcuts</property>
+  </object>
+  <object class="GtkAction" id="HelpIntroduction">
+    <property name="label">_Introduction</property>
+  </object>
+  <object class="GtkAction" id="HelpMenu">
+    <property name="label">_Help</property>
+  </object>
+  <object class="GtkAction" id="HelpMenuGUI">
+    <property name="label">_GUI description</property>
+  </object>
+  <object class="GtkAction" id="HelpMenuMisc">
+    <property name="label">Mis_cellaneous</property>
+  </object>
+  <object class="GtkAction" id="HelpModelTransformations">
+    <property name="label">_Model Transformations</property>
+  </object>
+  <object class="GtkAction" id="HelpProcessSettings">
+    <property name="label">_Process Settings</property>
+  </object>
+  <object class="GtkAction" id="HelpServerMode">
+    <property name="label">Server Mode</property>
+  </object>
+  <object class="GtkAction" id="HelpSimulation">
+    <property name="label">_Simulation</property>
+  </object>
+  <object class="GtkAction" id="HelpSupportedFormats">
+    <property name="label">Supported _Formats</property>
+  </object>
+  <object class="GtkAction" id="HelpProjectSetup">
+    <property name="label">_Project Setup</property>
+  </object>
+  <object class="GtkAction" id="HelpToolTypes">
+    <property name="label">T_ool Types</property>
+  </object>
+  <object class="GtkAction" id="HelpTouchOff">
+    <property name="label">_Touch off and tool change</property>
+    <property name="short_label">_Touch off</property>
+  </object>
+  <object class="GtkAction" id="HelpUserManual">
+    <property name="label">User _Manual: Overview</property>
+    <property name="stock_id">gtk-help</property>
+  </object>
+  <object class="GtkAction" id="ResetWorkspace">
+    <property name="label">Reset Workspace to Defaults</property>
+    <property name="tooltip">Reset models, tools, processes, bounds and task definitions to their default values.</property>
+  </object>
+  <object class="GtkAction" id="LoadWorkspace">
+    <property name="label">_Load Workspace ...</property>
+    <property name="tooltip">Load model, tool, process, bound and task definitions from a file.</property>
+  </object>
+  <object class="GtkNotebook" id="MainTabs">
+    <property name="visible">True</property>
+    <property name="can_focus">True</property>
+  </object>
+  <object class="GtkAction" id="OpenModel">
+    <property name="label">_Open Model ...</property>
+    <property name="tooltip">Opens a model file.</property>
+    <property name="stock_id">gtk-open</property>
+  </object>
+  <object class="GtkAction" id="OpenRecentModel">
+    <property name="label">Open _Recent</property>
+  </object>
+  <object class="GtkAction" id="ProjectWebsite">
+    <property name="label">Project _Website</property>
+    <property name="stock_id">gtk-network</property>
+  </object>
+  <object class="GtkWindow" id="ProjectWindow">
+    <property name="can_focus">False</property>
+    <property name="title" translatable="yes">PyCAM</property>
+    <property name="role">pycam-main</property>
+    <property name="destroy_with_parent">True</property>
+    <child>
+      <object class="GtkBox" id="WindowBox">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+      </object>
+    </child>
+  </object>
+  <object class="GtkAboutDialog" id="AboutWindow">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">About PyCAM</property>
+    <property name="role">pycam-about</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="type_hint">normal</property>
+    <property name="gravity">center</property>
+    <property name="transient_for">ProjectWindow</property>
+    <property name="program_name">PyCAM</property>
+    <property name="version">0.1</property>
+    <property name="copyright" translatable="yes">Copyright © 2008-2010 Lode Leroy
+Copyright © 2010-2011 Lars Kruse</property>
+    <property name="comments" translatable="yes">Toolpath Generation for 3-Axis CNC machining</property>
+    <property name="website">http://pycam.sourceforge.net/</property>
+    <property name="website_label" translatable="yes">Website of the PyCAM project</property>
+    <property name="license" translatable="yes">This program is free software: you can redistribute it and/or modify it under the terms of the GNU General Public License as published by the Free Software Foundation, either version 3 of the License, or (at your option) any later version.
+
+PyCAM is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+See the GNU General Public License for more details.
+
+You should have received a copy of the GNU General Public License along with this program.  If not, see &lt;http://www.gnu.org/licenses/&gt;.</property>
+    <property name="logo">logo_gui.png</property>
+    <property name="wrap_license">True</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-box2">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="AboutWindowButtons">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <placeholder/>
+        </child>
+      </object>
+    </child>
+  </object>
+  <object class="GtkDialog" id="GeneralSettingsWindow">
+    <property name="can_focus">False</property>
+    <property name="border_width">5</property>
+    <property name="title" translatable="yes">PyCAM Preferences</property>
+    <property name="role">pycam-preferences</property>
+    <property name="window_position">center-on-parent</property>
+    <property name="destroy_with_parent">True</property>
+    <property name="icon_name">preferences-desktop</property>
+    <property name="type_hint">normal</property>
+    <property name="transient_for">ProjectWindow</property>
+    <child internal-child="vbox">
+      <object class="GtkBox" id="dialog-box1">
+        <property name="visible">True</property>
+        <property name="can_focus">False</property>
+        <property name="orientation">vertical</property>
+        <property name="spacing">2</property>
+        <child internal-child="action_area">
+          <object class="GtkButtonBox" id="dialog-action_area1">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="layout_style">end</property>
+            <child>
+              <object class="GtkButton" id="ResetPreferencesButton">
+                <property name="label">gtk-revert-to-saved</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">0</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkButton" id="CloseSettingsWindow">
+                <property name="label">gtk-close</property>
+                <property name="visible">True</property>
+                <property name="can_focus">True</property>
+                <property name="receives_default">True</property>
+                <property name="use_stock">True</property>
+              </object>
+              <packing>
+                <property name="expand">False</property>
+                <property name="fill">False</property>
+                <property name="position">1</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="pack_type">end</property>
+            <property name="position">0</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkImage" id="logo">
+            <property name="visible">True</property>
+            <property name="can_focus">False</property>
+            <property name="ypad">2</property>
+            <property name="pixbuf">logo_gui.png</property>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">2</property>
+          </packing>
+        </child>
+        <child>
+          <object class="GtkNotebook" id="PreferencesNotebook">
+            <property name="visible">True</property>
+            <property name="can_focus">True</property>
+            <property name="tab_pos">left</property>
+            <child>
+              <object class="GtkFrame" id="GeneralSettingsPrefTab">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0</property>
+                <property name="shadow_type">none</property>
+                <child>
+                  <object class="GtkAlignment" id="alignment6">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="left_padding">12</property>
+                    <child>
+                      <object class="GtkBox" id="GeneralPreferencesBox">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="orientation">vertical</property>
+                        <property name="spacing">2</property>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLabel" id="GeneralSettingsFrameLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">&lt;b&gt;General Settings&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
+              </object>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="GeneralSettingsTabLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">General</property>
+              </object>
+              <packing>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+            <child>
+              <object class="GtkFrame" id="ProgramsPrefTab">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label_xalign">0</property>
+                <property name="shadow_type">none</property>
+                <child>
+                  <object class="GtkAlignment" id="alignment38">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="left_padding">12</property>
+                    <child>
+                      <object class="GtkGrid" id="grid11">
+                        <property name="visible">True</property>
+                        <property name="can_focus">False</property>
+                        <property name="column_spacing">3</property>
+                        <child>
+                          <object class="GtkLinkButton" id="ExternalProgramInkscapeLink">
+                            <property name="label" translatable="yes">Inkscape</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="has_tooltip">True</property>
+                            <property name="tooltip_text" translatable="yes">Inkscape is a vector drawing program. It can be used to convert 2D SVG files into DXF contour models.</property>
+                            <property name="xalign">0</property>
+                            <property name="uri">http://inkscape.org</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLinkButton" id="ExternalProgramPstoeditLink">
+                            <property name="label" translatable="yes">pstoedit</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="tooltip_text" translatable="yes">pstoedit is a postscript conversion tool. It can be used to convert 2D SVG files into DXF contour models.</property>
+                            <property name="relief">none</property>
+                            <property name="xalign">0</property>
+                            <property name="uri">http://www.pstoedit.net/pstoedit</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">0</property>
+                            <property name="top_attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="ExternalProgramInkscapeAuto">
+                            <property name="label">Detect</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">3</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="ExternalProgramPstoeditAuto">
+                            <property name="label">Detect</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">3</property>
+                            <property name="top_attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="ExternalProgramInkscapeBrowse">
+                            <property name="label" translatable="yes">Browse</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">2</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkButton" id="ExternalProgramPstoeditBrowse">
+                            <property name="label" translatable="yes">Browse</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">2</property>
+                            <property name="top_attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="ExternalProgramInkscapeControl">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="invisible_char">●</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">0</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkEntry" id="ExternalProgramPstoeditControl">
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="invisible_char">●</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">1</property>
+                            <property name="top_attach">1</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <object class="GtkLinkButton" id="ExternalProgramsHelp">
+                            <property name="label">gtk-help</property>
+                            <property name="visible">True</property>
+                            <property name="can_focus">True</property>
+                            <property name="receives_default">True</property>
+                            <property name="has_tooltip">True</property>
+                            <property name="relief">none</property>
+                            <property name="use_stock">True</property>
+                            <property name="xalign">1</property>
+                            <property name="uri">http://pycam.sourceforge.net/requirements/#optional-external-programs</property>
+                          </object>
+                          <packing>
+                            <property name="left_attach">4</property>
+                            <property name="top_attach">2</property>
+                          </packing>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                        <child>
+                          <placeholder/>
+                        </child>
+                      </object>
+                    </child>
+                  </object>
+                </child>
+                <child type="label">
+                  <object class="GtkLabel" id="ProgramsSettingsFrameLabel">
+                    <property name="visible">True</property>
+                    <property name="can_focus">False</property>
+                    <property name="label" translatable="yes">&lt;b&gt;External programs&lt;/b&gt;</property>
+                    <property name="use_markup">True</property>
+                  </object>
+                </child>
+              </object>
+              <packing>
+                <property name="position">1</property>
+              </packing>
+            </child>
+            <child type="tab">
+              <object class="GtkLabel" id="ProgramsSettingsTabLabel">
+                <property name="visible">True</property>
+                <property name="can_focus">False</property>
+                <property name="label" translatable="yes">Programs</property>
+              </object>
+              <packing>
+                <property name="position">1</property>
+                <property name="tab_fill">False</property>
+              </packing>
+            </child>
+          </object>
+          <packing>
+            <property name="expand">False</property>
+            <property name="fill">False</property>
+            <property name="position">3</property>
+          </packing>
+        </child>
+      </object>
+    </child>
+    <action-widgets>
+      <action-widget response="0">ResetPreferencesButton</action-widget>
+      <action-widget response="0">CloseSettingsWindow</action-widget>
+    </action-widgets>
+  </object>
+  <object class="GtkAction" id="Quit">
+    <property name="label">_Quit</property>
+    <property name="tooltip">Exit PyCAM</property>
+    <property name="stock_id">gtk-quit</property>
+  </object>
+  <object class="GtkAction" id="SaveAsWorkspace">
+    <property name="label">Save Workspace _as ...</property>
+    <property name="tooltip">Save the models, tools, processes, bounds and tasks definitions to a new file.</property>
+  </object>
+  <object class="GtkAction" id="SaveWorkspace">
+    <property name="label">_Save Workspace</property>
+    <property name="tooltip">Save the models, tools, processes, bounds and tasks definitions.</property>
+    <property name="stock_id">gtk-save-as</property>
+  </object>
+  <object class="GtkAction" id="SettingsMenu">
+    <property name="label">_Settings</property>
+  </object>
+  <object class="GtkAction" id="UndoButton">
+    <property name="label">Undo latest workspace change</property>
+    <property name="stock_id">gtk-undo</property>
+  </object>
+  <object class="GtkAction" id="ViewMenu">
+    <property name="label">_View</property>
+  </object>
+</interface>

@@ -1,0 +1,8 @@
+/home/travis/builds/alexrj/Slic3r/local-lib/lib/perl5/Algorithm/Diff.pm
+/home/travis/builds/alexrj/Slic3r/local-lib/lib/perl5/Algorithm/DiffOld.pm
+/home/travis/builds/alexrj/Slic3r/local-lib/lib/perl5/Algorithm/cdiff.pl
+/home/travis/builds/alexrj/Slic3r/local-lib/lib/perl5/Algorithm/diff.pl
+/home/travis/builds/alexrj/Slic3r/local-lib/lib/perl5/Algorithm/diffnew.pl
+/home/travis/builds/alexrj/Slic3r/local-lib/lib/perl5/Algorithm/htmldiff.pl
+/home/travis/builds/alexrj/Slic3r/local-lib/man/man3/Algorithm::Diff.3
+/home/travis/builds/alexrj/Slic3r/local-lib/man/man3/Algorithm::DiffOld.3

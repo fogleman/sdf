@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="744.09448819"
+   height="1052.3622047"
+   id="svg2"
+   version="1.1"
+   inkscape:version="0.47 r22583"
+   sodipodi:docname="Polygon_directions_in_Inkscape.svg">
+  <title
+     id="title5230">Polygon directions in Inkscape</title>
+  <defs
+     id="defs4">
+    <inkscape:path-effect
+       is_visible="true"
+       id="path-effect4094"
+       effect="spiro" />
+    <marker
+       inkscape:stockid="Arrow1Lend"
+       orient="auto"
+       refY="0.0"
+       refX="0.0"
+       id="Arrow1Lend"
+       style="overflow:visible;">
+      <path
+         id="path3650"
+         d="M 0.0,0.0 L 5.0,-5.0 L -12.5,0.0 L 5.0,5.0 L 0.0,0.0 z "
+         style="fill-rule:evenodd;stroke:#000000;stroke-width:1.0pt;marker-start:none;"
+         transform="scale(0.8) rotate(180) translate(12.5,0)" />
+    </marker>
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect2870"
+       is_visible="true" />
+    <inkscape:path-effect
+       effect="spiro"
+       id="path-effect2866"
+       is_visible="true" />
+    <inkscape:perspective
+       sodipodi:type="inkscape:persp3d"
+       inkscape:vp_x="-227.75258 : 1082.1001 : 1"
+       inkscape:vp_y="0 : 2831.0432 : 0"
+       inkscape:vp_z="1088.0928 : 1082.1001 : 1"
+       inkscape:persp3d-origin="430.17013 : 585.553 : 1"
+       id="perspective10" />
+  </defs>
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.35"
+     inkscape:cx="325"
+     inkscape:cy="563.90492"
+     inkscape:document-units="px"
+     inkscape:current-layer="layer1"
+     showgrid="false"
+     inkscape:window-width="1024"
+     inkscape:window-height="742"
+     inkscape:window-x="0"
+     inkscape:window-y="0"
+     inkscape:window-maximized="1" />
+  <metadata
+     id="metadata7">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title>Polygon directions in Inkscape</dc:title>
+        <dc:date>2011-01-08</dc:date>
+        <dc:creator>
+          <cc:Agent>
+            <dc:title>Lars Kruse &lt;devel@sumpfralle.de&gt;</dc:title>
+          </cc:Agent>
+        </dc:creator>
+        <cc:license
+           rdf:resource="http://creativecommons.org/licenses/by-sa/3.0/" />
+      </cc:Work>
+      <cc:License
+         rdf:about="http://creativecommons.org/licenses/by-sa/3.0/">
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Reproduction" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#Distribution" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Notice" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#Attribution" />
+        <cc:permits
+           rdf:resource="http://creativecommons.org/ns#DerivativeWorks" />
+        <cc:requires
+           rdf:resource="http://creativecommons.org/ns#ShareAlike" />
+      </cc:License>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1">
+    <path
+       style="opacity:0.94999999999999996;fill:#04cf05;fill-opacity:1;stroke:none"
+       d="m 11.999996,14.611863 354.330704,0 0,283.464567 -354.330704,0 0,-283.464567 z"
+       id="rect2850" />
+    <path
+       style="opacity:0.94999999999999996;fill:#04cf05;fill-opacity:1;stroke:none"
+       d="m 616.67999,240.51488 -48.36114,-22.78403 -46.25407,24.7197 -3.92357,-39.88413 -57.29639,-9.14725 43.46852,-26.95067 -25.19337,-36.12613 58.12793,6.2772 25.88078,-35.9013 29.01583,34.77821 57.46616,-8.64206 -21.94578,37.09052 45.77836,25.12483 -56.38177,11.4729 -0.38149,39.97221 z"
+       id="path2852" />
+    <text
+       xml:space="preserve"
+       style="font-size:42px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana"
+       x="560.55811"
+       y="360.12335"
+       id="text2856"><tspan
+         sodipodi:role="line"
+         id="tspan2858"
+         x="560.55811"
+         y="360.12335">Path -&gt; Reverse</tspan></text>
+    <path
+       style="fill:none;stroke:#000000;stroke-width:7.95220041;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Lend)"
+       d="m 204.16637,345.13944 92.4721,302.4208"
+       id="path2868"
+       inkscape:path-effect="#path-effect2870"
+       inkscape:original-d="m 204.16637,345.13944 c 23.34498,284.22732 92.4721,302.4208 92.4721,302.4208" />
+    <path
+       inkscape:original-d="M 555.42746,387.17988 C 485.72727,595.06959 405.94881,648.03634 405.94881,648.03634"
+       inkscape:path-effect="#path-effect4094"
+       id="path4092"
+       d="M 555.42746,387.17988 405.94881,648.03634"
+       style="fill:none;stroke:#000000;stroke-width:7;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-opacity:1;stroke-dasharray:none;marker-end:url(#Arrow1Lend)"
+       sodipodi:nodetypes="cc" />
+    <path
+       id="path5202"
+       style="opacity:0.94999999999999996;fill:#04cf05;fill-opacity:1;stroke:none"
+       d="m 416.67999,946.22916 0.38149,-39.97221 56.38177,-11.4729 -45.77836,-25.12483 21.94578,-37.09052 -57.46616,8.64206 -29.01583,-34.77821 -25.88078,35.9013 -58.12793,-6.2772 25.19337,36.12613 -43.46852,26.95067 57.29639,9.14725 3.92357,39.88413 46.25407,-24.7197 48.36114,22.78403 z M 180,740.32615 l 354.3307,0 0,283.46455 -354.3307,0 0,-283.46455 z" />
+    <text
+       xml:space="preserve"
+       style="font-size:42;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Verdana;-inkscape-font-specification:Verdana"
+       x="356.57941"
+       y="706.64795"
+       id="text5205"><tspan
+         sodipodi:role="line"
+         id="tspan5207"
+         x="356.57941"
+         y="706.64795">Path -&gt; Combine</tspan></text>
+  </g>
+</svg>

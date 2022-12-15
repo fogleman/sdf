@@ -1,0 +1,59 @@
+{
+   "abstract" : "XS++ enhanced flavour of Module::Build",
+   "author" : [
+      "Steffen Mueller <smueller@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Build version 0.422",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Module-Build-WithXSpp",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::CBuilder" : "0",
+            "Module::Build" : "0.26"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "Module::Build" : "0.26"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Digest::MD5" : "0",
+            "ExtUtils::CBuilder" : "0",
+            "ExtUtils::CppGuess" : "0.04",
+            "ExtUtils::ParseXS" : "2.2205",
+            "ExtUtils::Typemaps" : "1.00",
+            "ExtUtils::XSpp" : "0.11",
+            "Module::Build" : "0.26"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::More" : "0"
+         }
+      }
+   },
+   "provides" : {
+      "Module::Build::WithXSpp" : {
+         "file" : "lib/Module/Build/WithXSpp.pm",
+         "version" : "0.14"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ]
+   },
+   "version" : "0.14",
+   "x_serialization_backend" : "JSON::PP version 2.27400"
+}

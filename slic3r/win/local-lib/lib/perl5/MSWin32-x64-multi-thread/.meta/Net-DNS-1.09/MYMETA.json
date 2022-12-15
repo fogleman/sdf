@@ -1,0 +1,60 @@
+{
+   "abstract" : "Perl Interface to the Domain Name System",
+   "author" : [
+      "Olaf Kolkman et al"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.18, CPAN::Meta::Converter version 2.143240, CPAN::Meta::Converter version 2.150010",
+   "license" : [
+      "mit"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Net-DNS",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "recommends" : {
+            "Digest::BubbleBabble" : "0.01",
+            "Digest::GOST" : "0.06",
+            "IO::Socket::IP" : "0.32",
+            "Net::LibIDN" : "0.12",
+            "Scalar::Util" : "1.25"
+         },
+         "requires" : {
+            "Digest::HMAC" : "1.03",
+            "Digest::MD5" : "2.13",
+            "Digest::SHA" : "5.23",
+            "File::Spec" : "0.86",
+            "IO::Socket" : "1.16",
+            "MIME::Base64" : "2.11",
+            "Test::More" : "0.52",
+            "Time::Local" : "1.19",
+            "Win32::API" : "0.55",
+            "Win32::IPHelper" : "0.07",
+            "Win32::TieRegistry" : "0.24",
+            "perl" : "5.006"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "version" : "1.09",
+   "x_serialization_backend" : "JSON::PP version 2.27400"
+}

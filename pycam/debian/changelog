@@ -1,0 +1,86 @@
+pycam (0.6.2) unstable; urgency=medium
+
+  * avoid OpenGL problem with "glutSolidCone"
+  * Polygon: one copy of get_shifted_vertex() is enough
+  * docs: hint for MacOS installation complications
+  * Updated MANIFEST.in
+  * added requirements; mention 'enum34'
+  * update documentation
+  * README.md: use native linebreaks
+  * show error in case of GLUT initialization problems
+  * 'detect_file_type' returns a namedtuple
+  * MotionGrid: cleaner type handling
+  * remove old settings file handling
+  * use enums instead of constants
+  * add configuration for 'coverage' tool
+  * docs: update documentation to be more in line with the GUI
+  * update Help links to point to new website
+  * DXF-Import: fix wrong import of 'get_points_of_arc'
+  * ParallelProcessing: refresh visibility after enabling multi mode
+  * notify initialization finish only after loading all plugins
+  * Toolpaths: allow caller to override the name of a model
+  * rename 'BoundsDict' class to 'BoundsEntity'
+  * allow disabling of plugins
+  * tolerate missing GUI
+  * docs: clarify that the current release does not run under Windows
+  * add more python2/3 compatible imports
+  * remove unconditional dependency on GTK for all plugins
+  * move 'undo' queue from GTK-based GUI to common base class
+  * move 'preferences' code from GTK-based GUI to common class
+  * moved part of initialization away from GUI code
+  * remove obsolete 'cutter' attribute
+  * fix intersection sorting in Line and Polygon classes
+  * remove automatic rescaling after unit change
+  * removed obsolete 'batch_queue' functionality
+  * handle empty model list politely
+  * clean up Bounds class and users
+  * add unit string to preview bounds description
+  * clean up ToolPath class and users
+  * ToolPath view: cache machine time calculation result
+  * avoid duplicate moves after cloning a ToolPath
+  * move EventCore class to its own file
+  * fix typos in error messages
+  * remove old python2.5 compatibility
+  * removed unused code (reported by 'vulture')
+
+  * travis: make sure Travis jobs know the git branch name
+  * travis: run pytest on every Travis build
+
+  * tests: add a "make pytest" target to run pytest
+  * tests: start adding unit tests of pycam.Geometry.Polygon
+  * tests: remove old manual test scripts
+
+ -- Sebastian Kuzminsky <seb@highlab.com>  Fri, 27 Oct 2017 10:30:09 -0600
+
+pycam (0.6.1) unstable; urgency=medium
+
+  * docs: lots of improvements
+  * remove support for psyco and ODE
+  * don't load the Tiny Pyramid model at startup
+  * limit the plunge feedrate
+  * lots of bug fixes and cleanups all over
+  * python3 compatibility
+  * added Code of Conduct
+  * toolpath simulation: increase default frame rate from 30
+
+  * add Continuous Integration testing via Travis
+  * lots of pylint fixes
+  * flake8 compliance
+
+ -- Sebastian Kuzminsky <seb@highlab.com>  Sun, 01 Oct 2017 13:56:09 -0600
+
+pycam (0.6) unstable; urgency=medium
+
+  * First triumphant release after years of dormancy.
+  * Merge misc old branches.
+  * Update debian packaging.
+
+ -- Sebastian Kuzminsky <seb@highlab.com>  Sat, 18 Feb 2017 11:50:53 -0700
+
+pycam (0.5.1-1) unstable; urgency=low
+
+  * initial debian package
+  * Closes: #600779
+
+ -- Lars Kruse <devel@sumpfralle.de>  Mon, 13 Jun 2011 02:04:59 +0200
+

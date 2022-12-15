@@ -1,0 +1,70 @@
+{
+   "abstract" : "Provide an interface to ZIP archive files.",
+   "author" : [
+      "Ned Konz <perl@bike-nomad.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.3, CPAN::Meta::Converter version 2.150010, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Archive-Zip",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Compress::Raw::Zlib" : "2.017",
+            "File::Basename" : "0",
+            "File::Copy" : "0",
+            "File::Find" : "0",
+            "File::Path" : "0",
+            "File::Spec" : "0.80",
+            "File::Temp" : "0",
+            "IO::File" : "0",
+            "IO::Handle" : "0",
+            "IO::Seekable" : "0",
+            "Time::Local" : "0",
+            "perl" : "5.006"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::MockModule" : "0",
+            "Test::More" : "0.88"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "mailto" : "bug-Archive-Zip@rt.cpan.org",
+         "web" : "https://rt.cpan.org/Public/Dist/Display.html?Name=Archive-Zip"
+      },
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/redhotpenguin/perl-Archive-Zip.git",
+         "web" : "https://github.com/redhotpenguin/perl-Archive-Zip"
+      }
+   },
+   "version" : "1.60",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

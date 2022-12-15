@@ -1,0 +1,87 @@
+1) update the version and the changelog
+ - in "Changelog" (version, release date, changes)
+ - in "src/pycam/__init__.py" (version)
+ - commit the changes
+
+2) create the archives
+ - "make dist"
+ - carefully check the resulting content of the archives
+
+3a) create an svn tag for the release (includes uploading the archive files)
+ - "make upload"
+
+3b) create the Windows standalone binary
+ - see pyinstaller/pyinstall_info.txt for details
+
+4) upload files to sourceforge
+ - https://sourceforge.net/project/admin/explorer.php?group_id=237831
+ - create a directory for the new release
+ - click at the icon to the left of the new directory and upload the new archives
+ - create a file called "release-notes-0.x" and upload it to the same directory
+  - first line: "PyCAM v0.x release notes:"
+  - second line: empty
+  - further lines: summary of changes (complete sentences)
+ - mark the release notes files as "Release notes" (see "Properties")
+ - set the release notes and the target operating systems for the archives
+  - zip: others
+  - exe: Windows
+  - tar.gz: Linux, Mac, BSD, Solaris
+  - standalone binary (Windows): no specific architecture
+
+5) announcements
+ - run "python setup.py register" (for the PyPI package index)
+ - create a project news items at sourceforge
+ - create a new release at http://freshmeat.net
+ - post the new release at http://www.cnczone.com/forums/showthread.php?t=63716
+ - create a blog post at: http://fab.senselab.org
+
+6) other stuff
+ - create a new release tag for the bug tracker:
+   https://sourceforge.net/tracker/admin/index.php?group_id=237831&atid=1104176&add_group=1
+
+
+# Version numbers
+
+If the user runs pycam out of a git working directory without
+taking any special action with respect to versioning,
+pycam determines the version dynamically each time it's
+invoked. The algorithm is at the top of pycam/__init__.py.
+
+When building Debian packages of pycam, the build system uses that code to
+produce pycam/Version.py, which just sets the VERSION variable according
+to the git working directory that the package was built from.
+
+Version numbers are determined like this:
+
+* Some commits correspond to actual releases, these are indicated by
+  special tags (like our "v0.5.1" tag, "v0.6.0", etc). The version
+  number of a commit with a release tag is just the release tag itself,
+  of course.
+
+* The version number of a commit without a release tag is constructed in a
+  "git describe"-like way: the most recent release tag, followed by the
+  number of commits since then, followed by the SHA of the current commit,
+  followed by "dirty" if there are uncommitted, non-ignored changes in
+  the git working directory.
+
+However, there's a complication needed to handle multiple branches. The
+versioning code considers two kinds of branches:
+
+* Long-lived branches like master (for current development) and stable
+  release branches (we don't have any yet, but imagine a "v0" branch,
+  "v1", etc). These branches are where the release tags live. We
+  want un-tagged commits in these branches to have the simple kind of
+  version number described above (tag, commits since tag, SHA). Example:
+  v0.6.1.345.gabc123 ("345 commits after v0.6.1").
+
+* Short-lived temporary branches (for new features, bug fixes, etc). These
+  branches have more complicated version numbers. Version numbers here
+  should show which long-lived branch this temporary branch came from
+  (by having a version number from that long-lived branch), but should
+  be clearly differentiated from versions actually from that long-lived
+  branch, and should include the name of the short-lived branch. Example:
+  v0.6.1~deb.version.sumpfralle.86.g6789cc3 ("deb-version-sumpfralle
+  branch, 86 commits after v0.6.1"). The "~" tilde character there
+  is deliberate: it sorts as "older than" in Debian version numbers,
+  so debs from short-lived branches will not replace debs from stable
+  release branches by mistake.

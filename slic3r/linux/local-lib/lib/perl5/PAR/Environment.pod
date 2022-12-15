@@ -1,0 +1,253 @@
+=head1 NAME
+
+PAR::Environment - Index and reference of PAR environment variables
+
+=head1 DESCRIPTION
+
+PAR uses various environment variables both during the building process of
+executables or PAR archives and the I<use> of them. Since the wealth of
+combinations and settings might confuse one or the other (like me), this
+document is intended to document all environment variables which PAR uses.
+
+Wherever I want to refer to the C<$ENV{FOO}> environment hash entry, I will
+usually talk about the C<FOO> variable for brevity.
+
+=head1 INDEX OF ENVIRONMENT VARIABLES
+
+B<Please note that this is still very, very incomplete! Contributions welcome!>
+
+For each variable, there should be a description what it contains, when
+it can be expected to exist (and contain meaningful information),
+when it is sensible to define it yourself, and what effect this has.
+
+Of course, the description may use examples.
+
+=head2 PAR_0
+
+If the running program is run from within a PAR archive or pp-produced
+executable, this variable contains the name of the extracted program
+(i.e. .pl file). This is useful of you want to open the source code
+file of the running program.
+
+For example, if you package a file F<foo.pl> into
+F<bar.par> and run F<foo.pl> with this command
+
+  par.pl foo.par bar.pl
+
+then the C<PAR_0> variable will contain something like
+C</tmp/par-youser/cache-b175f53eb731da9594e0dde337d66013ddf25a44/495829f0.pl>
+where C<youser> is your username and
+C</tmp/par-youser/cache-b175f53eb731da9594e0dde337d66013ddf25a44/> is the
+PAR cache directory (C<PAR_TEMP>).
+
+The name of the PAR cache directory can take a number of different forms,
+so use C<PAR_0> if you want to find the extracted program's .pl file --
+attempting to construct the name yourself requires complex logic that
+has already produced the value in C<PAR_0>.
+
+This works the same for executable binaries (F<.exe>, ...).
+
+If you are looking for the name and path of the pp-ed binary file,
+please refer to the C<PAR_PROGNAME> variable.
+
+=head2 PAR_ARGC, PAR_ARGV_0, PAR_ARGV_...
+
+You should not rely on these variables outside of the PAR binary loader
+code.
+
+These variables are set when a non-dependent pp-ed binary executable
+runs. The initially executed process extracts another binary and runs
+it as a child process. In order to pass its command line arguments to
+the child, the parent process sets C<PAR_ARG*> as they would be
+used in C programs: C<PAR_ARGC> has the number of arguments, C<PAR_ARGV_0>
+has the name of the executable, C<PAR_ARGV_*> are the command line arguments.
+
+If you would like to access the name of the running program (script or binary),
+please refer to C<PAR_0> and C<PAR_PROGNAME> instead!
+
+Related: C<PAR_SPAWNED>, C<PAR_0>, C<PAR_PROGNAME>
+
+=head2 PAR_CLEAN
+
+Users should set C<PAR_GLOBAL_CLEAN> instead.
+Recreated from C<PAR_GLOBAL_CLEAN> and the value of C<-C> from the YAML file
+by the PAR loader, and used within loader to control the initial behavior
+of extraction, and the final behavior of cleanup.  The user can reference
+C<PAR_CLEAN> in the application to determine which of these behaviors
+is being used for this run of the application.
+
+=head2 PAR_DEBUG
+
+Users should set C<PAR_GLOBAL_DEBUG> instead.
+
+If this variable is set to a true value and F<par.pl> is run,
+verbose output is sent to STDOUT or the logging filehandle.
+This is overridden by the C<-q> option to F<par.pl>,
+for steps after argument parsing occurs.
+
+This currently only influences F<par.pl>. Whether this is the intended
+behaviour remains to be verified.
+
+=head2 PAR_GLOBAL_CLEAN
+
+Setting C<PAR_GLOBAL_CLEAN> alters the behavior of par applications
+which see that environment variable at launch.
+C<PAR_GLOBAL_CLEAN> overrides the C<-C> option.
+Settings of 0 and 1 are supported.  0 corresponds to not using C<-C> on the
+pp command line; 1 corresponds to using C<-C> on the pp command line.
+C<PAR_GLOBAL_CLEAN> is ignored if C<PAR_GLOBAL_TEMP> is set, yet it
+controls the form of C<PAR_TEMP> when C<PAR_GLOBAL_TEMP> is not set.
+
+=head2 PAR_GLOBAL_DEBUG
+
+The PAR loader becomes more verbose when C<PAR_DEBUG> is set.
+Setting C<PAR_GLOBAL_DEBUG> guarantees that C<PAR_DEBUG> will be set
+internally, initially.  See C<PAR_DEBUG> for more details.
+
+=head2 PAR_GLOBAL_TEMP
+
+Contributes to the calculation of C<PAR_TEMP>, and is further explained
+there.
+
+=head2 PAR_GLOBAL_TMPDIR
+
+Contributes to the calculation of C<PAR_TEMP>, and is further explained
+there.
+
+=head2 PAR_INITIALIZED
+
+This environment variable is for internal use by the PAR binary loader
+only.
+Documented only to avoid surprises if spawned applications expect
+to see a value initialized by the user.
+
+=head2 PAR_PROGNAME
+
+C<PAR_PROGNAME> is set to the fully-qualified path name of the executable
+program.
+On Windows, this is reliably obtained from the C<GetModuleFileName> API.
+On other OSes, if the C runtime is given a qualified path name, it is used,
+or the unqualified file name given is qualified by walking the path.
+This is reasonably reliable given normal program spawning conventions,
+but cannot be guaranteed to be correct in all circumstances.
+
+=head2 PAR_APP_REUSE
+
+Strictly internal. Skip this section if you're not a PAR developer.
+
+The variable shouldn't ever be exposed to user code and packaged
+applications should not depend on it being set or not.
+
+If an application has been packaged with the C<--reusable> option, the
+bootstrapping code will set this environment variable to the name of
+the program that is to be run instead of the packaged program.
+The F<main.pl> loader script fetches the file name, deletes the
+environment variable, and then runs the given program.
+
+=head2 PAR_RUN
+
+This environment variable was set during constructions of C<PAR::Packer>
+objects (usually during F<pp> runs only) by versions of PAR up to
+0.957. Since PAR 0.958, this variable is unused.
+
+=head2 PAR_SPAWNED
+
+This variable is used internally by the F<parl> binary loader to signal
+the child process that it's the child.
+
+You should not rely on this variable outside of the PAR binary loader
+code. For a slightly more detailed discussion, please refer to the
+F<who_am_i.txt> documentation file in the PAR source distribution
+which was contributed by Alan Stewart. Related: C<PAR_ARGC>, C<PAR_ARGV_*>
+
+Documented only to avoid surprises if spawned applications expect
+to see a value initialized by the user.
+
+=head2 PAR_TEMP
+
+Users should set C<PAR_GLOBAL_TEMP> instead.
+C<PAR_TEMP> is calculated from a variety of other variables.
+See the C<NOTES> section in the pod for PAR.pm for
+a complete description of how the calculation proceeds.
+C<PAR_TEMP>, once calculated, is used as the location
+where PAR stores its extracted, temporary file cache.
+
+=head2 PAR_TMPDIR
+
+Contributes to the calculation of C<PAR_TEMP>, and is further explained
+there.  Users should set C<PAR_GLOBAL_TMPDIR> instead.
+
+=head2 PAR_VERBATIM
+
+The C<PAR_VERBATIM> variable controls the way Perl code is packaged
+into a PAR archive or binary executable. If it is set to a true
+value during the packaging process, modules (and scripts) are
+B<not> passed through the default C<PAR::Filter::PodStrip> filter
+which removes all POD documentation from the code. Note that the
+C<PAR::Filter::PatchContent> filter is still applied.
+
+The C<-F> option to the F<pp> tool overrides the C<PAR_VERBATIM>
+setting. That means if you set C<PAR_VERBATIM=1> but specify
+C<-F PodStrip> on the C<pp> command line, the C<PodStrip> filter
+will be applied.
+
+C<PAR_VERBATIM> is not used by the PAR application.
+
+=head2 PAR_VERBOSE
+
+Setting this environment variable to a positive integer
+has the same effect as using the C<-verbose> switch to F<pp>.
+
+=head2 PP_OPTS
+
+During a F<pp> run, the contents of the C<PP_OPTS> variable are
+treated as if they were part of the command line. In newer versions
+of PAR, you can also write options to a file and execute F<pp>
+as follows to read the options from the file:
+
+  pp @FILENAME
+
+That can, of course, be combined with other command line arguments
+to F<pp> or the C<PP_OPTS> variable.
+
+=head2 TMP, TEMP, TMPDIR, TEMPDIR
+
+Please refer to C<PAR_TMPDIR>.
+
+=head1 SEE ALSO
+
+L<PAR>, L<PAR::Tutorial>, L<PAR::FAQ>
+
+L<par.pl>, L<parl>, L<pp>
+
+L<PAR::Dist> for details on PAR distributions.
+
+=head1 AUTHORS
+
+Steffen Mueller E<lt>smueller@cpan.orgE<gt>
+
+You can write
+to the mailing list at E<lt>par@perl.orgE<gt>, or send an empty mail to
+E<lt>par-subscribe@perl.orgE<gt> to participate in the discussion.
+
+Please submit bug reports to E<lt>bug-par@rt.cpan.orgE<gt>. If you need
+support, however, joining the E<lt>par@perl.orgE<gt> mailing list is
+preferred.
+
+=head1 COPYRIGHT
+
+PAR: Copyright 2003-2010 by Audrey Tang,
+E<lt>cpan@audreyt.orgE<gt>.
+
+This document: Copyright 2006-2010 by Steffen Mueller,
+E<lt>smueller@cpan.orgE<gt>
+
+Some information has been taken from Alan Stewart's extra documentation in the
+F<contrib/> folder of the PAR distribution.
+
+This program or documentation is free software; you can redistribute it and/or modify it
+under the same terms as Perl itself.
+
+See F<LICENSE>.
+
+=cut

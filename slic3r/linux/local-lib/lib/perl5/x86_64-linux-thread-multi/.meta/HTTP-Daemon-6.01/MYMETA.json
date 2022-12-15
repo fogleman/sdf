@@ -1,0 +1,55 @@
+{
+   "abstract" : "a simple http server class",
+   "author" : [
+      "Gisle Aas <gisle@activestate.com>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 6.57_05, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "HTTP-Daemon",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "HTTP::Date" : "6",
+            "HTTP::Request" : "6",
+            "HTTP::Response" : "6",
+            "HTTP::Status" : "6",
+            "IO::Socket" : "0",
+            "LWP::MediaTypes" : "6",
+            "Sys::Hostname" : "0",
+            "perl" : "5.008001"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "repository" : {
+         "url" : "http://github.com/gisle/http-daemon"
+      },
+      "x_MailingList" : "mailto:libwww@perl.org"
+   },
+   "version" : "6.01",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

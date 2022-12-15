@@ -24,8 +24,8 @@ f = sphere(1)
 generate(f, 'sphere')
 
 # box(size=1, center=ORIGIN, a=None, b=None)
-f = box(1)
-generate(f, 'box')
+#f = box(1)
+#generate(f, 'cube')
 
 f = box((1, 2, 3))
 generate(f, 'box2')
@@ -50,8 +50,8 @@ generate(f, 'capsule')
 f = capped_cylinder(-Z, Z, 0.5)
 generate(f, 'capped_cylinder')
 
-# rounded_cylinder(ra, rb, h)
-f = rounded_cylinder(0.5, 0.1, 2)
+# rounded_cylinder
+f = rounded_cylinder(0, 2, 0.5, 0.1)
 generate(f, 'rounded_cylinder')
 
 # capped_cone(a, b, ra, rb)
@@ -201,22 +201,177 @@ generate(f, 'transition_radial')
 f = hexagon(1).extrude(1)
 generate(f, 'extrude')
 
+# rounded_extrude(other, h, radius=0):
+f = hexagon(10).rounded_extrude(5, radius=2)
+generate(f, 'rounded_extrude')
+
+# rounded_extrude(other, h, radius=-0):
+f = hexagon(10).rounded_extrude(5, radius=-2)
+generate(f, 'rounded_extrude_neg')
+
+# rounded_extrude_stack(other_bottom, other_top, height_bottom, height_top, radius=-0):
+f = rounded_extrude_stack(rectangle([16,6]),rectangle([6,16]), 5, 7, radius=1)
+generate(f, 'rounded_extrude_stack')
+
 # extrude_to(a, b, h, e=ease.linear)
 f = rectangle(2).extrude_to(circle(1), 2, ease.in_out_quad)
 generate(f, 'extrude_to')
+
+# scale_extrude(scale=1, h):
+f = rectangle(10).scale_extrude(6, top=0.8)
+generate(f, 'scale_extrude')
+
+# taper_extrude(scale=1, h):
+f = rectangle(10).taper_extrude(6, slope=0.1)
+generate(f, 'taper_extrude')
 
 # revolve(other, offset=0)
 f = hexagon(1).revolve(3)
 generate(f, 'revolve')
 
+#f=polygon([[3,0],[4,0.5],[4,1],[3.5,1.5]])
+#print("result: {}".format(f(np.array([[0,1],[3.5,0],[3.9,1],[4.5,1],[3.5,2]]))))
+#print("should be 0 0 1 0 0")
+
+# helix_revolve(other, offset=0, pitch=1):
+f = polygon([[3,0],[4,.5],[4,1],[3,1.5]]).helix_revolve(pitch=2, rotations=4.3)
+generate(f, 'helix_revolve')
+
+# 2d rectangle
+f = rectangle([2,1]).extrude(0.1)
+#f = rectangle(a=[-2,-1],b=[2,1]).extrude(0.1)
+generate(f, '2d_rectangle')
+
+# 2d rounded_rectangle
+f = rounded_rectangle([2,1],0.2).extrude(0.1)
+#f = rounded_rectangle(a=[-2,-1],b=[2,1],radius=0.2).extrude(0.1)
+generate(f, '2d_rounded_rectangle')
+
+# 2d equilateral_triangle
+f = equilateral_triangle(3).extrude(0.1)
+generate(f, '2d_equilateral_triangle')
+
+# 2d n_gon
+f = equilateral_polygon(5,10).extrude(0.1)
+generate(f, '2d_equilateral_polygon')
+
+# 2d hexagon
+f = hexagon(2).extrude(0.1)
+generate(f, '2d_hexagon')
+
+# 2d circle
+f = circle(2).extrude(0.1)
+generate(f, '2d_circle')
+
+# 2d line
+f = (circle() & line()).extrude(0.1)
+generate(f, '2d_line')
+
+# 2d crop
+f = (circle() & crop(y0=-0.5, y1=0.5, x0=0)).extrude(0.1)
+generate(f, '2d_crop')
+
+# line
+#f = line(normal=[0,1], point=[0,0]).extrude(0.1).skin(0.1)
+#generate(f, '2d_line')
+
+# polygon
+f = polygon([[-16,-16],[14,-8],[3,4],[0,12]]).extrude(0.1)
+generate(f, '2d_polygon')
+
+# rounded_x
+f = rounded_x(10,2).extrude(0.1)
+generate(f, '2d_rounded_x')
+
+# rounded_polygon
+f = rounded_polygon([[-2,0,0],[0,2,-2**0.5],[2,0,-2**0.5],[0,-2,0]]).extrude(0.1)
+generate(f, '2d_rounded_polygon')
+
+
+# shell 
+f = rounded_polygon([
+   [-4,-1,0],[-6,-1,-1],[-6,1,-1],  [-4,1,-1], [-1,1,0],  # Left
+   [-1,4,0], [-1,6,-1], [1,6,-1],   [1,4,-1],  [1,1,0],   # Top
+   [4,1,0],  [6,1,-1],  [6,-1,-1],  [4,-1,-1], [1,-1,0],  # Right
+   [1,-8,0], [1,-10,-1],[-1,-10,-1],[-1,-8,-1],[-1,-1,0]  # Bottom
+   ]).shell(0.1).extrude(0.1)
+generate(f, '2d_shell')
+
+# round polygon corners
+pts1 = [[10,0,0],[1,1,-20],[3,10,0]]
+pts2 = [[-10,0,0],[-1,1,20],[-3,10,0]]
+pts3 = [[10,-10,0],[1,-9,-18],[3,0,20]]
+pts4 = [[-10,-10,0],[-1,-9,-18],[-3,0,20]]
+f = rounded_polygon(pts1).shell(0.1).extrude(0.1)
+f |= rounded_polygon(pts2).shell(0.1).extrude(0.1)
+f |= rounded_polygon(pts3).shell(0.1).extrude(0.1)
+f |= rounded_polygon(pts4).shell(0.1).extrude(0.1)
+rpts1 = round_polygon_corners(pts1,1)
+rpts2 = round_polygon_corners(pts2,1)
+rpts3 = round_polygon_corners(pts3,1)
+rpts4 = round_polygon_corners(pts4,1)
+f |= rounded_polygon(rpts1).extrude(0.1)
+f |= rounded_polygon(rpts2).extrude(0.1)
+f |= rounded_polygon(rpts3).extrude(0.1)
+f |= rounded_polygon(rpts4).extrude(0.1)
+generate(f, '2d_round_polygon_corners')
+
+pts = [[3,0,0],[2,0,-0.75],[1,0,2],[0,0,-0.75],[0,1,0],[3,1,0]]
+#print("pts",pts)
+rpts = round_polygon_smooth_ends(pts,[1])
+#print("rpts",rpts)
+f = rounded_polygon(pts).translate((0,3)).shell(0.1).extrude(0.1)
+f |= rounded_polygon(rpts).shell(0.1).extrude(0.1)
+generate(f, '2d_round_polygon_smooth_ends')
+
+# rounded_cog(outer_r, cog_r, num):
+f = rounded_cog(38, 6, 14).extrude(0.1)
+generate(f, '2d_rounded_cog')
+
+# edge
+f = rounded_polygon([
+   [-4,-1,0],[-6,-1,-1],[-6,1,-1],  [-4,1,-1], [-1,1,0],  # Left
+   [-1,4,0], [-1,6,-1], [1,6,-1],   [1,4,-1],  [1,1,0],   # Top
+   [4,1,0],  [6,1,-1],  [6,-1,-1],  [4,-1,-1], [1,-1,0],  # Right
+   [1,-8,0], [1,-10,-1],[-1,-10,-1],[-1,-8,-1],[-1,-1,0]  # Bottom
+   ]).edge(0.1).extrude(0.1)
+generate(f, '2d_edge')
+
+# mirror
+f = circle(3).taper_extrude(3,1).translate((0,0,-3))
+# draw an upside down one below the axis
+f |= circle(3).taper_extrude(3,1).translate((0,0,-3)).mirror([0,0,1])
+generate(f, 'mirror')
+
+s = circle(2).translate((3,3))
+# draw another on the side, mirrored over the negative X
+s |= circle(2).translate((3,3)).mirror([1,0])
+f = s.extrude(0.1)
+generate(f, '2d_mirror')
+
+# mirror_copy
+f = circle(3).taper_extrude(3,1).translate((0,0,-3)).mirror_copy([0,0,1])
+generate(f, 'mirror_copy')
+
+s = circle(2).translate((3,3)).mirror_copy([1,0.1])
+f = s.extrude(0.1)
+generate(f, '2d_mirror_copy')
+
 # slice(other)
 f = example.translate((0, 0, 0.55)).slice().extrude(0.1)
 generate(f, 'slice')
 
+FONT = 'Arial'
+TEXT = 'Hello, world!'
+w, h = measure_text(FONT, TEXT)
+f = rounded_box((w + 1, h + 1, 0.2), 0.1)
+f -= text(FONT, TEXT).extrude(0.2).k(0.05)
+
 # text(name, text, width=None, height=None, texture_point_size=512)
-f = rounded_box((7, 2, 0.2), 0.1)
-f -= text('Georgia', 'Hello, World!').extrude(0.2).rotate(pi).translate(0.1 * Z)
-generate(f, 'text')
+#f = rounded_box((7, 2, 0.2), 0.1)
+#f -= text('Georgia', 'Hello, World!').extrude(0.2).rotate(pi).translate(0.1 * Z)
+#f -= text('Georgia', 'Hello, World!').extrude(0.2).k(0.05) #.translate(-0.1 * Z)
+generate(f, '2d_text')
 
 # wrap_around(other, x0, x1, r=None, e=ease.linear)
 FONT = 'Arial'

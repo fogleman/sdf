@@ -1,0 +1,1 @@
+{"pathname":"O/OA/OALDERS/LWP-Protocol-https-6.07.tar.gz","name":"LWP::Protocol::https","dist":"LWP-Protocol-https-6.07","provides":{"LWP::Protocol::https":{"file":"lib/LWP/Protocol/https.pm","version":"6.07"},"LWP::Protocol::https::Socket":{"file":"lib/LWP/Protocol/https.pm","version":"6.07"}},"target":"LWP::Protocol::https","version":"6.07"}

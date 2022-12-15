@@ -1,0 +1,44 @@
+{
+   "abstract" : "unknown",
+   "author" : [
+      "Mark Dootson <mdootson@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 6.56, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "unknown"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Wx-Perl-Packager",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Class::Accessor" : "0",
+            "Digest::MD5" : "0",
+            "Wx" : "0.49"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "version" : "0.27",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

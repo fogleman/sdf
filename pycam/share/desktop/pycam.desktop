@@ -1,0 +1,13 @@
+[Desktop Entry]
+Version=1.0
+Name=PyCAM
+GenericName=Toolpath Generator
+Comment=generate GCode for 3-Axis CNC machining
+Exec=pycam %u
+TryExec=pycam
+Terminal=false
+Type=Application
+Categories=Development;Engineering;Robotics;Education;Science;2DGraphics;VectorGraphics;3DGraphics;
+MimeType=application/sla;image/svg+xml;application/postscript;image/vnd.dxf;
+Icon=pycam
+

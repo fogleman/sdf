@@ -1,0 +1,11 @@
+/home/travis/build/slic3r/Slic3r/local-lib/bin/wxpar
+/home/travis/build/slic3r/Slic3r/local-lib/lib/perl5/Wx/Perl/Packager.pm
+/home/travis/build/slic3r/Slic3r/local-lib/lib/perl5/Wx/Perl/Packager/Base.pm
+/home/travis/build/slic3r/Slic3r/local-lib/lib/perl5/Wx/Perl/Packager/Linux.pm
+/home/travis/build/slic3r/Slic3r/local-lib/lib/perl5/Wx/Perl/Packager/MSWin.pm
+/home/travis/build/slic3r/Slic3r/local-lib/lib/perl5/Wx/Perl/Packager/MacOSX.pm
+/home/travis/build/slic3r/Slic3r/local-lib/lib/perl5/Wx/Perl/Packager/Mini.pm
+/home/travis/build/slic3r/Slic3r/local-lib/lib/perl5/Wx/Perl/Packager/resource/packager.xpm
+/home/travis/build/slic3r/Slic3r/local-lib/lib/perl5/Wx/Perl/Packager/resource/packtest.pl
+/home/travis/build/slic3r/Slic3r/local-lib/man/man1/wxpar.1
+/home/travis/build/slic3r/Slic3r/local-lib/man/man3/Wx::Perl::Packager.3

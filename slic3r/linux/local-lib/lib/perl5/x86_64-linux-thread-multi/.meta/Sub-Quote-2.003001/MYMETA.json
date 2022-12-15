@@ -1,0 +1,69 @@
+{
+   "abstract" : "efficient generation of subroutines via string eval",
+   "author" : [
+      "mst - Matt S. Trout (cpan:MSTROUT) <mst@shadowcat.co.uk>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.24, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Sub-Quote",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "xt"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {}
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "develop" : {
+         "requires" : {}
+      },
+      "runtime" : {
+         "recommends" : {
+            "Sub::Name" : "0.08"
+         },
+         "requires" : {
+            "Scalar::Util" : "0",
+            "perl" : "5.006"
+         }
+      },
+      "test" : {
+         "requires" : {
+            "Test::Fatal" : "0.003",
+            "Test::More" : "0.94"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "mailto" : "bug-Sub-Quote@rt.cpan.org",
+         "web" : "https://rt.cpan.org/Public/Dist/Display.html?Name=Sub-Quote"
+      },
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ],
+      "repository" : {
+         "type" : "git",
+         "url" : "https://github.com/moose/Sub-Quote.git",
+         "web" : "https://github.com/moose/Sub-Quote"
+      },
+      "x_IRC" : "irc://irc.perl.org/#moose"
+   },
+   "version" : "2.003001",
+   "x_authority" : "cpan:MSTROUT",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

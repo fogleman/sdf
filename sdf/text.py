@@ -3,6 +3,7 @@ import scipy.ndimage as nd
 import numpy as np
 
 from . import d2
+from os import path
 
 # TODO: add support for newlines?
 
@@ -16,6 +17,9 @@ def _load_image(thing):
     return Image.fromarray(np.array(thing))
 
 def measure_text(name, text, width=None, height=None):
+    # Linux adaptation to use microsoft fonts
+    if path.exists("/usr/share/fonts/msttcore/{}.ttf".format(name.lower())):
+      name = "/usr/share/fonts/msttcore/{}.ttf".format(name.lower())
     font = ImageFont.truetype(name, 96)
     x0, y0, x1, y1 = font.getbbox(text)
     aspect = (x1 - x0) / (y1 - y0)
@@ -41,6 +45,9 @@ def measure_image(thing, width=None, height=None):
 
 @d2.sdf2
 def text(font_name, text, width=None, height=None, pixels=PIXELS, points=512):
+    # Linux adaptation to use microsoft fonts
+    if path.isfile("/usr/share/fonts/msttcore/{}.ttf".format(font_name.lower())):
+      font_name = "/usr/share/fonts/msttcore/{}.ttf".format(font_name.lower())
     # load font file
     font = ImageFont.truetype(font_name, points)
 

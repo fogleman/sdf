@@ -1,0 +1,52 @@
+{
+   "abstract" : "Perl bindings to the OpenGL API, GLU, and GLUT/FreeGLUT",
+   "author" : [
+      "Chris Marshall <chm at cpan dot org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.0401, CPAN::Meta::Converter version 2.150001, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "unknown"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "OpenGL",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Test::More" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "http://sourceforge.net/tracker/?group_id=562483&atid=2281758"
+      },
+      "homepage" : "http://sourceforge.net/projects/pogl/",
+      "repository" : {
+         "type" : "git",
+         "url" : "git://pogl.git.sourceforge.net/gitroot/pogl/pogl"
+      }
+   },
+   "version" : "0.70",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

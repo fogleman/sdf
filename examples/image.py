@@ -1,6 +1,6 @@
 from sdf import *
 
-IMAGE = 'examples/butterfly.png'
+IMAGE = 'butterfly.png'
 
 w, h = measure_image(IMAGE)
 

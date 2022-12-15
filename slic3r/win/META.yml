@@ -1,0 +1,12 @@
+build_requires: {}
+conflicts: {}
+dist_name: C:\projects\slic3r\package\win\..\..\slic3r.par
+distribution_type: par
+dynamic_config: 0
+generated_by: 'PAR::Packer version 1.043'
+license: unknown
+par:
+  clean: 0
+  signature: ''
+  verbatim: 0
+  version: 1.014

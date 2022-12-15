@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- Generated with glade 3.18.3 -->
+<interface>
+  <requires lib="gtk+" version="3.12"/>
+  <object class="GtkAction" id="ExportLinuxCNCToolDefinition">
+    <property name="label">_Export tools for LinuxCNC ...</property>
+    <property name="short_label">_Export tools for LinuxCNC ...</property>
+  </object>
+</interface>

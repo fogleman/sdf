@@ -1,0 +1,56 @@
+{
+   "abstract" : "Nearly transparent SSL encapsulation for IO::Socket::INET.",
+   "author" : [
+      "Steffen Ullrich <sullr@cpan.org>, Peter Behroozi, Marko Asplund"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.0401, CPAN::Meta::Converter version 2.150001, CPAN::Meta::Converter version 2.150005",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "IO-Socket-SSL",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Mozilla::CA" : "0",
+            "Net::SSLeay" : "1.46",
+            "Scalar::Util" : "0"
+         }
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "https://rt.cpan.org/Dist/Display.html?Queue=IO-Socket-SSL"
+      },
+      "homepage" : "https://github.com/noxxi/p5-io-socket-ssl",
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ],
+      "repository" : {
+         "url" : "https://github.com/noxxi/p5-io-socket-ssl"
+      }
+   },
+   "version" : "2.048",
+   "x_serialization_backend" : "JSON::PP version 2.27300"
+}

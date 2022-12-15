@@ -1,0 +1,58 @@
+{
+   "abstract" : "unknown",
+   "author" : [
+      "unknown"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "ExtUtils::MakeMaker version 7.24, CPAN::Meta::Converter version 2.150005, CPAN::Meta::Converter version 2.150010",
+   "keywords" : [
+      "TAP",
+      "test",
+      "harness",
+      "prove"
+   ],
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "Test-Harness",
+   "no_index" : {
+      "directory" : [
+         "t",
+         "inc"
+      ]
+   },
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "configure" : {
+         "requires" : {
+            "ExtUtils::MakeMaker" : "0"
+         }
+      },
+      "runtime" : {
+         "recommends" : {
+            "Pod::Usage" : "1.12"
+         },
+         "requires" : {}
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "bugtracker" : {
+         "web" : "http://rt.cpan.org/Public/Dist/Display.html?Name=Test-Harness"
+      },
+      "homepage" : "http://testanything.org/",
+      "repository" : {
+         "url" : "http://github.com/Perl-Toolchain-Gang/Test-Harness/tree/master"
+      }
+   },
+   "version" : "3.39",
+   "x_serialization_backend" : "JSON::PP version 2.27400"
+}

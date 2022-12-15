@@ -1,0 +1,34 @@
+#!/usr/bin/env python3
+"""
+This script is just a wrapper around different versions of flake8.
+It can be removed as soon as "python -m flake8" works across all common distributions.
+"""
+
+import sys
+
+
+def get_flake8_runner():
+    def import_via_main_or_maincli():
+        """ try to import "main" from flake8.main or flake8.main.cli
+
+        The "flake8" module in Debian Jessie and Stretch, as well as Ubuntu Trusty/Xenial use
+        different names.
+        """
+        try:
+            # Debian Stretch
+            from flake8.main.cli import main
+        except ImportError:
+            # Debian Jessie and Ubuntu Trusty
+            from flake8.main import main
+        return main
+    try:
+        return import_via_main_or_maincli()
+    except ImportError:
+        # probably a virtualenv on travis is hiding the system packages from us
+        sys.path.insert(0, "/usr/lib/python3/dist-packages")
+        return import_via_main_or_maincli()
+
+
+if __name__ == "__main__":
+    runner = get_flake8_runner()
+    runner()

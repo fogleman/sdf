@@ -1,0 +1,46 @@
+Source: pycam
+Section: science
+Priority: optional
+Maintainer: Lars Kruse <devel@sumpfralle.de>
+Build-Depends:
+ codespell,
+ debhelper (>= 9),
+ dh-python,
+ help2man,
+ python,
+ python3-flake8,
+ python3-numpy,
+ python3-pytest,
+ python3-setuptools,
+ python3-svg.path,
+Standards-Version: 3.9.8
+Homepage: https://github.com/SebKuzminsky/pycam
+
+Package: pycam
+Architecture: all
+Depends:
+ librecad-data,
+ python3-gi,
+ python3-svg.path,
+ python3-yaml,
+ ${misc:Depends},
+ ${python3:Depends},
+Recommends:
+ python3-numpy,
+ python3-opengl,
+ python3-setproctitle,
+Description: CAM program & Python library for generating toolpaths
+ PyCAM is a toolpath generator for 3 axis machines. The generated
+ GCode can be used with LinuxCNC and other machine controllers.
+ The included Python library can be used independently from the GUI.
+ .
+ Features:
+    * read and write STL model files (3D)
+    * support for 2D models (DXF/SVG/PS)
+    * generate toolpaths (GCode) for various strategies and drill
+      definitions
+    * manage and store processing templates
+    * scale, move, rotate, flip and transform the model
+    * interactive 3D model view based on OpenGL
+    * non-interactive generation of GCode via commandline
+        * render single-line fonts (provided by QCAD)

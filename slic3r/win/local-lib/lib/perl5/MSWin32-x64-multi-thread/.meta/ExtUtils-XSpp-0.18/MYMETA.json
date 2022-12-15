@@ -1,0 +1,198 @@
+{
+   "abstract" : "XS for C++",
+   "author" : [
+      "Mattia Barbon <mbarbon@cpan.org>"
+   ],
+   "dynamic_config" : 0,
+   "generated_by" : "Module::Build version 0.422",
+   "license" : [
+      "perl_5"
+   ],
+   "meta-spec" : {
+      "url" : "http://search.cpan.org/perldoc?CPAN::Meta::Spec",
+      "version" : "2"
+   },
+   "name" : "ExtUtils-XSpp",
+   "prereqs" : {
+      "build" : {
+         "requires" : {
+            "Test::Base" : "0",
+            "Test::Differences" : "0"
+         }
+      },
+      "runtime" : {
+         "requires" : {
+            "Digest::MD5" : "2.0",
+            "ExtUtils::ParseXS" : "3.07",
+            "ExtUtils::Typemaps" : "1",
+            "perl" : "v5.6.1"
+         }
+      }
+   },
+   "provides" : {
+      "ExtUtils::XSpp" : {
+         "file" : "lib/ExtUtils/XSpp.pm",
+         "version" : "0.18"
+      },
+      "ExtUtils::XSpp::Cmd" : {
+         "file" : "lib/ExtUtils/XSpp/Cmd.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Driver" : {
+         "file" : "lib/ExtUtils/XSpp/Driver.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Exception" : {
+         "file" : "lib/ExtUtils/XSpp/Exception.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Exception::code" : {
+         "file" : "lib/ExtUtils/XSpp/Exception/code.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Exception::object" : {
+         "file" : "lib/ExtUtils/XSpp/Exception/object.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Exception::perlcode" : {
+         "file" : "lib/ExtUtils/XSpp/Exception/perlcode.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Exception::simple" : {
+         "file" : "lib/ExtUtils/XSpp/Exception/simple.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Exception::stdmessage" : {
+         "file" : "lib/ExtUtils/XSpp/Exception/stdmessage.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Exception::unknown" : {
+         "file" : "lib/ExtUtils/XSpp/Exception/unknown.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Grammar" : {
+         "file" : "lib/ExtUtils/XSpp/Grammar.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Grammar::YappDriver" : {
+         "file" : "lib/ExtUtils/XSpp/Grammar.pm",
+         "version" : "1.05"
+      },
+      "ExtUtils::XSpp::Lexer" : {
+         "file" : "lib/ExtUtils/XSpp/Lexer.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node" : {
+         "file" : "lib/ExtUtils/XSpp/Node.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Access" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Access.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Argument" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Argument.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Class" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Class.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Comment" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Comment.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Constructor" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Constructor.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Destructor" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Destructor.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Enum" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Enum.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::EnumValue" : {
+         "file" : "lib/ExtUtils/XSpp/Node/EnumValue.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::File" : {
+         "file" : "lib/ExtUtils/XSpp/Node/File.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Function" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Function.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Member" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Member.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Method" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Method.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Module" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Module.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Package" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Package.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::PercAny" : {
+         "file" : "lib/ExtUtils/XSpp/Node/PercAny.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Preprocessor" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Preprocessor.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Raw" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Raw.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Node::Type" : {
+         "file" : "lib/ExtUtils/XSpp/Node/Type.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Parser" : {
+         "file" : "lib/ExtUtils/XSpp/Parser.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Plugin::feature::default_xs_typemap" : {
+         "file" : "lib/ExtUtils/XSpp/Plugin/feature/default_xs_typemap.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Typemap" : {
+         "file" : "lib/ExtUtils/XSpp/Typemap.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Typemap::parsed" : {
+         "file" : "lib/ExtUtils/XSpp/Typemap/parsed.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Typemap::reference" : {
+         "file" : "lib/ExtUtils/XSpp/Typemap/reference.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Typemap::simple" : {
+         "file" : "lib/ExtUtils/XSpp/Typemap/simple.pm",
+         "version" : "0"
+      },
+      "ExtUtils::XSpp::Typemap::wrapper" : {
+         "file" : "lib/ExtUtils/XSpp/Typemap/wrapper.pm",
+         "version" : "0"
+      }
+   },
+   "release_status" : "stable",
+   "resources" : {
+      "license" : [
+         "http://dev.perl.org/licenses/"
+      ]
+   },
+   "version" : "0.18",
+   "x_serialization_backend" : "JSON::PP version 2.27400"
+}

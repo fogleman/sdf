@@ -4,10 +4,13 @@ import (
 	"fmt"
 	"log"
 	"os"
+	"path"
+	"strings"
 	"time"
 
 	. "github.com/fogleman/fauxgl"
 	"github.com/nfnt/resize"
+	cutter "github.com/pschou/go-cutter"
 )
 
 const (
@@ -33,6 +36,8 @@ var (
 	modelColor  = HexColor("2185C5")
 
 	background = Transparent
+
+	showAxis = true
 )
 
 func main() {
@@ -40,6 +45,19 @@ func main() {
 	args := os.Args[1:]
 	if len(args) != 2 {
 		log.Fatal("Usage: go run render.go input.stl output.png")
+	}
+
+	if strings.HasPrefix(path.Base(os.Args[1]), "2d_") {
+		fmt.Println("Using 2d perspective")
+		eye = V(0, 0, 4)
+		center = V(0, 0, 0)
+		up = V(0, 1, 0)
+		modelLight = V(0.5, 0.5, 2).Normalize()
+		showAxis = false
+		//eye = V(1.5, 1.5, 3)
+		//up = V(1, 0, 0)
+		//center = V(.5, .5, 0)
+		//zColor = Transparent
 	}
 
 	// load mesh
@@ -64,7 +82,7 @@ func main() {
 	matrix = matrix.Orthographic(-2, 2, -2, 2, near, far)
 
 	// render axes and origin
-	{
+	if showAxis {
 		shader := NewPhongShader(matrix, axisLight.Normalize(), eye)
 		shader.AmbientColor = Gray(0.4)
 		shader.DiffuseColor = Gray(0.7)
@@ -122,5 +140,47 @@ func main() {
 	// save image
 	image := context.Image()
 	image = resize.Resize(width, height, image, resize.Bilinear)
+
+	// crop off 2d images
+	if strings.HasPrefix(path.Base(os.Args[1]), "2d_") {
+		image, _ = cutter.TrimAlpha(image)
+		//		bounds := image.Bounds()
+		//		minY := bounds.Min.Y
+		//		maxY := bounds.Max.Y
+		//		minX := bounds.Min.X
+		//		maxX := bounds.Max.X
+		//		for has_image := false; minY < maxY && !has_image; minY++ {
+		//			for i := minX; i < maxX; i++ {
+		//				_, _, _, A := image.At(i, minY).RGBA()
+		//				has_image = has_image || (A != 0)
+		//			}
+		//		}
+		//		for has_image := false; minY < maxY && !has_image; maxY-- {
+		//			for i := maxX - 1; i >= minX; i-- {
+		//				_, _, _, A := image.At(i, maxY).RGBA()
+		//				has_image = has_image || (A != 0)
+		//			}
+		//		}
+		//		for has_image := false; minX < maxX && !has_image; minX++ {
+		//			for i := minY; i < maxY; i++ {
+		//				_, _, _, A := image.At(minX, i).RGBA()
+		//				has_image = has_image || (A != 0)
+		//			}
+		//		}
+		//		for has_image := false; minX < maxX && !has_image; maxX-- {
+		//			for i := maxY - 1; i >= minY; i-- {
+		//				_, _, _, A := image.At(maxX, i).RGBA()
+		//				has_image = has_image || (A != 0)
+		//			}
+		//		}
+		//		//fmt.Println("minX", minX, "minY", minY, "maxX", maxX, "maxY", maxY)
+		//
+		//		image, _ = cutter.Crop(image, cutter.Config{
+		//			Width:  maxX - minX + 2,
+		//			Height: maxY - minY + 2,
+		//			Anchor: go_image.Point{minX - 1, minY - 1},
+		//			Mode:   cutter.TopLeft, // optional, default value
+		//		})
+	}
 	SavePNG(os.Args[2], image)
 }
