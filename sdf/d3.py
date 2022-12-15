@@ -404,6 +404,12 @@ def elongate(other, size):
     return f
 
 @op3
+def mirror(other, offset):
+    def f(p):
+        return other(offset - p)
+    return f
+
+@op3
 def twist(other, k):
     def f(p):
         x = p[:,0]
