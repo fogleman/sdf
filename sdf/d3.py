@@ -417,6 +417,17 @@ def mirror(other, point=ORIGIN, normal=UP ):
     return f
 
 @op3
+def taper(other, factor, start, end, e=ease.linear):
+    def f(p):
+        for each in p:
+            scale = (each[2]-start)/(end-start)
+            s = e(np.clip(scale, 0, 1))*factor + 1
+            each[0] /= s
+            each[1] /= s
+        return other(p)
+    return f
+
+@op3
 def twist(other, k):
     def f(p):
         x = p[:,0]
