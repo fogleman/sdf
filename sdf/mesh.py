@@ -150,7 +150,7 @@ def generate(
 
 def save(path, *args, **kwargs):
     points = generate(*args, **kwargs)
-    if path.lower().endswith('.stl'):
+    if str(path).lower().endswith('.stl'):
         stl.write_binary_stl(path, points)
     else:
         mesh = _mesh(points)
