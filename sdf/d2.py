@@ -195,6 +195,17 @@ def polygon(points):
         return s * np.sqrt(d)
     return f
 
+@sdf2
+def vesica(r, d):
+    def f(p):
+        p = np.abs(p)
+        b = np.sqrt(r * r - d * d)
+        return np.where(
+            ((p[:,1] - b) * d > p[:,0] * b),
+            _length(p - np.array([0, b])),
+            _length(p - np.array([-d, 0])) - r)
+    return f
+
 # Positioning
 
 @op2
