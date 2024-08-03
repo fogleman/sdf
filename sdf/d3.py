@@ -563,6 +563,14 @@ class Mesh:
         b = tuple(self.points.max(axis=0).tolist())
         return (a, b)
 
+    def scaled(self, scale):
+        try:
+            sx, sy, sz = scale
+        except TypeError:
+            sx = sy = sz = scale
+        points = self.points * (sx, sy, sz)
+        return Mesh(points, self.triangles)
+
     @sdf3
     def sdf(self, half_width=None):
         import pyopenvdb as vdb
