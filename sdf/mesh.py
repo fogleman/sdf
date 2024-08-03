@@ -52,15 +52,16 @@ def _skip(sdf, job):
     same = np.all(values > 0) if values[0] > 0 else np.all(values < 0)
     return same
 
-def _worker(sdf, job, sparse):
+def _worker(sdf, job, step, sparse):
     X, Y, Z = job
     if sparse and _skip(sdf, job):
         return None
         # return _debug_triangles(X, Y, Z)
     P = _cartesian_product(X, Y, Z)
-    # TODO: pass info (step, shape, bounds, etc.)
-    P = InfoArray(P, info=None)
-    volume = sdf(P).reshape((len(X), len(Y), len(Z)))
+    shape = (len(X), len(Y), len(Z))
+    info = dict(step=step, shape=shape)
+    P = InfoArray(P, info=info)
+    volume = sdf(P).reshape(shape)
     try:
         points = _marching_cubes(volume)
     except Exception:
@@ -140,7 +141,7 @@ def generate(
     skipped = empty = nonempty = 0
     bar = progress.Bar(num_batches, enabled=verbose)
     pool = ThreadPool(workers)
-    f = partial(_worker, sdf, sparse=sparse)
+    f = partial(_worker, sdf, step=(dx, dy, dz), sparse=sparse)
     for result in pool.imap(f, batches):
         bar.increment(1)
         if result is None:
