@@ -6,6 +6,8 @@ from .d2 import *
 
 from .d3 import *
 
+from .mesh import Mesh
+
 from .text import (
     measure_image,
     measure_text,
@@ -13,7 +15,7 @@ from .text import (
     text,
 )
 
-from .mesh import (
+from .core import (
     generate,
     save,
     sample_slice,
