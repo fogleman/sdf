@@ -13,16 +13,6 @@ WORKERS = multiprocessing.cpu_count()
 SAMPLES = 2 ** 22
 BATCH_SIZE = 32
 
-class InfoArray(np.ndarray):
-    def __new__(cls, input_array, info=None):
-        obj = np.asarray(input_array).view(cls)
-        obj.info = info
-        return obj
-    def __array_finalize__(self, obj):
-        if obj is None:
-            return
-        self.info = getattr(obj, 'info', None)
-
 def _marching_cubes(volume, level=0):
     verts, faces, _, _ = measure.marching_cubes(volume, level)
     return verts[faces].reshape((-1, 3))
@@ -59,8 +49,6 @@ def _worker(sdf, job, step, sparse):
         # return _debug_triangles(X, Y, Z)
     P = _cartesian_product(X, Y, Z)
     shape = (len(X), len(Y), len(Z))
-    info = dict(step=step, shape=shape)
-    P = InfoArray(P, info=info)
     volume = sdf(P).reshape(shape)
     try:
         points = _marching_cubes(volume)
