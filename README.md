@@ -74,6 +74,22 @@ python examples/example.py # should generate a file named out.stl
 You can skip the installation if you always run scripts that import `sdf`
 from the root folder.
 
+## OpenVDB
+
+OpenVDB and its Python module are also required if you want to use meshes as SDFs.
+It doesn't seem like this can easily be installed via pip. The basic approach for
+building it is as follows:
+
+```bash
+git clone https://github.com/AcademySoftwareFoundation/openvdb.git
+cd openvdb
+mkdir build
+cd build
+cmake -D OPENVDB_BUILD_PYTHON_MODULE=ON -D USE_NUMPY=ON ..
+make -j8
+cp openvdb/openvdb/python/pyopenvdb.* `python -c 'import site; print(site.getsitepackages()[0])'`
+```
+
 ## File Formats
 
 `sdf` natively writes binary STL files. For other formats, [meshio](https://github.com/nschloe/meshio)
