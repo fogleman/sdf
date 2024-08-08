@@ -34,13 +34,32 @@ class Mesh:
         b = tuple(self.points.max(axis=0).tolist())
         return (a, b)
 
+    def transformed(self, matrix):
+        points = np.hstack([self.points, np.ones((self.points.shape[0], 1))])
+        points = points @ np.array(matrix).T
+        points = points[:,:3]
+        return Mesh(points, self.triangles)
+
     def scaled(self, scale):
         try:
             sx, sy, sz = scale
         except TypeError:
             sx = sy = sz = scale
-        points = self.points * (sx, sy, sz)
-        return Mesh(points, self.triangles)
+        matrix = [[sx, 0, 0, 0], [0, sy, 0, 0], [0, 0, sz, 0], [0, 0, 0, 1]]
+        return self.transformed(matrix)
+
+    def translated(self, offset):
+        dx, dy, dz = offset
+        matrix = [[1, 0, 0, dx], [0, 1, 0, dy], [0, 0, 1, dz], [0, 0, 0, 1]]
+        return self.transformed(matrix)
+
+    def positioned(self, position, anchor):
+        a, b = map(np.array, self.bounding_box)
+        p = a + (b - a) * anchor
+        return self.translated(position - p)
+
+    def centered(self):
+        return self.positioned((0, 0, 0), (0.5, 0.5, 0.5))
 
     @sdf3
     def sdf(self, voxel_size, half_width=None):
