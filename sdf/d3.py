@@ -27,6 +27,7 @@ class SDF3:
         if name in _ops:
             f = _ops[name]
             return functools.partial(f, self)
+        return getattr(self.f, name)
         raise AttributeError
     def __or__(self, other):
         return union(self, other)

@@ -104,4 +104,10 @@ class Mesh:
             d = interpolator(p).reshape((-1, 1))
             return np.where(e > grid.background, e, d)
 
+        f.array = A
+        f.xyz = (X, Y, Z)
+        f.grid = grid
+        f.interpolator = interpolator
+        f.estimator = estimator
+
         return f
