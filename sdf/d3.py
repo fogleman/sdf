@@ -405,6 +405,30 @@ def elongate(other, size):
     return f
 
 @op3
+def mirror(other, point=ORIGIN, normal=UP ):
+    x, y, z = _normalize(normal)
+    
+    matrix = np.array([
+        [1-2*x*x,  -2*x*y,  -2*x*z],
+        [ -2*x*y, 1-2*y*y,  -2*y*z],
+        [ -2*x*z,  -2*y*z, 1-2*z*z],
+    ]).T
+    def f(p):
+        return other(np.dot(p-point, matrix) + point)
+    return f
+
+@op3
+def taper(other, factor, start, end, e=ease.linear):
+    def f(p):
+        for each in p:
+            scale = (each[2]-start)/(end-start)
+            s = e(np.clip(scale, 0, 1))*factor + 1
+            each[0] /= s
+            each[1] /= s
+        return other(p)
+    return f
+
+@op3
 def twist(other, k):
     def f(p):
         x = p[:,0]
