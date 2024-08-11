@@ -1,8 +1,8 @@
 import functools
 import numpy as np
-# import operator
+import operator
 
-from . import core, dn, d2, ease
+from . import dn, d2, ease, mesh
 
 # Constants
 
@@ -27,7 +27,6 @@ class SDF3:
         if name in _ops:
             f = _ops[name]
             return functools.partial(f, self)
-        return getattr(self.f, name)
         raise AttributeError
     def __or__(self, other):
         return union(self, other)
@@ -39,11 +38,11 @@ class SDF3:
         self._k = k
         return self
     def generate(self, *args, **kwargs):
-        return core.generate(self, *args, **kwargs)
+        return mesh.generate(self, *args, **kwargs)
     def save(self, path, *args, **kwargs):
-        return core.save(path, self, *args, **kwargs)
+        return mesh.save(path, self, *args, **kwargs)
     def show_slice(self, *args, **kwargs):
-        return core.show_slice(self, *args, **kwargs)
+        return mesh.show_slice(self, *args, **kwargs)
 
 def sdf3(f):
     def wrapper(*args, **kwargs):
@@ -296,23 +295,6 @@ def MO(h,slant,size,center = ORIGIN):
     return f
 
 @sdf3
-def cylindrical_MO(thickness,m,n,slant,mode = "vertical",size = 2*np.pi,center = ORIGIN):
-    size = np.array(size)
-    def f(p):
-        x = p[:,0]
-        y = p[:,1]
-        z = p[:,2]
-        rho = np.sqrt(x**2+y**2)
-        theta = np.arctan2(y,x)
-        if mode == "vertical":
-            d = np.abs(np.sin(z)+np.cos(m*theta+slant*np.sin(n*rho)))-thickness
-        elif mode == "horizontal":
-            d = np.abs(np.sin(z)+np.cos(m*rho+slant*np.sin(n*theta)))-thickness
-        q = np.abs(p - center) - size / 2
-        return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
-    return f
-
-@sdf3
 def EB(h,size,center = ORIGIN):
     size = np.array(size)
     def f(p):
@@ -324,211 +306,58 @@ def EB(h,size,center = ORIGIN):
         return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
     return f
 
-@sdf3
-def cylindrical_EB(h,size,center = ORIGIN):
-    size = np.array(size)
-    def f(p):
-        x = p[:,0]
-        y = p[:,1]
-        z = p[:,2]
-        rho = np.sqrt(x**2+y**2)
-        theta = np.arctan2(x,y)
-        d = np.abs(np.cos(rho)+np.cos(theta)*np.cos(z))-h
-        q = np.abs(p - center) - size / 2
-        return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
-    return f
 #Minimal surfaces
 
-# @sdf3
-# def schwarzP(h,size,center = ORIGIN):
-#     size = np.array(size)
-#     def f(p):
-#         x = p[:,0]
-#         y = p[:,1]
-#         z = p[:,2]
-#         d = np.abs(np.cos(x)+np.cos(y)+np.cos(z))-h
-#         q = np.abs(p - center) - size / 2
-#         return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
-#     return f
-
 @sdf3
-def schwarzP(thickness,topology,size,center = ORIGIN):
+def schwarzP(h,size,center = ORIGIN):
     size = np.array(size)
     def f(p):
         x = p[:,0]
         y = p[:,1]
         z = p[:,2]
-        d = np.abs(np.cos(x)+np.cos(y)+np.cos(z)-topology)-thickness
+        d = np.abs(np.cos(x)+np.cos(y)+np.cos(z))-h
         q = np.abs(p - center) - size / 2
         return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
     return f
 
 @sdf3
-def cylindrical_schwarzP(thickness,topology,size,center = ORIGIN):
+def schwarzD(h,size, center = ORIGIN):
     size = np.array(size)
     def f(p):
         x = p[:,0]
         y = p[:,1]
         z = p[:,2]
-        rho = np.sqrt(x**2+y**2)
-        theta = np.arctan2(x,y)
-        d = np.abs(np.cos(rho)+np.cos(theta)+np.cos(z)-topology)-thickness
+        d = np.abs(np.sin(x)*np.sin(y)*np.sin(z)+np.sin(x)*np.cos(y)*np.cos(z)+np.cos(x)*np.sin(y)*np.cos(z))-h
         q = np.abs(p - center) - size / 2
         return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
     return f
 
 
-# @sdf3
-# def schwarzD(h,size, center = ORIGIN):
-#     size = np.array(size)
-#     def f(p):
-#         x = p[:,0]
-#         y = p[:,1]
-#         z = p[:,2]
-#         d = np.abs(np.sin(x)*np.sin(y)*np.sin(z)+np.sin(x)*np.cos(y)*np.cos(z)+np.cos(x)*np.sin(y)*np.cos(z))-h
-#         q = np.abs(p - center) - size / 2
-#         return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
-#     return f
 @sdf3
-def schwarzD(thickness,topology,size, center = ORIGIN):
+def gyroid(h,t,size,center = ORIGIN):
     size = np.array(size)
     def f(p):
         x = p[:,0]
         y = p[:,1]
         z = p[:,2]
-        d = np.abs(np.sin(x)*np.sin(y)*np.sin(z)+np.sin(x)*np.cos(y)*np.cos(z)+np.cos(x)*np.sin(y)*np.cos(z)-topology)-thickness
-        q = np.abs(p - center) - size / 2
-        return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
-    return f
-
-@sdf3
-def cylindrical_schwarzD(thickness,topology,size, center = ORIGIN):
-    size = np.array(size)
-    def f(p):
-        x = p[:,0]
-        y = p[:,1]
-        z = p[:,2]
-        rho = np.sqrt(x**2+y**2)
-        theta = np.arctan2(x,y)
-        d = np.abs(np.sin(rho)*np.sin(theta)*np.sin(z)+np.sin(rho)*np.cos(theta)*np.cos(z)+np.cos(rho)*np.sin(theta)*np.cos(z)-topology)-thickness
-        q = np.abs(p - center) - size / 2
-        return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
-    return f
-
-@sdf3
-def fischer_koch(thickness,topology,size, center = ORIGIN):
-    size = np.array(size)
-    def f(p):
-        x = p[:,0]
-        y = p[:,1]
-        z = p[:,2]
-        d = np.abs(np.cos(2*x)*np.sin(y)*np.cos(z)+np.cos(2*y)*np.cos(x)*np.sin(z)+np.cos(y)*np.sin(x)*np.cos(2*z)-topology)-thickness
-        q = np.abs(p - center) - size / 2
-        return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
-    return f
-
-@sdf3
-def lidinoid(thickness,topology,size, center = ORIGIN):
-    size = np.array(size)
-    def f(p):
-        x = p[:,0]
-        y = p[:,1]
-        z = p[:,2]
-        d = np.abs(np.sin(2*x)*np.cos(y)*np.sin(z)+np.sin(2*y)*np.cos(z)*np.sin(x)+np.sin(2*z)*np.cos(x)*np.sin(y)-np.cos(2*x)*np.cos(2*y)-np.cos(2*y)*np.cos(2*z)-np.cos(2*z)*np.cos(2*x)-topology)-thickness
-        q = np.abs(p - center) - size / 2
-        return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
-    return f
-
-@sdf3
-def neovius(thickness,topology,size, center = ORIGIN):
-    size = np.array(size)
-    def f(p):
-        x = p[:,0]
-        y = p[:,1]
-        z = p[:,2]
-        d = np.abs(3*(np.cos(x)+np.cos(y)+np.cos(z))+4*np.cos(x)*np.cos(y)*np.cos(z)-topology)-thickness
-        q = np.abs(p - center) - size / 2
-        return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
-    return f
-# @sdf3
-# def gyroid(thickness,topology,n,size = (2*np.pi,2*np.pi,2*np.pi),center = ORIGIN):
-#     size = np.array(size)
-#     def f(p):
-#         x = p[:,0]
-#         y = p[:,1]
-#         z = p[:,2]
-#         d = np.abs(np.cos(n*x)*np.sin(n*y)+np.cos(n*y)*np.sin(n*z)+np.cos(n*z)*np.sin(n*x)-topology)-thickness
-#         q = np.abs(p - center) - size / 2
-#         return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
-#     return f
-
-@sdf3
-def gyroid(thickness,topology,size,center = ORIGIN):
-    size = np.array(size)
-    def f(p):
-        x = p[:,0]
-        y = p[:,1]
-        z = p[:,2]
-        d = np.abs(np.cos(x)*np.sin(y)+np.cos(y)*np.sin(z)+np.cos(z)*np.sin(x)-topology)-thickness
-        q = np.abs(p - center) - size / 2
-        return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
-    return f
-
-@sdf3
-def cylindrical_gyroid(thickness,topology,n,size = (2*np.pi,2*np.pi,2*np.pi),center = ORIGIN):
-    size = np.array(size)
-    def f(p):
-        x = p[:,0]
-        y = p[:,1]
-        z = p[:,2]
-        rho = np.sqrt(x**2+y**2)
-        theta = np.arctan2(y,x)
-        d = np.abs(np.cos(n*rho)*np.sin(n*theta)+np.cos(n*theta)*np.sin(n*z)+np.cos(n*z)*np.sin(n*rho)-topology)-thickness
-        q = np.abs(p - center) - size / 2
-        return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
-    return f
-
-# @sdf3
-# def FG_gyroid(h,t,size,center = ORIGIN):
-#     size = np.array(size)
-#     def f(p):
-#         tt = _length(t(p))
-#         hh = _length(h(p))
-#         x = p[:,0]
-#         y = p[:,1]
-#         z = p[:,2]
-#         d = np.abs(np.cos(x)*np.sin(y)+np.cos(y)*np.sin(z)+np.cos(z)*np.sin(x)-tt)-hh
-#         q = np.abs(p - center) - size / 2
-#         return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
-#     return f
-
-@sdf3
-def FG_gyroid(h_min,h_max,fh,t_min,t_max,ft,size,k=1.0,center = ORIGIN, e = ease.linear):
-    size = np.array(size)
-    def f(p):
-        Gh = _length(fh(p))
-        Gt = _length(ft(p))
-        x = p[:,0]
-        y = p[:,1]
-        z = p[:,2]
-        h = h_min+(h_max-h_min)*np.clip(Gh,0,1)
-        h = e(h).reshape((-1, 1))
-        t = t_min+(t_max-t_min)*np.clip(Gt,0,1)
-        t = e(t).reshape((-1, 1))
         d = np.abs(np.cos(x)*np.sin(y)+np.cos(y)*np.sin(z)+np.cos(z)*np.sin(x)-t)-h
         q = np.abs(p - center) - size / 2
         return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
     return f
 
-# def transition_general(f0, f1, f2, k=1.0, e=ease.linear):
-#     def f(p):
-#         d1 = f0(p)
-#         d2 = f1(p)
-#         G = f2(p)
-#         t = np.clip(1./(1.+np.exp(k*G)), 0, 1)
-#         t = e(t).reshape((-1, 1))
-#         return t * d2 + (1 - t) * d1
-#     return f
+@sdf3
+def FG_gyroid(h,t,size,center = ORIGIN):
+    size = np.array(size)
+    def f(p):
+        tt = t(p)
+        hh = h(p)
+        x = p[:,0]
+        y = p[:,1]
+        z = p[:,2]
+        d = np.abs(np.cos(x)*np.sin(y)+np.cos(y)*np.sin(z)+np.cos(z)*np.sin(x)-tt)-hh
+        q = np.abs(p - center) - size / 2
+        return _max(d,_length(_max(q, 0)) + _min(np.amax(q, axis=1), 0))
+    return f
 
 @sdf3
 def graded_gyroid(h_min,h_max,t_min,t_max,size,center = ORIGIN):
@@ -567,7 +396,7 @@ def tetrahedron(r):
         x = p[:,0]
         y = p[:,1]
         z = p[:,2]
-        return (_max(np.abs(x + y) - z, np.abs(x - y) + z) - r) / np.sqrt(3)
+        return (_max(np.abs(x + y) - z, np.abs(x - y) + z) - 1) / np.sqrt(3)
     return f
 
 @sdf3
@@ -749,57 +578,12 @@ def transition_linear(f0, f1, p0=-Z, p1=Z, e=ease.linear):
     return f
 
 @op3
-def transition_spherical(f0, f1,r0=5, x0=0,y0=0,z0=0,k=1.0, e=ease.linear):
-    def f(p):
-        d1 = f0(p)
-        d2 = f1(p)
-        r = (p[:,0]-x0)**2+(p[:,1]-y0)**2+(p[:,2]-z0)**2 - r0**2
-        t = 1./(1.0+np.exp(k*r))
-        t = e(t).reshape((-1, 1))
-        return t * d2 + (1 - t) * d1
-    return f
-
-@op3
-def transition_sdf(f0, f1,f2,k=0.25,h=1.0, e=ease.linear):
-    def f(p):
-        d1 = f0(p)
-        d2 = f1(p)
-        d3 = f2(p)
-        r = _length(d3-h)
-        t = 1./(1.0+np.exp(k*r))
-        t = e(t).reshape((-1, 1))
-        return t * d2 + (1 - t) * d1
-    return f
-
-@op3
 def transition_radial(f0, f1, r0=0, r1=1, e=ease.linear):
     def f(p):
         d1 = f0(p)
         d2 = f1(p)
         r = np.hypot(p[:,0], p[:,1])
         t = np.clip((r - r0) / (r1 - r0), 0, 1)
-        t = e(t).reshape((-1, 1))
-        return t * d2 + (1 - t) * d1
-    return f
-
-@op3
-def transition_sigmoid(f0, f1, k=1.0, e=ease.linear):
-    def f(p):
-        d1 = f0(p)
-        d2 = f1(p)
-        G = p[:,2]
-        t = np.clip(1./(1.+np.exp(k*G)), 0, 1)
-        t = e(t).reshape((-1, 1))
-        return t * d2 + (1 - t) * d1
-    return f
-
-@op3
-def transition_general(f0, f1, f2, k=1.0, e=ease.linear):
-    def f(p):
-        d1 = f0(p)
-        d2 = f1(p)
-        G = f2(p)
-        t = np.clip(1./(1.+np.exp(k*G)), 0, 1)
         t = e(t).reshape((-1, 1))
         return t * d2 + (1 - t) * d1
     return f
