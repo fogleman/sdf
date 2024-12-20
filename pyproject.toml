@@ -1,0 +1,30 @@
+[project]
+name = "sdf"
+version = "0.1"
+description = "Generate 3D meshes from signed distance functions."
+authors = [{ name = "Michael Fogleman", email = "michael.fogleman@gmail.com" }]
+license = { text = "MIT" }
+readme = "README.md"
+classifiers = [
+  "Development Status :: 3 - Alpha",
+  "Intended Audience :: Developers",
+  "Natural Language :: English",
+  "License :: OSI Approved :: MIT License",
+  "Programming Language :: Python",
+  "Programming Language :: Python :: 3",
+]
+dependencies = [
+  "matplotlib",
+  "meshio",
+  "numpy",
+  "scikit-image>=0.17",
+  "scipy",
+  "Pillow",
+]
+
+[build-system]
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools]
+packages = ["sdf"]
