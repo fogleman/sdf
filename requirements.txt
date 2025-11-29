@@ -1,0 +1,9 @@
+# install this folder
+.
+# requirements for visualization
+ipykernel
+ipywidgets
+pyvista
+trame
+trame-vtk
+trame-vuetify
