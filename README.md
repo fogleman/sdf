@@ -5,8 +5,8 @@ dirt simple Python API.
 
 Special thanks to [Inigo Quilez](https://iquilezles.org/) for his excellent documentation on signed distance functions:
 
-- [3D Signed Distance Functions](https://iquilezles.org/www/articles/distfunctions/distfunctions.htm)
-- [2D Signed Distance Functions](https://iquilezles.org/www/articles/distfunctions2d/distfunctions2d.htm)
+- [3D Signed Distance Functions](https://iquilezles.org/articles/distfunctions)
+- [2D Signed Distance Functions](https://iquilezles.org/articles/distfunctions2d)
 
 ## Example
 
